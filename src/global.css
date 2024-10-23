@@ -1,3 +1,7 @@
+:root{
+    --text: rgb(225, 225, 225);
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -6,4 +10,35 @@
 
 body{
     background: rgb(0, 0, 25);
+}
+
+.standardForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.standardForm label{
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+.standardForm input{
+    font-size: 28px;
+    padding-left: 10px;
+}
+
+.button{
+    background: rgb(225, 225, 225);
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.button:hover{
+    background: rgb(200, 200, 200);
 }
