@@ -1,12 +1,15 @@
 <script>
     import "../../../../../global.css";
     import logo from "$lib/logo.png";
+    import Loader from "../../../../../components/Loader.svelte";
     let {data} = $props();
 
     let password = $state();
     let confirmPassword = $state();
+    let loader = $state(false);
 
     const submit = async ()=>{
+        loader = true;
         fetch(`${import.meta.env.VITE_API_URL}/vendor/${data.vendorId}/password/${data.token}`, {
             method: "put",
             headers: {
@@ -27,9 +30,20 @@
             })
             .catch((err)=>{
                 console.log(err);
+            })
+            .finally(()=>{
+                setTimeout(()=>{
+                    loader = false;
+                }, 2500)
             });
     }
 </script>
+
+<svelte:head>
+    <title>Vendor | inlet.shop</title>
+</svelte:head>
+
+{#if loader} <Loader/> {/if}
 
 <img class="logo" src={logo} alt="Inlet Sites logo">
 
