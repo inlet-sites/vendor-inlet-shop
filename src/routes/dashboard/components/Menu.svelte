@@ -56,6 +56,15 @@
         font-size: 24px;
         cursor: pointer;
         margin-bottom: 25px;
+        width: 200px;
+    }
+
+    .container button:hover{
+        color: rgb(150, 150, 150);
+    }
+
+    .container button:active{
+        color: rgb(125, 125, 125);
     }
 
     .bottomButtons{

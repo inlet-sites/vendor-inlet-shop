@@ -4,13 +4,15 @@
     import Notifier from "../../components/Notifier.svelte";
     import Loader from "../../components/Loader.svelte";
     import Menu from "./components/Menu.svelte";
+    import Account from "./pages/Account.svelte";
 
     let notifier = $state({type: "", message: ""});
     let loader = $state(false);
-    let vendor;
+    let page = $state("account");
+    let vendor = $state({});
 
     const changePage = (event)=>{
-        console.log(event.detail.page);
+        page = event.detail.page;
     }
 
     onMount(()=>{
@@ -35,7 +37,6 @@
                 }
             })
             .catch((err)=>{
-                console.log(err);
                 notifier.type = "error";
                 notifier.message = "Something went wrong, try refreshing the page";
             })
@@ -49,9 +50,31 @@
 {#if loader}
     <Loader/>
 {/if}
-<Menu
-    on:page={changePage}
-/>
 
 <div class="container">
+    <Menu
+        on:page={changePage}
+    />
+
+    <div class="pages">
+        {#if page === "account"}
+            <Account
+                vendor={vendor}     
+            />
+        {/if}
+    </div>
 </div>
+
+<style>
+    .container{
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .pages{
+        height: 100%;
+        width: calc(100% - 250px);
+        overflow-y: auto;
+    }
+</style>
