@@ -2,11 +2,13 @@
     import "../../../../../global.css";
     import logo from "$lib/logo.png";
     import Loader from "../../../../../components/Loader.svelte";
+    import Notifier from "../../../../../components/Notifier.svelte";
     let {data} = $props();
 
     let password = $state();
     let confirmPassword = $state();
     let loader = $state(false);
+    let notifier = $state({type: "", message: ""});
 
     const submit = async ()=>{
         loader = true;
@@ -23,18 +25,18 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    console.log(response.message);
+                    notifier.type = "error";
+                    notifier.message = response.message;
                 }else{
-                    console.log(response);
+                    window.location.href = "/";
                 }
             })
             .catch((err)=>{
-                console.log(err);
+                notifier.type = "error";
+                notifier.message = "Something went wrong, try refreshing the page.";
             })
             .finally(()=>{
-                setTimeout(()=>{
-                    loader = false;
-                }, 2500)
+                loader = false;
             });
     }
 </script>
@@ -42,6 +44,8 @@
 <svelte:head>
     <title>Vendor | inlet.shop</title>
 </svelte:head>
+
+<Notifier type={notifier.type} message={notifier.message}/>
 
 {#if loader} <Loader/> {/if}
 
