@@ -1,6 +1,6 @@
 <script>
     import "../global.css";
-    import logo from "$lib/logoWhiteText.png";
+    import logo from "$lib/logo.png";
 
     const login = ()=>{
         if(localStorage.getItem("vendorToken")){
@@ -15,7 +15,11 @@
     <header>
         <button on:click={login}>Log In</button>
 
-        <img src={logo} alt="Inlet Sites logo">
+        <div class="logo">
+            <img src={logo} alt="Inlet Sites logo">
+
+            <h2>Inlet.Shop</h2>
+        </div>
 
         <h1>Vendor Portal</h1>
 
@@ -77,7 +81,6 @@
         height: 100vh;
         width: 100vw;
         color: white;
-        font-size: 55px;
         position: relative;
         padding: 15% 0;
     }
@@ -104,9 +107,24 @@
         color: rgb(225, 225, 225);
     }
 
-    header img{
+    .logo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 75%;
         max-width: 1200px;
+        height: 200px;
+        font-size: 75px;
+    }
+
+    .logo img{
+        height: 200px;
+        width: 200px;
+        margin-right: 35px;
+    }
+
+    header h1{
+        font-size: 55px;
     }
 
     #about{
@@ -148,5 +166,32 @@
     #contact li{
         font-size: 22px;
         margin: 25px 0;
+    }
+
+    @media screen and (max-width: 850px){
+        header{
+            padding: 35% 0;
+        }
+
+        .logo{
+            flex-direction: column;
+            font-size: 45px;
+        }
+
+        .logo img{
+            margin: 0;
+        }
+
+        header h1{
+            font-size: 35px;
+        }
+
+        #about{
+            padding: 0 15px;
+        }
+
+        #contact{
+            padding: 0 15px;
+        }
     }
 </style>
