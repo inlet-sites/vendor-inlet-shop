@@ -1,5 +1,6 @@
 <script>
     import "../../global.css";
+    import {onMount} from "svelte";
     import logo from "$lib/logo.png";
     import Notifier from "../../components/Notifier.svelte";
     import Loader from "../../components/Loader.svelte";
@@ -10,8 +11,39 @@
     let password = $state("");
 
     const submit = ()=>{
-        console.log('submit');
+        loader = true;
+        fetch(`${import.meta.env.VITE_API_URL}/vendor/token`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    notifier.type = "error";
+                    notifier.message = response.message
+                }else{
+                    localStorage.setItem("vendorToken", response.token);
+                    window.location.href = "/dashboard";
+                }
+            })
+            .catch((err)=>{
+                loader.type = "error";
+                loader.message = "Something went wrong, try refreshing the page";
+            })
+            .finally(()=>{
+                loader = false;
+            });
     }
+
+    onMount(()=>{
+        if(localStorage.getItem("vendorToken")) window.location.href = "/dashboard";
+    });
 </script>
 
 <svelte:head>
