@@ -118,6 +118,7 @@
 
     .vendorImage label{
         cursor: pointer;
+        width: 200px;
     }
 
     .vendorImage input{
