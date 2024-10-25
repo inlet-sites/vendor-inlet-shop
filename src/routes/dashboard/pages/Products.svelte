@@ -67,7 +67,7 @@
             <button class="product" onclick={displayProduct}>
                 <img src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}" alt={product.name}>
                 <h2>{product.name}</h2>
-                <p>{(product.price / 100).toFixed(2)}</p>
+                <p>${(product.price / 100).toFixed(2)}</p>
             </button>
         {/each}
     </div>
@@ -103,6 +103,7 @@
     .product{
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         width: 250px;
         border: 1px solid white;
         margin: 15px 0;
@@ -114,12 +115,7 @@
         width: 100%;
     }
 
-    .details{
-        padding: 15px 35px;
-        margin-left: 35px;
-    }
-
-    .details h1{
-        font-size: 28px;
+    .product h2, .product p{
+        margin-left: 15px;
     }
 </style>

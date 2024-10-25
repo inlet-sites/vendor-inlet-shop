@@ -38,6 +38,7 @@
         position: relative;
         padding-top: 150px;
         padding: 150px 0 0 35px;
+        border-right: 1px solid rgba(255, 0, 0, 0.35);
     }
 
     img{
