@@ -20,6 +20,10 @@
         notifier.message = event.detail.message;
     }
 
+    const updateVendor = (event)=>{
+        vendor = event.detail.vendor;
+    }
+
     onMount(()=>{
         const token = localStorage.getItem("vendorToken");
         if(!token) window.location.href = "/login";
@@ -66,6 +70,7 @@
             <Account
                 vendor={vendor}     
                 on:notify={notify}
+                on:updateVendor={updateVendor}
             />
         {/if}
     </div>
