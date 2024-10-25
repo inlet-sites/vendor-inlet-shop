@@ -3,8 +3,10 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
+    let active = $state("account");
 
     const openPage = (page)=>{
+        active = page;
         dispatch("page", {page: page});
     }
 
@@ -17,11 +19,11 @@
 <div class="container">
     <img src={logo} alt="Inlet Shop logo">
 
-    <button on:click={()=>openPage("account")}>Account</button> 
+    <button class:active={active === "account"} on:click={()=>{openPage("account")}}>Account</button> 
 
-    <button on:click={()=>{openPage("products")}}>Products</button>
+    <button class:active={active === "products"} on:click={()=>{openPage("products")}}>Products</button>
 
-    <button on:click={()=>{openPage("orders")}}>Orders</button>
+    <button class:active={active === "orders"} on:click={()=>{openPage("orders")}}>Orders</button>
 
     <div class="bottomButtons">
         <button on:click={logout}>Logout</button>
@@ -74,5 +76,9 @@
         left: 0;
         width: 100%;
         padding-left: 35px;
+    }
+
+    .container button.active{
+        color: rgb(231, 0, 31);
     }
 </style>
