@@ -7,6 +7,8 @@
     let loader = $state(false);
     let products = $state([]);
     let newProduct = $state(false);
+    let searchString = $state("");
+    let allProducts = [];
 
     const displayProduct = ()=>{
         console.log("displaying product");
@@ -18,6 +20,11 @@
 
     const closeCreate = ()=>{
         newProduct = false;
+    }
+
+    const search = ()=>{
+        const s = searchString.toLowerCase();
+        products = allProducts.filter(p => p.name.toLowerCase().includes(s));
     }
 
     onMount(()=>{
@@ -39,6 +46,7 @@
                 }else{
                     console.log(response);
                     products = response;
+                    allProducts = response;
                 }
             })
             .catch((err)=>{
@@ -58,9 +66,26 @@
 {/if}
 
 <div class="container">
-    <h1>Your Products</h1>
+    <header>
+        <div class="search">
+            <input
+                type="text"
+                bind:value={searchString}
+                placeholder="Search"
+                onchange={search}
+            >
 
-    <button class="button newProd" onclick={createNew}>New</button>
+            <button class="searchButton" onclick={search}>
+                <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#000000">
+                    <path d="M17 17L21 21" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M3 11C3 15.4183 6.58172 19 11 19C13.213 19 15.2161 18.1015 16.6644 16.6493C18.1077 15.2022 19 13.2053 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <button class="button newProd" onclick={createNew}>New</button>
+    </header>
+
 
     <div class="products">
         {#each products as product}
@@ -88,10 +113,34 @@
         padding-top: 55px;
     }
 
+    header{
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        margin: 0 auto 35px auto;
+    }
+
+    .searchButton{
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .search{
+        display: flex;
+        align-items: center;
+    }
+
+    .search input{
+        font-size: 22px;
+        padding-left: 15px;
+    }
+
+    .search svg{
+        margin-left: -35px;
+    }
+
     .newProd{
-        position: absolute;
-        top: 35px;
-        right: 35px;
     }
 
     .products{
