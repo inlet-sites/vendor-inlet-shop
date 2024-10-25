@@ -37,6 +37,7 @@
                         message: response.message
                     });
                 }else{
+                    console.log(response);
                     products = response;
                 }
             })
@@ -63,7 +64,7 @@
 
     <div class="products">
         {#each products as product}
-            <button onclick={displayProduct}>
+            <button class="product" onclick={displayProduct}>
                 <img src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}" alt={product.name}>
                 <h2>{product.name}</h2>
                 <p>{(product.price / 100).toFixed(2)}</p>
@@ -84,11 +85,41 @@
         height: 100%;
         width: 100%;
         position: relative;
+        padding-top: 55px;
     }
 
     .newProd{
         position: absolute;
         top: 35px;
         right: 35px;
+    }
+
+    .products{
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .product{
+        display: flex;
+        flex-direction: column;
+        width: 250px;
+        border: 1px solid white;
+        margin: 15px 0;
+        cursor: pointer;
+        padding-bottom: 15px;
+    }
+
+    .product img{
+        width: 100%;
+    }
+
+    .details{
+        padding: 15px 35px;
+        margin-left: 35px;
+    }
+
+    .details h1{
+        font-size: 28px;
     }
 </style>
