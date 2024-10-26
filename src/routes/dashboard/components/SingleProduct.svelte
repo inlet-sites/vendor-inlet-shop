@@ -3,6 +3,7 @@
     import Loader from "../../../components/Loader.svelte";
 
     import Name from "./productProperties/Name.svelte";
+    import Description from "./productProperties/Description.svelte";
 
     const dispatch = createEventDispatcher();
     let {productId} = $props();
@@ -40,6 +41,10 @@
     const updateLoader = (event)=>{
         loader = event.detail.on;
     }
+
+    const updateProduct = (event)=>{
+        product = event.detail.product;
+    }
 </script>
 
 <div class="container">
@@ -54,6 +59,14 @@
 
     <Name
         name={product.name}
+        productId={product.id}
+        on:updateProduct={updateProduct}
+        on:loader={updateLoader}
+        on:notify
+    />
+
+    <Description
+        description={product.description}
         productId={product.id}
         on:loader={updateLoader}
         on:notify

@@ -6,7 +6,6 @@
     let edit = $state(false);
 
     const updateName = ()=>{
-        console.log("updating name");
         dispatch("loader", {on: true});
         fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
             method: "put",
