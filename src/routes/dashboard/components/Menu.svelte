@@ -19,14 +19,14 @@
 <div class="container">
     <img src={logo} alt="Inlet Shop logo">
 
-    <button class:active={active === "account"} on:click={()=>{openPage("account")}}>Account</button> 
+    <button class:active={active === "account"} onclick={()=>{openPage("account")}}>Account</button> 
 
-    <button class:active={active === "products"} on:click={()=>{openPage("products")}}>Products</button>
+    <button class:active={active === "products"} onclick={()=>{openPage("products")}}>Products</button>
 
-    <button class:active={active === "orders"} on:click={()=>{openPage("orders")}}>Orders</button>
+    <button class:active={active === "orders"} onclick={()=>{openPage("orders")}}>Orders</button>
 
     <div class="bottomButtons">
-        <button on:click={logout}>Logout</button>
+        <button onclick={logout}>Logout</button>
     </div>
 </div>
 
