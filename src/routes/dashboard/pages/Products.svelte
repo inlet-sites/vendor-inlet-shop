@@ -2,16 +2,18 @@
     import {onMount, createEventDispatcher} from "svelte";
     import Loader from "../../../components/Loader.svelte";
     import NewProduct from "../components/NewProduct.svelte";
+    import SingleProduct from "../components/SingleProduct.svelte";
 
     const dispatch = createEventDispatcher();
     let loader = $state(false);
     let products = $state([]);
     let newProduct = $state(false);
+    let singleProduct = $state(null);
     let searchString = $state("");
     let allProducts = [];
 
-    const displayProduct = ()=>{
-        console.log("displaying product");
+    const displayProduct = (id)=>{
+        singleProduct = id;
     }
 
     const createNew = ()=>{
@@ -44,7 +46,6 @@
                         message: response.message
                     });
                 }else{
-                    console.log(response);
                     products = response;
                     allProducts = response;
                 }
@@ -89,7 +90,7 @@
 
     <div class="products">
         {#each products as product}
-            <button class="product" onclick={displayProduct}>
+            <button class="product" onclick={()=>{displayProduct(product.id)}}>
                 <img src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}" alt={product.name}>
                 <h2>{product.name}</h2>
                 <p>${(product.price / 100).toFixed(2)}</p>
@@ -101,6 +102,14 @@
         <NewProduct
             on:closeCreate={closeCreate}
             on:notify
+        />
+    {/if}
+
+    {#if singleProduct}
+        <SingleProduct
+            productId={singleProduct}
+            on:notify
+            on:close={()=>{singleProduct=null}}
         />
     {/if}
 </div>
