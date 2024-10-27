@@ -32,10 +32,10 @@
         display: flex;
         align-items: center;
         position: fixed;
-        top: 15px;
+        bottom: 15px;
         right: 15px;
         height: 75px;
-        z-index: 2;
+        z-index: 100;
         padding: 0 35px 0 15px;
     }
 

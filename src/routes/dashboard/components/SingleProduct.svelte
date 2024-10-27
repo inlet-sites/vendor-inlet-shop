@@ -4,6 +4,7 @@
 
     import Name from "./productProperties/Name.svelte";
     import Description from "./productProperties/Description.svelte";
+    import Price from "./productProperties/Price.svelte";
 
     const dispatch = createEventDispatcher();
     let {productId} = $props();
@@ -44,6 +45,13 @@
 
     const updateProduct = (event)=>{
         product = event.detail.product;
+        if(event.detail.update){
+            dispatch("update", {
+                id: productId,
+                type: event.detail.update,
+                data: event.detail.data
+            });
+        }
     }
 </script>
 
@@ -68,6 +76,15 @@
     <Description
         description={product.description}
         productId={product.id}
+        on:updateProduct={updateProduct}
+        on:loader={updateLoader}
+        on:notify
+    />
+
+    <Price
+        price={product.price}
+        productId={product.id}
+        on:updateProduct={updateProduct}
         on:loader={updateLoader}
         on:notify
     />
