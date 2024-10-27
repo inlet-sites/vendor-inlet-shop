@@ -5,6 +5,7 @@
     import Name from "./productProperties/Name.svelte";
     import Description from "./productProperties/Description.svelte";
     import Price from "./productProperties/Price.svelte";
+    import Quantity from "./productProperties/Quantity.svelte";
 
     const dispatch = createEventDispatcher();
     let {productId} = $props();
@@ -85,6 +86,13 @@
         price={product.price}
         productId={product.id}
         on:updateProduct={updateProduct}
+        on:loader={updateLoader}
+        on:notify
+    />
+
+    <Quantity
+        quantity={product.quantity}
+        productId={product.id}
         on:loader={updateLoader}
         on:notify
     />
