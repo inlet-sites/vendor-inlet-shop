@@ -6,6 +6,7 @@
     import Description from "./productProperties/Description.svelte";
     import Price from "./productProperties/Price.svelte";
     import Quantity from "./productProperties/Quantity.svelte";
+    import Images from "./productProperties/Images.svelte";
 
     const dispatch = createEventDispatcher();
     let {productId} = $props();
@@ -92,6 +93,13 @@
 
     <Quantity
         quantity={product.quantity}
+        productId={product.id}
+        on:loader={updateLoader}
+        on:notify
+    />
+
+    <Images
+        images={product.images}
         productId={product.id}
         on:loader={updateLoader}
         on:notify
