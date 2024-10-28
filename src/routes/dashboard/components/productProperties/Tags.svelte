@@ -2,36 +2,37 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let {price, productId} = $props();
+    let {tags, productId} = $props();
     let edit = $state(false);
-    let displayPrice = $state(0);
+    let inputTags = $state("");
 
-    $effect(()=>{
-        displayPrice = price / 100;
-    });
-
-    const updatePrice = ()=>{
+    const updateTags = ()=>{
         dispatch("loader", {on: true});
+        let submitTags = tags;
+        if(typeof(tags) === "string"){
+            submitTags = tags.split(",");
+        }
+        if(submitTags[submitTags.length-1] === "") submitTags.splice(submitTags.length-1, 1);
         fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
-            body: JSON.stringify({price: displayPrice * 100})
+            body: JSON.stringify({tags: submitTags})
         })
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
                     dispatch("notify", {
                         type: "error",
-                        message: response.error
+                        message: response.message
                     });
                 }else{
-                    dispatch("updateProduct", {product: response, update: "price", data: response.price});
+                    dispatch("updateProduct", {product: response, update: "tags", data: response.tags});
                     dispatch("notify", {
                         type: "success",
-                        message: "Product price updated"
+                        message: "Product tags updated"
                     });
                 }
             })
@@ -48,11 +49,11 @@
     }
 </script>
 
-<div class="Price">
+<div class="Tags">
     <div class="title">
-        <h2>Price</h2>
+        <h2>Tags</h2>
         {#if edit}
-            <button onclick={updatePrice} aria-label="confirm">
+            <button onclick={updateTags} aria-label="submit">
                 <svg width="35px" height="35px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                     <path d="M5 13L9 17L19 7" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
@@ -68,19 +69,21 @@
 
     {#if edit}
         <input
-            type="number"
-            min="0"
-            step="0.01"
-            bind:value={displayPrice}
-            onchange={updatePrice}
+            type="text"
+            bind:value={tags}
+            onchange={updateTags}
         >
     {:else}
-        <p>${displayPrice}</p>
+        <div class="tags">
+            {#each tags as tag}
+                <p class="tag">{tag}</p>
+            {/each}
+        </div>
     {/if}
 </div>
 
 <style>
-    .Price{
+    .Tags{
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -91,6 +94,18 @@
     .title{
         display: flex;
         margin-bottom: 15px;
+    }
+
+    .tags{
+        display: flex;
+    }
+
+    .tag{
+        border: 1px solid red;
+        padding: 2px;
+        margin: 2px;
+        border-radius: 5px;
+        font-size: 18px;
     }
 
     button{

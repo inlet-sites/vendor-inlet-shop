@@ -50,7 +50,7 @@
             bind:value={name}
             onchange={updateName}
         >
-        <button onclick={updateName}>
+        <button onclick={updateName} aria-click="submit">
             <svg width="35px" height="35px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                 <path d="M5 13L9 17L19 7" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
