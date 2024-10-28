@@ -23,12 +23,11 @@
                         message: response.message
                     });
                 }else{
-                    dispatch("updateProduct", {product: response});
+                    dispatch("updateProduct", {product: response, update: "images", data: response.images});
                     dispatch("notify", {
                         type: "success",
                         message: "Image removed"
                     });
-                    images = response.images;
                 }
             })
             .catch((err)=>{
@@ -71,7 +70,6 @@
                         type: "success",
                         message: "New photos added"
                     });
-                    images = response.images;
                 }
             })
             .catch((err)=>{

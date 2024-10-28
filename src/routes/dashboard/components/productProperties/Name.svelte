@@ -23,7 +23,7 @@
                         message: response.message
                     });
                 }else{
-                    dispatch("updateProduct", {product: response});
+                    dispatch("updateProduct", {product: response, update: "name", data: response.name});
                     dispatch("notify", {
                         type: "success",
                         message: "Product name updated"

@@ -94,6 +94,7 @@
     <Quantity
         quantity={product.quantity}
         productId={product.id}
+        on:updateProduct={updateProduct}
         on:loader={updateLoader}
         on:notify
     />
@@ -101,6 +102,7 @@
     <Images
         images={product.images}
         productId={product.id}
+        on:updateProduct={updateProduct}
         on:loader={updateLoader}
         on:notify
     />
