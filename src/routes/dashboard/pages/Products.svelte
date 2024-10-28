@@ -10,6 +10,7 @@
     let newProduct = $state(false);
     let singleProduct = $state(null);
     let searchString = $state("");
+    let tags = $state([]);
     let allProducts = [];
 
     const displayProduct = (id)=>{
@@ -35,6 +36,16 @@
         products = allProducts;
     }
 
+    const tagSearch = (tag)=>{
+        for(let i = 0; i < allProducts.length; i++){
+            products = [];
+            if(allProducts[i].tags.includes(tag)){
+                products.push(allProducts[i]);
+            }
+        }
+        console.log(products);
+    }
+
     onMount(()=>{
         loader = true;
         fetch(`${import.meta.env.VITE_API_URL}/product/vendor`, {
@@ -54,6 +65,14 @@
                 }else{
                     products = response;
                     allProducts = response;
+
+                    const tempTags = new Set();
+                    for(let i = 0; i < allProducts.length; i++){
+                        for(let j = 0; j < allProducts[i].tags.length; j++){
+                            tempTags.add(allProducts[i].tags[j].toLowerCase());
+                        }
+                    }
+                    tags = Array.from(tempTags);
                 }
             })
             .catch((err)=>{
@@ -93,6 +112,11 @@
         <button class="button newProd" onclick={createNew}>New</button>
     </header>
 
+    <div class="tags">
+        {#each tags as tag}
+            <button onclick={()=>{tagSearch(tag.toLowerCase())}}>{tag.toUpperCase()}</button>
+        {/each}
+    </div>
 
     <div class="products">
         {#each products as product}
@@ -156,7 +180,28 @@
         margin-left: -35px;
     }
 
-    .newProd{
+    .tags{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .tags button{
+        background: white;
+        border: 2px outset white;
+        font-size: 16px;
+        padding: 5px;
+        margin: 0 15px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .tags button:hover{
+        background: var(--text);
+    }
+
+    .tags button:active{
+        border: 2px inset white;
     }
 
     .products{
