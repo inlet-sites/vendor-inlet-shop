@@ -4,15 +4,17 @@
     const dispatch = createEventDispatcher();
     let {tags, productId} = $props();
     let edit = $state(false);
-    let inputTags = $state("");
+    let newTag = $state("");
 
-    const updateTags = ()=>{
+    const updateTags = (idx = null)=>{
         dispatch("loader", {on: true});
-        let submitTags = tags;
-        if(typeof(tags) === "string"){
-            submitTags = tags.split(",");
+        let submitTags = tags.slice(0);
+        if(idx !== null){
+            submitTags.splice(idx, 1);
+        }else{
+            submitTags.push(newTag);
         }
-        if(submitTags[submitTags.length-1] === "") submitTags.splice(submitTags.length-1, 1);
+
         fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
             method: "put",
             headers: {
@@ -45,23 +47,36 @@
             .finally(()=>{
                 dispatch("loader", {on: false});
                 edit = false;
+                newTag = "";
             });
     }
 </script>
 
 <div class="Tags">
     <div class="title">
+        <div class="tooltipContainer">
+            <svg width="20px" height="20px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9 9C9 5.49997 14.5 5.5 14.5 9C14.5 11.5 12 10.9999 12 13.9999" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 18.01L12.01 17.9989" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <div class="tooltip">
+                <p>Tags are like categories that can be placed on items. Customers can choose to display all items with a specific tag. The tags are case independent.</p>
+            </div>
+        </div>
+
         <h2>Tags</h2>
         {#if edit}
-            <button onclick={updateTags} aria-label="submit">
+            <button onclick={()=>{updateTags(null)}} aria-label="submit">
                 <svg width="35px" height="35px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                     <path d="M5 13L9 17L19 7" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </button>
         {:else}
             <button onclick={()=>{edit = true}} aria-label="edit">
-                <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#000000">
-                    <path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942" stroke="#e1e1e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
+                    <path d="M8 12H12M16 12H12M12 12V8M12 12V16" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </button>
         {/if}
@@ -70,16 +85,24 @@
     {#if edit}
         <input
             type="text"
-            bind:value={tags}
-            onchange={updateTags}
+            bind:value={newTag}
+            onchange={()=>{updateTags(null)}}
         >
-    {:else}
-        <div class="tags">
-            {#each tags as tag}
-                <p class="tag">{tag}</p>
-            {/each}
-        </div>
     {/if}
+
+    <div class="tags">
+        {#each tags as tag, i}
+            <div class="tag">
+                <button class="removeButton" onclick={()=>{updateTags(i)}}>
+                    <svg width="22px" height="22px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#000000">
+                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <p>{tag.toUpperCase()}</p>
+            </div>
+        {/each}
+    </div>
 </div>
 
 <style>
@@ -102,10 +125,12 @@
 
     .tag{
         border: 1px solid red;
-        padding: 2px;
-        margin: 2px;
+        padding: 10px 25px;
+        padding: 10px 30px 10px 10px;
+        margin: 0 5px;
         border-radius: 5px;
         font-size: 18px;
+        position: relative;
     }
 
     button{
@@ -118,5 +143,38 @@
     input{
         font-size: 28px;
         padding-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .tooltipContainer{
+        position: relative;
+    }
+
+    .tooltipContainer svg{
+        position: relative;
+        z-index: 3;
+    }
+
+    .tooltipContainer svg:hover + .tooltip{
+        display: flex;
+    }
+
+    .tooltip{
+        display: none;
+        background: white;
+        color: black;
+        padding: 10px;
+        position: absolute;
+        width: 250px;
+        top: 25px;
+        left: 25px;
+        z-index: 4;
+    }
+
+    .removeButton{
+        background: red;
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 </style>
