@@ -4,15 +4,37 @@
 
     const dispatch = createEventDispatcher();
     let name = $state("");
-    let tags = $state("");
+    let tags = $state([""]);
     let description = $state("");
     let price = $state(null);
     let quantity = $state(null);
     let files = $state(null);
     let loader = $state(false);
+    let needsToRun = true;
 
     const cancel = ()=>{
         dispatch("closeCreate");
+    }
+
+    $effect(()=>{
+        let needsField = true;
+        for(let i = 0; i < tags.length; i++){
+            if(tags[i] === ""){
+                needsField = false;
+                break;
+            }
+        }
+
+        if(needsField) tags.push("");
+    });
+
+    const createTags = ()=>{
+        const newTags = [];
+        for(let i = 0; i < tags.length; i++){
+            if(tags[i] !== "") newTags.push(tags[i]);
+        }
+
+        return JSON.stringify(newTags);
     }
 
     const submit = ()=>{
@@ -20,7 +42,7 @@
 
         let formData = new FormData();
         formData.append("name", name);
-        formData.append("tags", JSON.stringify(tags));
+        formData.append("tags", createTags());
         formData.append("description", description);
         formData.append("price", price * 100);
         formData.append("quantity", quantity);
@@ -87,11 +109,14 @@
         </label>
 
         <label>Tags
-            <input
-                type="text"
-                bind:value={tags}
-                placeholder="Tags"
-            >
+            {#each tags as tag, i}
+                <input
+                    class="tag"
+                    type="text"
+                    bind:value={tags[i]}
+                    placeholder="Tag"
+                >
+            {/each}
         </label>
 
         <label>Description
@@ -166,5 +191,9 @@
 
     .cancel:hover{
         background: rgb(125, 0, 0);
+    }
+
+    .tag{
+        margin-bottom: 5px;
     }
 </style>
