@@ -121,13 +121,14 @@
 
     .tags{
         display: flex;
+        flex-wrap: wrap;
+        display: flex;
     }
 
     .tag{
         border: 1px solid red;
-        padding: 10px 25px;
         padding: 10px 30px 10px 10px;
-        margin: 0 5px;
+        margin: 5px 5px;
         border-radius: 5px;
         font-size: 18px;
         position: relative;

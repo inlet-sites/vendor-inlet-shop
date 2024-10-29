@@ -34,16 +34,34 @@
         const product = allProducts.find(p => p.id === event.detail.id);
         product[event.detail.type] = event.detail.data;
         products = allProducts;
+        if(event.detail.type === "tags") updateTags();
     }
 
     const tagSearch = (tag)=>{
+        if(tag === "all"){
+            products = allProducts;
+            return;
+        }
+
+        products = [];
         for(let i = 0; i < allProducts.length; i++){
-            products = [];
-            if(allProducts[i].tags.includes(tag)){
-                products.push(allProducts[i]);
+            for(let j = 0; j < allProducts[i].tags.length; j++){
+                if(allProducts[i].tags[j].toLowerCase() === tag){
+                    products.push(allProducts[i]);
+                    break;
+                }
             }
         }
-        console.log(products);
+    }
+
+    const updateTags = ()=>{
+        const tempTags = new Set();
+        for(let i = 0; i < allProducts.length; i++){
+            for(let j = 0; j < allProducts[i].tags.length; j++){
+                tempTags.add(allProducts[i].tags[j].toLowerCase());
+            }
+        }
+        tags = Array.from(tempTags);
     }
 
     onMount(()=>{
@@ -65,14 +83,7 @@
                 }else{
                     products = response;
                     allProducts = response;
-
-                    const tempTags = new Set();
-                    for(let i = 0; i < allProducts.length; i++){
-                        for(let j = 0; j < allProducts[i].tags.length; j++){
-                            tempTags.add(allProducts[i].tags[j].toLowerCase());
-                        }
-                    }
-                    tags = Array.from(tempTags);
+                    updateTags();
                 }
             })
             .catch((err)=>{
@@ -113,6 +124,7 @@
     </header>
 
     <div class="tags">
+        <button onclick={()=>{tagSearch("all")}}>ALL</button>
         {#each tags as tag}
             <button onclick={()=>{tagSearch(tag.toLowerCase())}}>{tag.toUpperCase()}</button>
         {/each}
@@ -157,7 +169,7 @@
         display: flex;
         justify-content: space-between;
         width: 90%;
-        margin: 0 auto 35px auto;
+        margin: 0 auto;
     }
 
     .searchButton{
@@ -184,6 +196,7 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
+        margin-bottom: 35px;
     }
 
     .tags button{
@@ -191,7 +204,7 @@
         border: 2px outset white;
         font-size: 16px;
         padding: 5px;
-        margin: 0 15px;
+        margin: 5px 15px;
         border-radius: 10px;
         cursor: pointer;
     }
