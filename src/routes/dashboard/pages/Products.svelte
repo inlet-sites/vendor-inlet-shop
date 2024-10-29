@@ -37,6 +37,11 @@
         if(event.detail.type === "tags") updateTags();
     }
 
+    const addProduct = (event)=>{
+        allProducts.push(event.detail.product);
+        products = allProducts;
+    }
+
     const tagSearch = (tag)=>{
         if(tag === "all"){
             products = allProducts;
@@ -143,6 +148,7 @@
     {#if newProduct}
         <NewProduct
             on:closeCreate={closeCreate}
+            on:addProduct={addProduct}
             on:notify
         />
     {/if}
