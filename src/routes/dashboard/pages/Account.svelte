@@ -6,6 +6,7 @@
     import Description from "../components/vendorProperties/Description.svelte";
     import Phone from "../components/vendorProperties/Phone.svelte";
     import Email from "../components/vendorProperties/Email.svelte";
+    import Address from "../components/vendorProperties/Address.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -96,6 +97,13 @@
 
     <Email
         email={vendor.contact?.email}
+        on:loader={(event)=>{loader = event.detail.on}}
+        on:updateVendor
+        on:notify
+    />
+
+    <Address
+        address={vendor.contact?.address}
         on:loader={(event)=>{loader = event.detail.on}}
         on:updateVendor
         on:notify
