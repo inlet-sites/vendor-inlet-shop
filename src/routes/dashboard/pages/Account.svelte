@@ -2,6 +2,7 @@
     import {createEventDispatcher} from "svelte";
     import ChangePassModal from "../components/ChangePassModal.svelte";
     import Loader from "../../../components/Loader.svelte";
+    import Slogan from "../components/vendorProperties/Slogan.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -69,18 +70,30 @@
 
     <h1>{vendor.store}</h1>
 
-    <button
-        class="changePass"
-        onclick={modal = true}
-    >Change Password</button>
+    <h2>Public Information</h2>
+    <Slogan
+        slogan={vendor.slogan}
+        on:loader={(event)=>{loader = event.detail.on}}
+        on:updateVendor
+        on:notify
+    />
+
+    <div class="divider"></div>
 
     <div class="vendorImage">
-        <h2>Thumbnail Image</h2>
+        <h2>Thumbnail</h2>
         <label>
             <img src={imageUrl} alt="Vendor thumbnail">
             <input type="file" onchange={newThumbnail} bind:files/>
         </label>
     </div>
+
+    <div class="divider"></div>
+
+    <button
+        class="changePass"
+        onclick={modal = true}
+    >Change Password</button>
 </div>
 
 <style>
@@ -132,5 +145,10 @@
     .vendorImage img{
         width: 200px;
         height: 200px;
+    }
+
+    .divider{
+        margin: 35px;
+        border-bottom: 2px solid var(--text);
     }
 </style>
