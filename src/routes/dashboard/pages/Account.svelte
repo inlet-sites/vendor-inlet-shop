@@ -4,6 +4,7 @@
     import Loader from "../../../components/Loader.svelte";
     import Slogan from "../components/vendorProperties/Slogan.svelte";
     import Description from "../components/vendorProperties/Description.svelte";
+    import Phone from "../components/vendorProperties/Phone.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -17,7 +18,6 @@
         loader = true;
         const formData = new FormData();
         formData.append("file", files[0]);
-        console.log(formData);
 
         fetch(`${import.meta.env.VITE_API_URL}/vendor/image`, {
             method: "put",
@@ -81,6 +81,13 @@
 
     <Description
         description={vendor.description}
+        on:loader={(event)=>{loader = event.detail.on}}
+        on:updateVendor
+        on:notify
+    />
+
+    <Phone
+        phone={vendor.contact?.phone}
         on:loader={(event)=>{loader = event.detail.on}}
         on:updateVendor
         on:notify

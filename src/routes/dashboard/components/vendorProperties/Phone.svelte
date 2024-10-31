@@ -2,10 +2,10 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let {slogan} = $props();
+    let {phone} = $props();
     let edit = $state(false);
 
-    const updateSlogan = ()=>{
+    const updatePhone = ()=>{
         dispatch("loader", {on: true});
         fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
             method: "put",
@@ -13,7 +13,7 @@
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
-            body: JSON.stringify({slogan: slogan})
+            body: JSON.stringify({phone: phone})
         })
             .then(r=>r.json())
             .then((response)=>{
@@ -26,7 +26,7 @@
                     dispatch("updateVendor", {vendor: response});
                     dispatch("notify", {
                         type: "success",
-                        message: "Slogan updated"
+                        message: "Phone number updated"
                     });
                 }
             })
@@ -43,11 +43,11 @@
     }
 </script>
 
-<div class="Slogan">
+<div class="Phone">
     <div class="title">
-        <h3>Slogan</h3>
+        <h3>Phone Number</h3>
         {#if edit}
-            <button onclick={updateSlogan} aria-label="confirm">
+            <button onclick={updatePhone} aria-label="confirm">
                 <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                     <path d="M5 13L9 17L19 7" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
@@ -64,20 +64,20 @@
     {#if edit}
         <input
             type="text"
-            bind:value={slogan}
-            onchange={updateSlogan}
+            bind:value={phone}
+            onchange={updatePhone}
         />
     {:else}
-        {#if slogan}
-            <p>{slogan}</p>
+        {#if phone}
+            <p>{phone}</p>
         {:else}
-            <p>***No Slogan***</p>
+            <p>***No Phone Number***</p>
         {/if}
     {/if}
 </div>
 
 <style>
-    .Slogan{
+    .Phone{
         margin: 25px 0;
     }
 
