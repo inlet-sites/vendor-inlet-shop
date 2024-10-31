@@ -2,10 +2,10 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let {slogan} = $props();
+    let {description} = $props();
     let edit = $state(false);
 
-    const updateSlogan = ()=>{
+    const updateDescription = ()=>{
         dispatch("loader", {on: true});
         fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
             method: "put",
@@ -13,7 +13,7 @@
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
-            body: JSON.stringify({slogan: slogan})
+            body: JSON.stringify({description: description})
         })
             .then(r=>r.json())
             .then((response)=>{
@@ -24,6 +24,10 @@
                     });
                 }else{
                     dispatch("updateVendor", {vendor: response});
+                    dispatch("notify", {
+                        type: "success",
+                        message: "Description updated"
+                    });
                 }
             })
             .catch((err)=>{
@@ -39,11 +43,11 @@
     }
 </script>
 
-<div class="Slogan">
+<div class="Description">
     <div class="title">
-        <h3>Slogan</h3>
+        <h3>Description</h3>
         {#if edit}
-            <button onclick={updateSlogan} aria-label="confirm">
+            <button onclick={updateDescription} aria-label="confirm">
                 <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                     <path d="M5 13L9 17L19 7" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
@@ -58,22 +62,22 @@
     </div>
 
     {#if edit}
-        <input
-            type="text"
-            bind:value={slogan}
-            onchange={updateSlogan}
-        />
+        <textarea
+            rows="10"
+            bind:value={description}
+            onchange={updateDescription}
+        ></textarea>
     {:else}
-        {#if slogan}
-            <p>{slogan}</p>
+        {#if description}
+            <p>{description}</p>
         {:else}
-            <p>***No Slogan</p>
+            <p>***No Description***</p>
         {/if}
     {/if}
 </div>
 
 <style>
-    .Slogan{
+    .Description{
         margin: 25px 0;
     }
 
@@ -95,7 +99,8 @@
         margin-left: 10px;
     }
 
-    input{
-        font-size: 28px;
+    textarea{
+        width: 75%;
+        font-size: 16px;
     }
 </style>

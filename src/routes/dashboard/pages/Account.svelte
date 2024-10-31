@@ -3,6 +3,7 @@
     import ChangePassModal from "../components/ChangePassModal.svelte";
     import Loader from "../../../components/Loader.svelte";
     import Slogan from "../components/vendorProperties/Slogan.svelte";
+    import Description from "../components/vendorProperties/Description.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -73,6 +74,13 @@
     <h2>Public Information</h2>
     <Slogan
         slogan={vendor.slogan}
+        on:loader={(event)=>{loader = event.detail.on}}
+        on:updateVendor
+        on:notify
+    />
+
+    <Description
+        description={vendor.description}
         on:loader={(event)=>{loader = event.detail.on}}
         on:updateVendor
         on:notify
