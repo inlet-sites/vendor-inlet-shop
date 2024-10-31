@@ -5,6 +5,7 @@
     import Slogan from "../components/vendorProperties/Slogan.svelte";
     import Description from "../components/vendorProperties/Description.svelte";
     import Phone from "../components/vendorProperties/Phone.svelte";
+    import Email from "../components/vendorProperties/Email.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -88,6 +89,13 @@
 
     <Phone
         phone={vendor.contact?.phone}
+        on:loader={(event)=>{loader = event.detail.on}}
+        on:updateVendor
+        on:notify
+    />
+
+    <Email
+        email={vendor.contact?.email}
         on:loader={(event)=>{loader = event.detail.on}}
         on:updateVendor
         on:notify
