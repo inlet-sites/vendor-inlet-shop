@@ -4,6 +4,9 @@
     const dispatch = createEventDispatcher();
     let {description} = $props();
     let edit = $state(false);
+    let displayDescription = $derived(description ? description.split("\n") : []);
+    $inspect(description);
+    $inspect(displayDescription);
 
     const updateDescription = ()=>{
         dispatch("loader", {on: true});
@@ -69,7 +72,9 @@
         ></textarea>
     {:else}
         {#if description}
-            <p>{description}</p>
+            {#each displayDescription as d}
+                <p class="text">{d}</p>
+            {/each}
         {:else}
             <p>***No Description***</p>
         {/if}
@@ -102,5 +107,9 @@
     textarea{
         width: 75%;
         font-size: 16px;
+    }
+
+    .text{
+        margin: 15px 0;
     }
 </style>
