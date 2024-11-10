@@ -43,6 +43,18 @@
         updateTags();
     }
 
+    const removeProduct = (event)=>{
+        for(let i = 0; i < allProducts.length; i++){
+            if(allProducts[i].id === event.detail.product){
+                allProducts.splice(i, 1);
+                products = allProducts;
+                updateTags();
+                break;
+            }
+        }
+        singleProduct = null;
+    }
+
     const tagSearch = (tag)=>{
         if(tag === "all"){
             products = allProducts;
@@ -158,6 +170,7 @@
         <SingleProduct
             productId={singleProduct}
             on:update={updateProduct}
+            on:removeProduct={removeProduct}
             on:notify
             on:close={()=>{singleProduct=null}}
         />

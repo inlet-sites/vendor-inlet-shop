@@ -13,6 +13,7 @@
     let {productId} = $props();
     let product = $state({});
     let loader = $state(false);
+    let deleteModal = $state(false);
 
     loader = true;
     fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
@@ -42,6 +43,39 @@
             loader = false;
         });
 
+    const deleteProduct = ()=>{
+        deleteModal = true;
+    }
+
+    const submitDelete = ()=>{
+        loader = true;
+        fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
+            method: "delete",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+            }
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    dispatch("notify", {type: "error", message: response.message});
+                }else{
+                    dispatch("removeProduct", {product: productId});
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+                dispatch("notify", {
+                    type: "error",
+                    message: "Something went wrong, try refreshing the page"
+                });
+            })
+            .finally(()=>{
+                loader = false;
+            });
+    }
+
     const updateLoader = (event)=>{
         loader = event.detail.on;
     }
@@ -58,15 +92,34 @@
     }
 </script>
 
+{#if deleteModal}
+    <div class="deleteModal">
+        <h2>Are you sure that you want to delete this product?</h2>
+        <h3>This is irreversible</h3>
+
+        <div class="deleteButtons">
+            <button class="button modalDelete" onclick={submitDelete}>Delete</button>
+            <button class="button modalCancel" onclick={()=>{deleteModal = false}}>Cancel</button>
+        </div>
+    </div>
+{/if}
+
 <div class="container">
     {#if loader}
         <Loader/>
     {/if}
 
-    <button
-        class="finished button"
-        onclick={()=>{dispatch("close")}}
-    >Finished</button>
+    <div class="actionables">
+        <button
+            class="finished button"
+            onclick={()=>{dispatch("close")}}
+        >Finished</button>
+
+        <button
+            class="delete button"
+            onclick={deleteProduct}
+        >Delete</button>
+    </div>
 
     <Name
         name={product.name}
@@ -128,9 +181,51 @@
         background: rgb(0, 0, 25);
     }
 
-    .finished{
+    .actionables{
+        display: flex;
+        flex-direction: column;
         position: absolute;
         top: 35px;
         right: 35px;
+    }
+
+    .delete{
+        margin-top: 10px;
+        background: rgb(175, 0, 0);
+        color: var(--text);
+    }
+
+    .deleteModal{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: calc(50% - 125px);
+        left: calc(50% - 175px);
+        height: 350px;
+        width: 450px;
+        z-index: 5;
+        background: var(--text);
+        padding: 15px;
+        box-shadow: 0 0 5px white;
+        text-align: center;
+    }
+
+    .deleteButtons{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+    }
+
+    .modalDelete{
+        background: rgb(175, 0, 0);
+        color: var(--text);
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .modalCancel{
+        width: 100%;
     }
 </style>
