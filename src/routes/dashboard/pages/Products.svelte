@@ -40,6 +40,7 @@
     const addProduct = (event)=>{
         allProducts.push(event.detail.product);
         products = allProducts;
+        updateTags();
     }
 
     const tagSearch = (tag)=>{
