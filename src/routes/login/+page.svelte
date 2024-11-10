@@ -10,6 +10,15 @@
     let email = $state("");
     let password = $state("");
 
+    const notify = (type, message)=>{
+        notifier.type = type;
+        notifier.message = message;
+
+        setTimeout(()=>{
+            notifier.type = "";
+        }, 7500);
+    }
+
     const submit = ()=>{
         loader = true;
         fetch(`${import.meta.env.VITE_API_URL}/vendor/token`, {
@@ -25,16 +34,14 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    notifier.type = "error";
-                    notifier.message = response.message
+                    notify("error", response.message);
                 }else{
                     localStorage.setItem("vendorToken", response.token);
                     window.location.href = "/dashboard";
                 }
             })
             .catch((err)=>{
-                loader.type = "error";
-                loader.message = "Something went wrong, try refreshing the page";
+                notify("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{
                 loader = false;
@@ -51,7 +58,9 @@
 </svelte:head>
 
 <div class="container">
-    <Notifier type={notifier.type} message={notifier.message}/>
+    {#if notifier.type}
+        <Notifier type={notifier.type} message={notifier.message}/>
+    {/if}
 
     {#if loader} <Loader/> {/if}
 

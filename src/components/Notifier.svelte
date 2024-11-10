@@ -1,13 +1,5 @@
 <script>
     let {type, message} = $props();
-
-    $effect(()=>{
-        if(type){
-            setTimeout(()=>{
-                type = "";
-            }, 7500);
-        }
-    })
 </script>
 
 {#if type === "error"}

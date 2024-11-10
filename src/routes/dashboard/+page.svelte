@@ -19,6 +19,10 @@
     const notify = (event)=>{
         notifier.type = event.detail.type;
         notifier.message = event.detail.message;
+
+        setTimeout(()=>{
+            notifier.type = "";
+        }, 7500);
     }
 
     const updateVendor = (event)=>{
@@ -56,7 +60,14 @@
     });
 </script>
 
-<Notifier type={notifier.type} message={notifier.message}/>
+<svelte:head>
+    <title>Vendor Dashboard | Inlet.Shop</title>
+</svelte:head>
+
+{#if notifier.type}
+    <Notifier type={notifier.type} message={notifier.message}/>
+{/if}
+
 {#if loader}
     <Loader/>
 {/if}

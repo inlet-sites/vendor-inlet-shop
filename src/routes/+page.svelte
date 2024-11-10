@@ -11,6 +11,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Vendor | Inlet.shop</title>
+</svelte:head>
+
 <div class="container">
     <header>
         <button on:click={login}>Log In</button>

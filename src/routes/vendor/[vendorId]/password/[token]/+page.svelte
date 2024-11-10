@@ -10,6 +10,15 @@
     let loader = $state(false);
     let notifier = $state({type: "", message: ""});
 
+    const notify = (type, message)=>{
+        notifier.type = type;
+        notifier.message = message;
+
+        setTimeout(()=>{
+            notifier.type = "";
+        }, 7500);
+    }
+
     const submit = async ()=>{
         loader = true;
         fetch(`${import.meta.env.VITE_API_URL}/vendor/${data.vendorId}/password/${data.token}`, {
@@ -45,7 +54,9 @@
     <title>Vendor | inlet.shop</title>
 </svelte:head>
 
-<Notifier type={notifier.type} message={notifier.message}/>
+{#if notifier.type}
+    <Notifier type={notifier.type} message={notifier.message}/>
+{/if}
 
 {#if loader} <Loader/> {/if}
 
