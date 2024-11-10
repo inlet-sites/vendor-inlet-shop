@@ -1,4 +1,5 @@
 <script>
+    import {onMount} from "svelte";
     import "../../../../../global.css";
     import logo from "$lib/logo.png";
     import Loader from "../../../../../components/Loader.svelte";
@@ -9,6 +10,7 @@
     let confirmPassword = $state();
     let loader = $state(false);
     let notifier = $state({type: "", message: ""});
+    let focusInput = $state({});
 
     const notify = (type, message)=>{
         notifier.type = type;
@@ -48,6 +50,10 @@
                 loader = false;
             });
     }
+
+    onMount(()=>{
+        focusInput.focus();
+    });
 </script>
 
 <svelte:head>
@@ -71,6 +77,7 @@
             <input
                 type="password"
                 bind:value={password}
+                bind:this={focusInput}
                 placeholder="Password"
                 required
             >
