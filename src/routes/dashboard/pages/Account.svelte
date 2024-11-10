@@ -162,7 +162,6 @@
 
     .vendorImage label{
         cursor: pointer;
-        width: 200px;
     }
 
     .vendorImage input{
@@ -174,7 +173,6 @@
     }
 
     .vendorImage img{
-        width: 200px;
         height: 200px;
     }
 
