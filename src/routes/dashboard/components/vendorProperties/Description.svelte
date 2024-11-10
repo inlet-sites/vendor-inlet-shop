@@ -5,8 +5,6 @@
     let {description} = $props();
     let edit = $state(false);
     let displayDescription = $derived(description ? description.split("\n") : []);
-    $inspect(description);
-    $inspect(displayDescription);
 
     const updateDescription = ()=>{
         dispatch("loader", {on: true});
