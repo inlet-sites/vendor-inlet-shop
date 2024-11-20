@@ -118,4 +118,10 @@
     .text{
         margin: 15px 0;
     }
+
+    @media screen and (max-width: 850px){
+        textarea{
+            width: 100%;
+        }
+    }
 </style>

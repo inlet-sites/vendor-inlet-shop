@@ -104,4 +104,10 @@
         width: calc(100% - 250px);
         overflow-y: auto;
     }
+
+    @media screen and (max-width: 850px){
+        .pages{
+            width: 100%;
+        }
+    }
 </style>
