@@ -4,8 +4,10 @@
 
     const dispatch = createEventDispatcher();
     let active = $state("account");
+    let menuOpen = $state(false);
 
     const openPage = (page)=>{
+        menuOpen = false;
         active = page;
         dispatch("page", {page: page});
     }
@@ -14,9 +16,13 @@
         localStorage.removeItem("vendorToken");
         window.location.href = "/";
     }
+
+    const showMobile = ()=>{
+        menuOpen = !menuOpen;
+    }
 </script>
 
-<div class="container">
+<div class="container" class:open={menuOpen}>
     <img src={logo} alt="Inlet Shop logo">
 
     <button class:active={active === "account"} onclick={()=>{openPage("account")}}>Account</button> 
@@ -29,6 +35,14 @@
         <button onclick={logout}>Logout</button>
     </div>
 </div>
+
+<button class="mobileMenu" aria-label="open menu" onclick={showMobile}>
+    <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
+        <path d="M3 5H21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M3 12H21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M3 19H21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+</button>
 
 <style>
     .container{
@@ -80,5 +94,40 @@
 
     .container button.active{
         color: rgb(231, 0, 31);
+    }
+
+    .mobileMenu{
+        display: none;
+        background: none;
+        border: none;
+    }
+
+    @media screen and (max-width: 850px){
+        .container{
+            display: none;
+            align-items: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-right: none;
+            z-index: 2;
+        }
+
+        .container.open{
+            display: flex;
+        }
+
+        .container > button{
+            margin: 35px 0;
+            font-size: 35px;
+        }
+
+        .mobileMenu{
+            display: flex;
+            position: fixed;
+            top: 25px;
+            right: 25px;
+        }
     }
 </style>
