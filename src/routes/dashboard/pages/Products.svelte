@@ -12,6 +12,7 @@
     let searchString = $state("");
     let tags = $state([]);
     let allProducts = [];
+    let activeTag = $state("all");
 
     const displayProduct = (id)=>{
         singleProduct = id;
@@ -56,6 +57,8 @@
     }
 
     const tagSearch = (tag)=>{
+        activeTag = tag;
+
         if(tag === "all"){
             products = allProducts;
             return;
@@ -120,7 +123,7 @@
     <Loader/>
 {/if}
 
-<div class="container">
+<div class="Products">
     <header>
         <div class="search">
             <input
@@ -142,9 +145,14 @@
     </header>
 
     <div class="tags">
-        <button onclick={()=>{tagSearch("all")}}>ALL</button>
+        <button
+            class:active={activeTag === "all"}
+            onclick={()=>{tagSearch("all")}}>ALL</button>
         {#each tags as tag}
-            <button onclick={()=>{tagSearch(tag.toLowerCase())}}>{tag.toUpperCase()}</button>
+            <button
+                class:active={activeTag === tag}
+                onclick={()=>{tagSearch(tag.toLowerCase())}}
+            >{tag.toUpperCase()}</button>
         {/each}
     </div>
 
@@ -178,7 +186,7 @@
 </div>
 
 <style>
-    .container{
+    .Products{
         height: 100%;
         width: 100%;
         position: relative;
@@ -223,9 +231,8 @@
         background: white;
         border: 2px outset white;
         font-size: 16px;
-        padding: 5px;
-        margin: 5px 15px;
-        border-radius: 10px;
+        padding: 5px 10px;
+        margin: 5px 0;
         cursor: pointer;
     }
 
@@ -233,7 +240,7 @@
         background: var(--text);
     }
 
-    .tags button:active{
+    .tags button.active{
         border: 2px inset white;
     }
 
@@ -260,5 +267,27 @@
 
     .product h2, .product p{
         margin-left: 15px;
+    }
+
+    @media screen and (max-width: 850px){
+        .Products{
+            padding-top: 95px;
+        }
+    }
+
+    @media screen and (max-width: 550px){
+        .Products{
+            padding-top: 95px;
+        }
+
+        .newProd{
+            position: absolute;
+            top: 25px;
+            left: 25px;
+        }
+
+        .search{
+            margin: 0 auto 15px auto;
+        }
     }
 </style>

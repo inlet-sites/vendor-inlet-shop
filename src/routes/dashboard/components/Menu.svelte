@@ -100,6 +100,7 @@
         display: none;
         background: none;
         border: none;
+        z-index: 3;
     }
 
     @media screen and (max-width: 850px){
