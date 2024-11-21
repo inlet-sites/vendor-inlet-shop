@@ -104,7 +104,7 @@
     </div>
 {/if}
 
-<div class="container">
+<div class="SingleProduct">
     {#if loader}
         <Loader/>
     {/if}
@@ -171,7 +171,7 @@
 </div>
 
 <style>
-    .container{
+    .SingleProduct{
         height: 100%;
         width: 100%;
         position: absolute;

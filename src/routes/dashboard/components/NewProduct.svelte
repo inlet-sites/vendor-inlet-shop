@@ -86,7 +86,7 @@
     }
 </script>
 
-<div class="container">
+<div class="NewProduct">
     {#if loader}
         <Loader/>
     {/if}
@@ -156,13 +156,14 @@
                 multiple
                 required
             >
+        </label>
 
         <button class="button">Create</button>
     </form>
 </div>
 
 <style>
-    .container{
+    .NewProduct{
         height: 100%;
         width: 100%;
         position: absolute;
@@ -171,19 +172,24 @@
         background: rgb(0, 0, 25);
         color: var(--text);
         padding: 35px;
+        overflow: auto;
     }
 
-    .container .standardForm{
+    h1{
+        font-size: 28px;
+    }
+
+    .NewProduct .standardForm{
         width: 50%;
     }
 
-    .container button{
+    .NewProduct button{
         margin-top: 35px;
     }
 
     .cancel{
         position: absolute;
-        top: 35px;
+        top: 15px;
         right: 35px;
         background: rgb(100, 0, 0);
         color: var(--text);
@@ -195,5 +201,27 @@
 
     .tag{
         margin-bottom: 5px;
+    }
+
+    @media screen and (max-width: 1200px){
+        .NewProduct .standardForm{
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 850px){
+        .NewProduct{
+            padding-top: 100px;
+        }
+
+        .cancel{
+            top: 0;
+            right: initial;
+            left: 35px;
+        }
+
+        input[type="file"]{
+            font-size: 22px;
+        }
     }
 </style>

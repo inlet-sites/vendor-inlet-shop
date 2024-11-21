@@ -124,6 +124,7 @@
 {/if}
 
 <div class="Products">
+    {#if !newProduct && !singleProduct}
     <header>
         <div class="search">
             <input
@@ -165,6 +166,7 @@
             </button>
         {/each}
     </div>
+    {/if}
 
     {#if newProduct}
         <NewProduct
