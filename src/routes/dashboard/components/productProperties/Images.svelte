@@ -137,7 +137,7 @@
         font-size: 18px;
         position: absolute;
         top: 0;
-        left: 55%;
+        left: calc(50% + 75px);
         padding: 5px 10px;
         cursor: pointer;
     }

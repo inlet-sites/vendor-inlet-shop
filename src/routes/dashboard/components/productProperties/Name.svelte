@@ -93,4 +93,16 @@
         font-size: 28px;
         padding-left: 10px;
     }
+
+    @media screen and (max-width: 850px){
+        .Name{
+            margin-top: 55px;
+            padding-bottom: 0;
+            width: 100%;
+        }
+
+        .Name input{
+            max-width: 90%;
+        }
+    }
 </style>

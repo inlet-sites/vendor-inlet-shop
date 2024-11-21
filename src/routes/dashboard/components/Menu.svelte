@@ -112,7 +112,7 @@
             top: 0;
             left: 0;
             border-right: none;
-            z-index: 2;
+            z-index: 3;
         }
 
         .container.open{

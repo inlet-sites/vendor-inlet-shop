@@ -228,4 +228,18 @@
     .modalCancel{
         width: 100%;
     }
+
+    @media screen and (max-width: 850px){
+        .actionables{
+            flex-direction: row;
+            align-items: center;
+            top: 15px;
+            left: 15px;
+            right: initial;
+        } 
+
+        .delete{
+            margin: 0 0 0 5px;
+        }
+    }
 </style>
