@@ -201,8 +201,8 @@
         justify-content: space-between;
         align-items: center;
         position: fixed;
-        top: calc(50% - 125px);
-        left: calc(50% - 175px);
+        top: calc(50% - 175px);
+        left: calc(50% - 225px);
         height: 350px;
         width: 450px;
         z-index: 5;
@@ -240,6 +240,17 @@
 
         .delete{
             margin: 0 0 0 5px;
+        }
+
+        .deleteModal{
+            left: calc(50% - 225px);
+        }
+    }
+
+    @media screen and (max-width: 500px){
+        .deleteModal{
+            width: 100%;
+            left: 0;
         }
     }
 </style>
