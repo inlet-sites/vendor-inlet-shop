@@ -24,12 +24,11 @@
     });
 
     const cancel = ()=>{
-        dispatch("cancel");
+        dispatch("back");
     }
 
     const next = ()=>{
         dispatch("next", {
-            step: "variations",
             product: product,
             variations: variations
         });
