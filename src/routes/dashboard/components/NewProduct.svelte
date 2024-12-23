@@ -27,3 +27,15 @@
         <h1>Variations Step</h1>
     {/if}
 </div>
+
+<style>
+    .NewProduct{
+        padding: 0 35px;
+    }
+
+    @media screen and (max-width: 500px){
+        .NewProduct{
+            padding: 0 5px;
+        }
+    }
+</style>

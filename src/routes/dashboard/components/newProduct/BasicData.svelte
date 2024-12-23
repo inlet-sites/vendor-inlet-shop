@@ -106,7 +106,6 @@
 <style>
     .BasicData{
         color: var(--text);
-        padding-left: 35px;
         max-width: 1000px;
     }
 
