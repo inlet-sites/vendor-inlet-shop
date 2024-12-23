@@ -2,16 +2,13 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    const {multiple} = $props();
-    const shipping = $state(true);
-    let variation = $state({
-        descriptor: "",
-        price: 0,
-        quantity: 0,
-        shipping: 0,
-        images: "",
-        purchaseOption: "list"
-    });
+    let {variation = {}, multiple, onlineSales} = $props();
+    let descriptor = $state(variation.descriptor);
+    let price = $state(variation.price);
+    let quantity = $state(variation.quantity);
+    let shipping = $state(variation.shipping);
+    let images = $state(variation.images);
+    let purchaseOption = $state(variation.purchaseOption || "list");
 
     const next = ()=>{
         console.log("nexting");
@@ -30,73 +27,77 @@
             <label>Descriptor
                 <input
                     type="text"
-                    bind:value={variation.descriptor}
+                    bind:value={descriptor}
                 >
             </label>
         {/if}
 
-        <label>Price
+        <label>Price ($)
             <input
                 type="number"
                 min="0"
                 step="0.01"
-                bind:value={variation.price}
+                bind:value={price}
                 required
             >
         </label>
 
-        <label>Quantity
+        <label>Quantity Available
             <input
                 type="number"
                 min="-1"
                 step="1"
-                bind:value={variation.quantity}
+                bind:value={quantity}
                 required
             >
         </label>
 
-        <label>Shipping Cost
-            <input
-                type="number"
-                min="0"
-                step="0.01"
-                bind:value={variation.shipping}
-                required
-            >
-        </label>
+        {#if purchaseOption !== "list"}
+            <label>Shipping Cost ($)
+                <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    bind:value={shipping}
+                    required
+                >
+            </label>
+        {/if}
 
-        <h3>How will you sell this item?</h3>
-        <label>Available to purchase online, and I will ship the item
-            <input
-                type="radio"
-                name="purchaseOption"
-                value="ship"
-                bind:group={variation.purchaseOption}
-            >
-        </label>
+        {#if onlineSales}
+            <h3>How will you sell this item?</h3>
+            <label class="radio">Available to purchase online, and I will ship the item
+                <input
+                    type="radio"
+                    name="purchaseOption"
+                    value="ship"
+                    bind:group={purchaseOption}
+                >
+            </label>
 
-        <label>Available to purchase online, but must be picked up in-store
-            <input
-                type="radio"
-                name="purchaseOption"
-                value="buy"
-                bind:group={variation.purchaseOption}
-            >
-        </label>
+            <label class="radio">Available to purchase online, but must be picked up in-store
+                <input
+                    type="radio"
+                    name="purchaseOption"
+                    value="buy"
+                    bind:group={purchaseOption}
+                >
+            </label>
 
-        <label>List the item only, not available for online purchase
-            <input
-                type="radio"
-                name="purchaseOption"
-                value="list"
-                bind:group={variation.purchaseOption}
-            >
-        </label>
+            <label class="radio">List the item only, not available for online purchase
+                <input
+                    type="radio"
+                    name="purchaseOption"
+                    value="list"
+                    bind:group={purchaseOption}
+                >
+            </label>
+        {/if}
 
         <label>Images
             <input
                 type="file"
-                bind:value={variation.images}
+                bind:value={images}
                 accept="image/*"
                 multiple
             >
@@ -124,5 +125,27 @@
 
     .buttonBox button{
         margin: 35px 35px 0 0;
+    }
+
+    h3{
+        margin-top: 35px;
+    }
+
+    .radio{
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        align-items: center;
+        cursor: pointer;
+        margin: 10px 0;
+        border: 1px solid var(--text);
+        border-radius: 15px;
+        padding: 5px 10px;
+    }
+
+    .radio input{
+        margin-right: 15px;
+        height: 25px;
+        width: 25px;
     }
 </style>
