@@ -1,20 +1,31 @@
 <script>
     import Loader from "../../../components/Loader.svelte";
     import BasicData from "./newProduct/BasicData.svelte";
+    import Variation from "./newProduct/Variation.svelte";
 
-    let currentStep = $state("basicData");
+    let currentStep = $state("variations");
     let product = $state();
     let variations = $state([]);
     let multipleVariations = $state(false);
+    let variationStage = $state(0);
 
     const next = (event)=>{
         switch(event.detail.step){
             case "variations":
-                product = event.detail.product;
-                multipleVariations = event.details.variations;
+                if(variations.length === 0){
+                    product = event.detail.product;
+                    multipleVariations = event.detail.variations;
+                }
                 break;
         }
         currentStep = event.detail.step;
+    }
+
+    const back = ()=>{
+        switch(currentStep){
+            case "variations":
+                if(variationStage = 0) currentStep = "basicData"; break;
+        }
     }
 </script>
 
@@ -24,7 +35,10 @@
             on:cancel
             on:next={next}/>
     {:else if currentStep === "variations"}
-        <h1>Variations Step</h1>
+        <Variation
+            on:back={back}
+            multiple={multipleVariations}    
+        />
     {/if}
 </div>
 
