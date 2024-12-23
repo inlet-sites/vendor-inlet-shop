@@ -8,6 +8,8 @@
     let variations = $state([]);
     let multipleVariations = $state(false);
     let variationStage = $state(0);
+    let onlineSales = false;
+    if(localStorage.getItem("onlineSales") === "true") onlineSales = true;
 
     const next = (event)=>{
         switch(currentStep){
@@ -58,6 +60,7 @@
         <Variation
             variation={variations[variationStage]}
             multiple={multipleVariations}    
+            onlineSales={onlineSales}
             on:back={back}
         />
     {/if}
