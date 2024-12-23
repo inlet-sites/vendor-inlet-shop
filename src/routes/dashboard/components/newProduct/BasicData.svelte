@@ -1,5 +1,6 @@
 <script>
     import {createEventDispatcher} from "svelte";
+    import VariationExplanation from "./VariationExplanation.svelte";
 
     const dispatch = createEventDispatcher();
     let product = $state({
@@ -8,6 +9,7 @@
         description: ""
     });
     let variations = $state(false);
+    let variationExplanation = $state(false);
 
     $effect(()=>{
         let needsField = true;
@@ -32,9 +34,16 @@
             variations: variations
         });
     }
+
+    const explainVariations = ()=>{
+        variationExplanation = !variationExplanation;
+    }
 </script>
 
 <div class="BasicData">
+    {#if variationExplanation}
+        <VariationExplanation on:finished={explainVariations}/>
+    {/if}
     <h1>New Product</h1>
     <form class="standardForm" onsubmit={next}>
         <h2>Product Information</h2>
@@ -66,7 +75,15 @@
             ></textarea>
         </label>
 
-        <h3>Does this product have multiple variations?</h3>
+        <div class="variationTitle">
+            <h3>Does this product have multiple variations?</h3>
+            <button type="button" onclick={explainVariations}>
+                <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
+                    <path d="M7.90039 8.07954C7.90039 3.30678 15.4004 3.30682 15.4004 8.07955C15.4004 11.4886 11.9913 10.8067 11.9913 14.8976" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M12 19.01L12.01 18.9989" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        </div>
         <label class="variations">Yes
             <input
                 type="checkbox"
@@ -90,11 +107,27 @@
     .BasicData{
         color: var(--text);
         padding-left: 35px;
-        max-width: 1200px;
+        max-width: 1000px;
     }
 
     textarea{
         font-size: 26px;
+    }
+
+    .variationTitle{
+        display: flex;
+        align-items: center;
+    }
+
+    .variationTitle button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: none;
+        border: 2px solid white;
+        cursor: pointer;
+        border-radius: 50%;
+        margin-left: 15px;
     }
 
     .variations{
