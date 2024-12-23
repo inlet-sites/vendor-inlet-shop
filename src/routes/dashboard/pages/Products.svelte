@@ -173,6 +173,7 @@
             on:closeCreate={closeCreate}
             on:addProduct={addProduct}
             on:notify
+            on:cancel={closeCreate}
         />
     {/if}
 
