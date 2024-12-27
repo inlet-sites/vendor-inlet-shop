@@ -7,6 +7,7 @@
     import Phone from "../components/vendorProperties/Phone.svelte";
     import Email from "../components/vendorProperties/Email.svelte";
     import Address from "../components/vendorProperties/Address.svelte";
+    import AddToken from "../components/AddToken.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -15,6 +16,14 @@
     let imageUrl = $state("");
     let loader = $state(false);
     let files = $state(null);
+    let addToken = $state(false);
+    let addWebhook = $state(false);
+    //const onlineSales = localStorage.getItem("onlineSales");
+    const onlineSales = "false";
+
+    const showLoader = (event)=>{
+        loader = event.detail.showLoader;
+    }
 
     const newThumbnail = ()=>{
         loader = true;
@@ -71,6 +80,16 @@
         />
     {/if}
 
+    {#if addToken}
+        <AddToken
+            vendorId={vendor.id}
+            on:notify
+            on:showLoader={showLoader}
+            on:cancel={()=>{addToken = false}}
+            on:next={()=>{addToken = false; addWebhook = true}}
+        />
+    {/if}
+
     <h1>{vendor.store}</h1>
 
     <h2>Public Information</h2>
@@ -108,6 +127,16 @@
         on:updateVendor
         on:notify
     />
+
+    {#if onlineSales === "false"}
+        <div class="divider"></div>
+
+        <h1>Online Sales</h1>
+        <button
+            class="button"
+            onclick={()=>{addToken = true}}
+        >Setup</button>
+    {/if}
 
     <div class="divider"></div>
 
