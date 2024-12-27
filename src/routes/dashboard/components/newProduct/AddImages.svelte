@@ -2,7 +2,11 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let images = $state();
+    let images = [];
+
+    const handleFileChange = (event)=>{
+        images = Array.from(event.target.files);
+    }
 
     const next = ()=>{
         dispatch("next", {
@@ -23,7 +27,7 @@
         <label>Images
             <input
                 type="file"
-                bind:value={images}
+                onchange={handleFileChange}
                 accept="/image/*"
                 multiple
             >

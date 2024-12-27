@@ -7,18 +7,22 @@
     let price = $state(0);
     let quantity = $state(0);
     let shipping = $state(0);
-    let images = $state([]);
+    let images = [];
+    let imageInput = $state();
     let purchaseOption = $state(onlineSales ? "ship" : "list");
 
+    const handleFileChange = (event)=>{
+        images = Array.from(event.target.files);
+    }
+
     const next = ()=>{
-        const dispatchImages = Array.from(images);
         dispatch("addVariation", {
             variation: {
                 descriptor: descriptor,
                 price: price,
                 quantity: quantity,
                 shipping: purchaseOption === "ship" ? shipping : 0,
-                images: dispatchImages,
+                images: images,
                 purchaseOption: purchaseOption
             }
         });
@@ -28,6 +32,7 @@
         quantity = 0;
         shipping = 0;
         images = [];
+        imageInput.value = undefined;
         purchaseOption = onlineSales ? "ship" : "list";
     }
 
@@ -59,6 +64,7 @@
                 <input
                     type="text"
                     bind:value={descriptor}
+                    required
                 >
             </label>
         {/if}
@@ -129,9 +135,9 @@
             <label>Images
                 <input
                     type="file"
-                    bind:value={images}
                     accept="image/*"
                     multiple
+                    onchange={handleFileChange}
                 >
             </label>
         {/if}
@@ -155,6 +161,7 @@
                 class="button"
                 type="button"
                 onclick={finish}
+                bind:this={imageInput}
             >Finish</button>
         </div>
     </form>
