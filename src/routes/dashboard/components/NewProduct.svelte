@@ -1,9 +1,11 @@
 <script>
+    import {createEventDispatcher} from "svelte";
     import Loader from "../../../components/Loader.svelte";
     import BasicData from "./newProduct/BasicData.svelte";
     import Variation from "./newProduct/Variation.svelte";
     import AddImages from "./newProduct/AddImages.svelte";
 
+    const dispatch = createEventDispatcher();
     let currentStep = $state("basicData");
     let product = $state();
     let variations = $state([]);
@@ -45,7 +47,6 @@
         for(let i = 0; i < product.images.length; i++){
             productFormData.append("images", product.images[i]);
         }
-        console.log(productFormData);
         const vendorToken = localStorage.getItem("vendorToken");
 
         const productResponse = await fetch(`${import.meta.env.VITE_API_URL}/product`, {
@@ -55,9 +56,7 @@
             },
             body: productFormData
         });
-        console.log(productResponse);
         const newProduct = await productResponse.json();
-        console.log(newProduct);
 
         const variationPromises = [];
         for(let i = 0; i < variations.length; i++){
@@ -84,7 +83,11 @@
         for(let i = 0; i < response.length; i++){
             newProduct.variations.push(await response[i].json());
         }
-        console.log(newProduct);
+        loader = false;
+        dispatch("addProduct", {
+            product: newProduct
+        });
+        dispatch("cancel");
     }
 </script>
 
