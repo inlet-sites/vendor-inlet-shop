@@ -2,20 +2,51 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let {variation = {}, multiple, onlineSales} = $props();
-    let descriptor = $state(variation.descriptor);
-    let price = $state(variation.price);
-    let quantity = $state(variation.quantity);
-    let shipping = $state(variation.shipping);
-    let images = $state(variation.images);
-    let purchaseOption = $state(variation.purchaseOption || "list");
+    let {multiple, onlineSales, productName} = $props();
+    let descriptor = $state(multiple ? "" : productName);
+    let price = $state(0);
+    let quantity = $state(0);
+    let shipping = $state(0);
+    let images = $state([]);
+    let purchaseOption = $state(onlineSales ? "ship" : "list");
 
     const next = ()=>{
-        console.log("nexting");
+        const dispatchImages = Array.from(images);
+        dispatch("addVariation", {
+            variation: {
+                descriptor: descriptor,
+                price: price,
+                quantity: quantity,
+                shipping: purchaseOption === "ship" ? shipping : 0,
+                images: dispatchImages,
+                purchaseOption: purchaseOption
+            }
+        });
+
+        descriptor = "";
+        price = 0;
+        quantity = 0;
+        shipping = 0;
+        images = [];
+        purchaseOption = onlineSales ? "ship" : "list";
     }
 
-    const back = ()=>{
-        dispatch("back");
+    const finish = ()=>{
+        dispatch("addVariation", {
+            variation: {
+                descriptor: descriptor,
+                price: price,
+                quantity: quantity,
+                shipping: purchaseOption === "ship" ? shipping : 0,
+                images: images,
+                purchaseOption: purchaseOption
+            }
+        });
+        dispatch("next");
+    }
+
+    const cancel = ()=>{
+        dispatch("cancel");
     }
 </script>
 
@@ -94,25 +125,37 @@
             </label>
         {/if}
 
-        <label>Images
-            <input
-                type="file"
-                bind:value={images}
-                accept="image/*"
-                multiple
-            >
-        </label>
+        {#if multiple}
+            <label>Images
+                <input
+                    type="file"
+                    bind:value={images}
+                    accept="image/*"
+                    multiple
+                >
+            </label>
+        {/if}
 
         <div class="buttonBox">
             <button
                 class="button"
                 type="button"
-                onclick={back}
-            >Back</button>
+                onclick={cancel}
+            >Cancel</button>
+
+            {#if multiple}
+                <button
+                    class="button"
+                    type="button"
+                    onclick={next}
+                >Next Variation</button>
+            {/if}
 
             <button
                 class="button"
-            >Next</button>
+                type="button"
+                onclick={finish}
+            >Finish</button>
         </div>
     </form>
 </div>

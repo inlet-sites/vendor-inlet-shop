@@ -24,10 +24,17 @@
     });
 
     const cancel = ()=>{
-        dispatch("back");
+        dispatch("cancel");
     }
 
     const next = ()=>{
+        for(let i = 0; i < product.tags.length; i++){
+            if(product.tags[i] === ""){
+                product.tags.splice(i, 1);
+                i--;
+            }
+        }
+
         dispatch("next", {
             product: product,
             variations: variations
