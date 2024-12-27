@@ -1,5 +1,5 @@
 <script>
-    import {createEventDispatcher} from "svelte";
+    import {createEventDispatcher, onMount} from "svelte";
     import ChangePassModal from "../components/ChangePassModal.svelte";
     import Loader from "../../../components/Loader.svelte";
     import Slogan from "../components/vendorProperties/Slogan.svelte";
@@ -8,6 +8,7 @@
     import Email from "../components/vendorProperties/Email.svelte";
     import Address from "../components/vendorProperties/Address.svelte";
     import AddToken from "../components/AddToken.svelte";
+    import AddWebhook from "../components/AddWebhook.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -18,8 +19,7 @@
     let files = $state(null);
     let addToken = $state(false);
     let addWebhook = $state(false);
-    //const onlineSales = localStorage.getItem("onlineSales");
-    const onlineSales = "false";
+    let onlineSales = $state("true");
 
     const showLoader = (event)=>{
         loader = event.detail.showLoader;
@@ -66,6 +66,12 @@
             imageUrl = `${import.meta.env.VITE_API_URL}/document/defaultVendorImage.png`;
         }
     });
+
+    onMount(()=>{
+        const data = localStorage.getItem("onlineSales");
+        onlineSales = data === "true" ? true : false;
+        console.log(onlineSales);
+    });
 </script>
 
 {#if loader}
@@ -82,11 +88,18 @@
 
     {#if addToken}
         <AddToken
-            vendorId={vendor.id}
             on:notify
             on:showLoader={showLoader}
             on:cancel={()=>{addToken = false}}
             on:next={()=>{addToken = false; addWebhook = true}}
+        />
+    {/if}
+
+    {#if addWebhook}
+        <AddWebhook
+            on:notify
+            on:showLoader={showLoader}
+            on:finish={()=>{addWebhook = false; onlineSales = true}}
         />
     {/if}
 
@@ -128,7 +141,7 @@
         on:notify
     />
 
-    {#if onlineSales === "false"}
+    {#if !onlineSales}
         <div class="divider"></div>
 
         <h1>Online Sales</h1>

@@ -2,11 +2,11 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let token = $state();
+    let secret = $state();
 
     const submit = ()=>{
         dispatch("showLoader", {showLoader: true});
-        
+
         fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
             method: "put",
             headers: {
@@ -14,7 +14,7 @@
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
             body: JSON.stringify({
-                stripeToken: token
+                webhookSecret: secret
             })
         })
             .then(r=>r.json())
@@ -24,9 +24,9 @@
                 }else{
                     dispatch("notify", {
                         type: "success",
-                        message: "Your stripe token has been verified"
+                        message: "Webhook secret has been verified"
                     });
-                    dispatch("next");
+                    dispatch("finish");
                 }
             })
             .catch((err)=>{
@@ -41,22 +41,27 @@
     }
 </script>
 
-<div class="AddToken">
+<div class="AddWebhook">
     <form class="standardForm" onsubmit={submit}>
-        <label>Stripe API Token
+        <label>Webhook Secret
             <input
                 type="text"
-                bind:value={token}
-                placeholder="API Token"
+                bind:value={secret}
+                placeholder="Secret Signing Key"
                 required
             >
         </label>
+
+        <a
+            href="/help/webhook-secret"
+            target="_blank"
+        >How do I get my webhook secret?</a>
 
         <div class="buttonBox">
             <button
                 class="button cancel"
                 type="button"
-                onclick={()=>{dispatch("cancel")}}
+                onclick={()=>{dispatch("finish")}}
             >Cancel</button>
 
             <button class="button">Submit</button>
@@ -65,7 +70,7 @@
 </div>
 
 <style>
-    .AddToken{
+    .AddWebhook{
         display: flex;
         justify-content: center;
         align-items: center;
@@ -83,6 +88,14 @@
         width: 90%;
         max-width: 1000px;
         padding: 35px;
+    }
+
+    label{
+        margin-bottom: 5px;
+    }
+
+    .buttonBox{
+        margin-top: 35px;
     }
 
     .cancel{
