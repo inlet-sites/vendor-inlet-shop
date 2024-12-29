@@ -93,11 +93,17 @@
     }
 
     img{
-        max-width: 75%;
+        width: 75%;
         margin: 0 auto;
     }
 
     a{
         color: white;
+    }
+
+    @media screen and (max-width: 600px){
+        img{
+            width: 100%;
+        }
     }
 </style>
