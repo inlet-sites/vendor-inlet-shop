@@ -52,6 +52,11 @@
             >
         </label>
 
+        <a
+            href="/help/stripe-token"
+            target="_blank"
+        >How do I get my Stripe API token</a>
+
         <div class="buttonBox">
             <button
                 class="button cancel"
