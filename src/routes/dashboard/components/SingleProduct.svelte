@@ -4,16 +4,17 @@
 
     import Name from "./productProperties/Name.svelte";
     import Description from "./productProperties/Description.svelte";
-    import Price from "./productProperties/Price.svelte";
-    import Quantity from "./productProperties/Quantity.svelte";
     import Images from "./productProperties/Images.svelte";
     import Tags from "./productProperties/Tags.svelte";
+    import Variation from "./productProperties/Variation.svelte";
 
     const dispatch = createEventDispatcher();
     let {productId} = $props();
     let product = $state({});
+    let variations = $state([]);
     let loader = $state(false);
     let deleteModal = $state(false);
+    let currentVariation = $state({});
 
     loader = true;
     fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
@@ -31,6 +32,8 @@
                 });
             }else{
                 product = response;
+                variations = response.variations;
+                currentVariation = response.variations[0];
             }
         })
         .catch((err)=>{
@@ -65,7 +68,6 @@
                 }
             })
             .catch((err)=>{
-                console.log(err);
                 dispatch("notify", {
                     type: "error",
                     message: "Something went wrong, try refreshing the page"
@@ -145,28 +147,16 @@
         on:notify
     />
 
-    <Price
-        price={product.price}
-        productId={product.id}
-        on:updateProduct={updateProduct}
-        on:loader={updateLoader}
-        on:notify
-    />
-
-    <Quantity
-        quantity={product.quantity}
-        productId={product.id}
-        on:updateProduct={updateProduct}
-        on:loader={updateLoader}
-        on:notify
-    />
-
     <Images
         images={product.images}
         productId={product.id}
         on:updateProduct={updateProduct}
         on:loader={updateLoader}
         on:notify
+    />
+
+    <Variation
+        variations={product.variations}
     />
 </div>
 
@@ -179,6 +169,7 @@
         left: 0;
         z-index: 2;
         background: rgb(0, 0, 25);
+        color: var(--text);
     }
 
     .actionables{
@@ -227,6 +218,29 @@
 
     .modalCancel{
         width: 100%;
+    }
+
+    .divider{
+        border-bottom: 2px solid var(--text);
+    }
+
+    select{
+        background: none;
+        border: 1px solid var(--text);
+        color: var(--text);
+        font-size: 24px;
+        margin: 35px 0 0 35px;
+        padding: 5px 15px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .variationData{
+        padding: 35px;
+    }
+
+    .variationData h2{
+        margin-bottom: 5px;
     }
 
     @media screen and (max-width: 850px){

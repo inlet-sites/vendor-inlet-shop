@@ -70,7 +70,6 @@
     onMount(()=>{
         const data = localStorage.getItem("onlineSales");
         onlineSales = data === "true" ? true : false;
-        console.log(onlineSales);
     });
 </script>
 
