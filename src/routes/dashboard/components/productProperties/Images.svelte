@@ -4,7 +4,6 @@
     const dispatch = createEventDispatcher();
     let {images, productId, variation} = $props();
     let files = $state(null);
-    $inspect(images);
 
     const removeImage = (image)=>{
         dispatch("loader", {on: true});

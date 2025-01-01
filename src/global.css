@@ -37,7 +37,7 @@ body{
     cursor: pointer;
     font-size: 28px;
     font-weight: bold;
-    border: 2px outset white;
+    border: 2px outset black;
     padding: 5px 15px;
 }
 

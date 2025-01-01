@@ -90,7 +90,16 @@
     }
 
     const updateVariation = (event)=>{
-        product.variations[event.detail.index] = event.detail.variation;
+        switch(event.detail.type){
+            case "delete":
+                product.variations.splice(event.detail.index, 1);
+                break;
+            case "newVariation":
+                product.variations.push(event.detail.variation);
+                break;
+            default:
+                product.variations[event.detail.index] = event.detail.variation;
+        }
     }
 </script>
 
@@ -159,6 +168,7 @@
     <Variation
         variations={product.variations}
         productId={product.id}
+        productName={product.name}
         on:updateVariation={updateVariation}
         on:loader={updateLoader}
         on:notify

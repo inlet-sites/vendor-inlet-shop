@@ -2,8 +2,8 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let {multiple, onlineSales, productName} = $props();
-    let descriptor = $state(multiple ? "" : productName);
+    let {multiple, onlineSales, productName, existing = false} = $props();
+    let descriptor = $state(multiple || existing ? "" : productName);
     let price = $state(0);
     let quantity = $state(0);
     let shipping = $state(0);
@@ -59,7 +59,7 @@
     <h1>Purchasing Information</h1>
 
     <form class="standardForm" onsubmit={next}>
-        {#if multiple}
+        {#if multiple || existing}
             <label>Descriptor
                 <input
                     type="text"
@@ -131,7 +131,7 @@
             </label>
         {/if}
 
-        {#if multiple}
+        {#if multiple || existing}
             <label>Images
                 <input
                     type="file"
