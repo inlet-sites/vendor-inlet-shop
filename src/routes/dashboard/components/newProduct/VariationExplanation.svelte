@@ -10,7 +10,10 @@
 
 <div class="VariationExplanation">
     <div class="modal">
-        <p>Variations of a product are different versions of the same product. For example, if you are selling T-Shirts, then you may have "Small", "Medium", and "Large". Each one of these may have its own pictures, price, shipping, and quantity.</p>
+        <p>A product may have multiple prices.</p>
+        <p>This can be useful if you are selling a product that has a few different variations.</p>
+        <p>For example, you may be selling T-shirts that have sizes "Small", "Medium", and "Large".</p>
+        <p>Each price has its own descriptor(short name), price, quantity available, shipping cost and images (which are only displayed when the customer is viewing that specific price).</p>
         <p>Every product can have an unlimited number of variations, and these can be changed at any time.</p>
         <p>For a standard product with a single price/quantity/etc. leave this this box un-checked.</p>
         <button class="button" onclick={submit}>OK</button>
@@ -40,7 +43,7 @@
     }
 
     p{
-        margin: 25px;
+        margin: 15px;
     }
 
     button{

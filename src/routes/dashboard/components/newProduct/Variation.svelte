@@ -56,7 +56,7 @@
 </script>
 
 <div class="Variation">
-    <h1>Purchasing Information</h1>
+    <h1>Price Information</h1>
 
     <form class="standardForm" onsubmit={next}>
         {#if multiple || existing}
@@ -154,7 +154,7 @@
                     class="button"
                     type="button"
                     onclick={next}
-                >Next Variation</button>
+                >Next Price</button>
             {/if}
 
             <button
