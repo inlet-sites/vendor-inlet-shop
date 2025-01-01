@@ -2,12 +2,19 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let {images, productId} = $props();
+    let {images, productId, variation} = $props();
     let files = $state(null);
 
     const removeImage = (image)=>{
         dispatch("loader", {on: true});
-        fetch(`${import.meta.env.VITE_API_URL}/product/${productId}/images/remove`, {
+        let route = `${import.meta.env.VITE_API_URL}/product/${productId}`;
+        if(variation){
+            route += `/variation/${variation}/images/remove`;
+        }else{
+            route += "/images/remove";
+        }
+
+        fetch(route, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
@@ -23,7 +30,11 @@
                         message: response.message
                     });
                 }else{
-                    dispatch("updateProduct", {product: response, update: "images", data: response.images});
+                    if(variation){
+                        dispatch("updateVariation", {variation: response});
+                    }else{
+                        dispatch("updateProduct", {product: response, update: "images", data: response.images});
+                    }
                     dispatch("notify", {
                         type: "success",
                         message: "Image removed"
@@ -38,8 +49,6 @@
             })
             .finally(()=>{
                 dispatch("loader", {on: false});
-                let idx = images.indexOf(image);
-                images.splice(idx, 1);
             });
     }
 
@@ -49,8 +58,14 @@
         for(let i = 0; i < files.length; i++){
             formData.append("images", files[i]);
         }
+        let route = `${import.meta.env.VITE_API_URL}/product/${productId}`;
+        if(variation){
+            route += `/variation/${variation}/images/add`;
+        }else{
+            route += "/images/add"
+        }
 
-        fetch(`${import.meta.env.VITE_API_URL}/product/${productId}/images/add`, {
+        fetch(route, {
             method: "put",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
@@ -86,7 +101,11 @@
 
 <div class="Images">
     <div class="title">
-        <h2>Images</h2>
+        {#if variation}
+            <h2>Price Images</h2>
+        {:else}
+            <h2>Product Images</h2>
+        {/if}
 
         <label class="addImage">
             Add
@@ -125,9 +144,14 @@
     }
 
     .title{
+        display: flex;
+        justify-content: flex-start;
         position: relative;
-        border-bottom: 2px solid white;
         padding: 5px;
+    }
+
+    .title h2{
+        text-decoration: underline;
     }
 
     .addImage{
@@ -135,9 +159,7 @@
         border: 1px outset white;
         color: black;
         font-size: 18px;
-        position: absolute;
-        top: 0;
-        left: calc(50% + 75px);
+        margin-left: 35px;
         padding: 5px 10px;
         cursor: pointer;
     }
@@ -148,16 +170,17 @@
 
     .imageContainer{
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
+        align-items: center;
         flex-wrap: wrap;
         width: 90%;
-        margin: 15px auto;
     }
 
     .image{
         position: relative;
         width: 250px;
         margin: 15px;
+        box-shadow: 0 0 5px var(--text);
     }
 
     .image img{

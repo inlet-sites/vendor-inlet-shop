@@ -11,7 +11,7 @@
     const dispatch = createEventDispatcher();
     let {productId} = $props();
     let product = $state({});
-    let variations = $state([]);
+    //let variations = $state([]);
     let loader = $state(false);
     let deleteModal = $state(false);
     let currentVariation = $state({});
@@ -32,7 +32,7 @@
                 });
             }else{
                 product = response;
-                variations = response.variations;
+                //variations = response.variations;
                 currentVariation = response.variations[0];
             }
         })
@@ -92,6 +92,10 @@
             });
         }
     }
+
+    const updateVariation = (event)=>{
+        product.variations[event.detail.index] = event.detail.variation;
+    }
 </script>
 
 {#if deleteModal}
@@ -150,6 +154,7 @@
     <Images
         images={product.images}
         productId={product.id}
+        variation={false}
         on:updateProduct={updateProduct}
         on:loader={updateLoader}
         on:notify
@@ -157,6 +162,10 @@
 
     <Variation
         variations={product.variations}
+        productId={product.id}
+        on:updateVariation={updateVariation}
+        on:loader={updateLoader}
+        on:notify
     />
 </div>
 
@@ -218,29 +227,6 @@
 
     .modalCancel{
         width: 100%;
-    }
-
-    .divider{
-        border-bottom: 2px solid var(--text);
-    }
-
-    select{
-        background: none;
-        border: 1px solid var(--text);
-        color: var(--text);
-        font-size: 24px;
-        margin: 35px 0 0 35px;
-        padding: 5px 15px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .variationData{
-        padding: 35px;
-    }
-
-    .variationData h2{
-        margin-bottom: 5px;
     }
 
     @media screen and (max-width: 850px){

@@ -1,6 +1,17 @@
 <script>
-    let {variations} = $props();
+    import {createEventDispatcher} from "svelte";
+    import Images from "./Images.svelte";
+
+    const dispatch = createEventDispatcher();
+    let {variations, productId} = $props();
     let variationIndex = $state(0);
+
+    const updateVariation = (event)=>{
+        dispatch("updateVariation", {
+            variation: event.detail.variation,
+            index: variationIndex
+        });
+    }
 </script>
 
 {#if variations}
@@ -35,6 +46,15 @@
         <h2>Quantity</h2>
         <p>{variations[variationIndex].quantity}</p>
     </div>
+
+    <Images
+        images={variations[variationIndex].images}
+        productId={productId}
+        variation={variations[variationIndex].id}
+        on:updateVariation={updateVariation}
+        on:loader
+        on:notify
+    />
 </div>
 {/if}
 
