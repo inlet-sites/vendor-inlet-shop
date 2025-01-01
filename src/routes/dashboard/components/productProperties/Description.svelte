@@ -93,7 +93,7 @@
     .Description{
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         color: var(--text);
         padding: 35px;
     }

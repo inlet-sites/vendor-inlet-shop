@@ -4,6 +4,7 @@
     const dispatch = createEventDispatcher();
     let {images, productId, variation} = $props();
     let files = $state(null);
+    $inspect(images);
 
     const removeImage = (image)=>{
         dispatch("loader", {on: true});
@@ -80,7 +81,11 @@
                         message: response.message
                     });
                 }else{
-                    dispatch("updateProduct", {product: response});
+                    if(variation){
+                        dispatch("updateVariation", {variation: response});
+                    }else{
+                        dispatch("updateProduct", {product: response});
+                    }
                     dispatch("notify", {
                         type: "success",
                         message: "New photos added"
@@ -141,6 +146,7 @@
 <style>
     .Images{
         color: white;
+        margin-left: 35px;
     }
 
     .title{

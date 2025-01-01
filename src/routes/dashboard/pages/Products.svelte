@@ -270,7 +270,6 @@
         margin: 15px 0;
         cursor: pointer;
         padding-bottom: 15px;
-        color: var(--text);
     }
 
     .product img{

@@ -11,10 +11,8 @@
     const dispatch = createEventDispatcher();
     let {productId} = $props();
     let product = $state({});
-    //let variations = $state([]);
     let loader = $state(false);
     let deleteModal = $state(false);
-    let currentVariation = $state({});
 
     loader = true;
     fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
@@ -32,8 +30,6 @@
                 });
             }else{
                 product = response;
-                //variations = response.variations;
-                currentVariation = response.variations[0];
             }
         })
         .catch((err)=>{
