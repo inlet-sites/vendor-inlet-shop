@@ -15,6 +15,7 @@
     let confirmed = $state(true);
     let shipped = $state(false);
     let singleOrder = $state(null);
+    $inspect(orders);
 
     const craftUrl= ()=>{
         let url = `${import.meta.env.VITE_API_URL}/order?`;
@@ -74,7 +75,7 @@
 
     {#if singleOrder}
         <SingleOrder
-            order={singleOrder}
+            orderId={singleOrder}
             on:close={()=>{singleOrder = null}}
         />
     {/if}
@@ -134,7 +135,7 @@
     
 
     {#each orders as order}
-        <button class="order" onclick={()=>{singleOrder = order}}>
+        <button class="order" onclick={()=>{singleOrder = order.id}}>
             <p class="name">{order.name}</p>
             <p class="email">{order.email}</p>
             <p class="total">${(order.total / 100).toFixed(2)}</p>
