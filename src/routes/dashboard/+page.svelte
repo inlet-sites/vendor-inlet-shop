@@ -6,6 +6,7 @@
     import Menu from "./components/Menu.svelte";
     import Account from "./pages/Account.svelte";
     import Products from "./pages/Products.svelte";
+    import Orders from "./pages/Orders.svelte";
 
     let notifier = $state({type: "", message: ""});
     let loader = $state(false);
@@ -91,6 +92,10 @@
             />
         {:else if page === "products"}
             <Products
+                on:notify={notify}
+            />
+        {:else if page === "orders"}
+            <Orders
                 on:notify={notify}
             />
         {/if}
