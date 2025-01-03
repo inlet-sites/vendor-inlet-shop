@@ -15,7 +15,6 @@
     let confirmed = $state(true);
     let shipped = $state(false);
     let singleOrder = $state(null);
-    $inspect(orders);
 
     const craftUrl= ()=>{
         let url = `${import.meta.env.VITE_API_URL}/order?`;
@@ -77,6 +76,8 @@
         <SingleOrder
             orderId={singleOrder}
             on:close={()=>{singleOrder = null}}
+            on:loader={(event)=>{loader = event.detail.on}}
+            on:notify
         />
     {/if}
 
