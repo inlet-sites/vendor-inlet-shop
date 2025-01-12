@@ -3,6 +3,7 @@
 
     const dispatch = createEventDispatcher();
     let token = $state();
+    let publishable = $state();
 
     const submit = ()=>{
         dispatch("showLoader", {showLoader: true});
@@ -14,7 +15,8 @@
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
             body: JSON.stringify({
-                stripeToken: token
+                stripeToken: token,
+                publishableKey: publishable
             })
         })
             .then(r=>r.json())
@@ -55,7 +57,21 @@
         <a
             href="/help/stripe-token"
             target="_blank"
-        >How do I get my Stripe API token</a>
+        >How do I get my Stripe API token?</a>
+
+        <label>Stripe Publishable Key
+            <input
+                type="text"
+                bind:value={publishable}
+                placeholder="Publishable Key"
+                required
+            >
+        </label>
+
+        <a
+            href="/help/publishable-key"
+            target="_blank"
+        >How do I get my Stripe publishable key?</a>
 
         <div class="buttonBox">
             <button
@@ -92,5 +108,13 @@
 
     .cancel{
         color: red;
+    }
+
+    label{
+        margin-bottom: 0;
+    }
+
+    a{
+        margin-bottom: 15px;
     }
 </style>
