@@ -37,7 +37,7 @@
             .then((response)=>{
                 if(response.error){
                     notifier.type = "error";
-                    notifier.message = response.message;
+                    notifier.message = response.error.message;
                 }else{
                     window.location.href = "/";
                 }

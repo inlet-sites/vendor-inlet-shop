@@ -27,7 +27,7 @@
                 if(response.error){
                     dispatch("notify", {
                         type: "error",
-                        message: response.message
+                        message: response.error.message
                     });
                 }else{
                     if(variation){
@@ -77,7 +77,7 @@
                 if(response.error){
                     dispatch("notify", {
                         type: "error",
-                        message: response.message
+                        message: response.error.message
                     });
                 }else{
                     if(variation){

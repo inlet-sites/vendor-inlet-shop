@@ -41,7 +41,7 @@
                 if(response.error){
                     dispatch("notify", {
                         type: "error",
-                        message: response.message
+                        message: response.error.message
                     });
                 }else{
                     dispatch("updateVendor", {vendor: response});

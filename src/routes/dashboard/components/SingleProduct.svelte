@@ -26,7 +26,7 @@
             if(response.error){
                 dispatch("notify", {
                     type: "error",
-                    message: response.message
+                    message: response.error.message
                 });
             }else{
                 product = response;
@@ -58,7 +58,7 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    dispatch("notify", {type: "error", message: response.message});
+                    dispatch("notify", {type: "error", message: response.error.message});
                 }else{
                     dispatch("removeProduct", {product: productId});
                 }

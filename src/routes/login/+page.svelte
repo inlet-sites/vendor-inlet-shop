@@ -34,7 +34,7 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    notify("error", response.message);
+                    notify("error", response.error.message);
                 }else{
                     localStorage.setItem("vendorToken", response.token);
                     window.location.href = "/dashboard";
