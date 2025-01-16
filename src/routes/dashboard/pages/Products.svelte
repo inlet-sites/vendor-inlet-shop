@@ -158,23 +158,27 @@
         {/each}
     </div>
 
-    <div class="products">
-        {#each products as product}
-            <button class="product" onclick={()=>{displayProduct(product.id)}}>
-                <img src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}" alt={product.name}>
-                <h2>{product.name}</h2>
-                {#if product.variations.length > 1}
-                    <p>
-                        ${(product.variations.reduce((a, c) => c.price < a ? c.price : a, product.variations[0].price) / 100).toFixed(2)}
-                        -
-                        ${(product.variations.reduce((a, c) => c.price > a ? c.price : a, 0) / 100).toFixed(2)}
-                    </p>
-                {:else}
-                    <p>${(product.variations[0].price / 100).toFixed(2)}</p>
-                {/if}
-            </button>
-        {/each}
-    </div>
+    {#if products.length > 0}
+        <div class="products">
+            {#each products as product}
+                <button class="product" onclick={()=>{displayProduct(product.id)}}>
+                    <img src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}" alt={product.name}>
+                    <h2>{product.name}</h2>
+                    {#if product.variations.length > 1}
+                        <p>
+                            ${(product.variations.reduce((a, c) => c.price < a ? c.price : a, product.variations[0].price) / 100).toFixed(2)}
+                            -
+                            ${(product.variations.reduce((a, c) => c.price > a ? c.price : a, 0) / 100).toFixed(2)}
+                        </p>
+                    {:else}
+                        <p>${(product.variations[0].price / 100).toFixed(2)}</p>
+                    {/if}
+                </button>
+            {/each}
+        </div>
+    {:else}
+        <h2>No Products Yet</h2>
+    {/if}
     {/if}
 
     {#if newProduct}
@@ -204,6 +208,12 @@
         width: 100%;
         position: relative;
         padding-top: 55px;
+    }
+
+    h2{
+        color: var(--text);
+        text-align: center;
+        font-size: 45px;
     }
 
     header{

@@ -134,14 +134,17 @@
         >Search</button>
     </div>
     
-
-    {#each orders as order}
-        <button class="order" onclick={()=>{singleOrder = order.id}}>
-            <p class="name">{order.name}</p>
-            <p class="email">{order.email}</p>
-            <p class="total">${(order.total / 100).toFixed(2)}</p>
-        </button>
-    {/each}
+    {#if orders.length > 0}
+        {#each orders as order}
+            <button class="order" onclick={()=>{singleOrder = order.id}}>
+                <p class="name">{order.name}</p>
+                <p class="email">{order.email}</p>
+                <p class="total">${(order.total / 100).toFixed(2)}</p>
+            </button>
+        {/each}
+    {:else}
+        <h2>No Orders to Display</h2>
+    {/if}
 </div>
 
 <style>
@@ -206,5 +209,10 @@
     .order .email{
         width: 50%;
         text-align: left;
+    }
+
+    h2{
+        margin-top: 35px;
+        font-size: 45px;
     }
 </style>
