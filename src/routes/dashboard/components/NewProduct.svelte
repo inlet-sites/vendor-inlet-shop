@@ -6,14 +6,12 @@
     import AddImages from "./newProduct/AddImages.svelte";
 
     const dispatch = createEventDispatcher();
+    let onlineSales = $props();
     let currentStep = $state("basicData");
     let product = $state();
     let variations = $state([]);
     let multipleVariations = $state(false);
-    let variationStage = $state(0);
-    let onlineSales = $state(false);
     let loader = $state(false);
-    if(localStorage.getItem("onlineSales") === "true") onlineSales = true;
 
     const next = (event)=>{
         switch(currentStep){

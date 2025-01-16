@@ -1,5 +1,5 @@
 <script>
-    import {createEventDispatcher, onMount} from "svelte";
+    import {createEventDispatcher} from "svelte";
     import ChangePassModal from "../components/ChangePassModal.svelte";
     import Loader from "../../../components/Loader.svelte";
     import Slogan from "../components/vendorProperties/Slogan.svelte";
@@ -19,7 +19,6 @@
     let files = $state(null);
     let addToken = $state(false);
     let addWebhook = $state(false);
-    let onlineSales = $state("true");
 
     const showLoader = (event)=>{
         loader = event.detail.showLoader;
@@ -67,10 +66,12 @@
         }
     });
 
-    onMount(()=>{
-        const data = localStorage.getItem("onlineSales");
-        onlineSales = data === "true" ? true : false;
-    });
+    const finishWebhook = ()=>{
+        addWebhook = false;
+        if(vendor.contact.phone || vendor.contact.email){
+            vendor.onlineSales = true;
+        }
+    }
 </script>
 
 {#if loader}
@@ -98,7 +99,8 @@
         <AddWebhook
             on:notify
             on:showLoader={showLoader}
-            on:finish={()=>{addWebhook = false; onlineSales = true}}
+            on:finish={finishWebhook}
+            on:finish={()=>{addWebhook = false; vendor.onlineSales = true}}
         />
     {/if}
 
@@ -140,10 +142,16 @@
         on:notify
     />
 
-    {#if !onlineSales}
-        <div class="divider"></div>
+    <div class="divider"></div>
 
-        <h1>Online Sales</h1>
+    <h1>Stripe Online Payment Information</h1>
+    {#if vendor.onlineSales}
+        <p><span class="green">Already activated.</span> Only click this button if you need to update your Stripe data.</p>
+        <button
+            class="button"
+            onclick={()=>{addToken = true}}
+        >Reset</button>
+    {:else}
         <button
             class="button"
             onclick={()=>{addToken = true}}
@@ -172,10 +180,6 @@
     .container{
         padding: 35px;
         color: rgb(225, 225, 225);
-    }
-
-    h1{
-        margin-bottom: 35px; 
     }
 
     .changePass{
@@ -220,5 +224,9 @@
     .divider{
         margin: 35px;
         border-bottom: 2px solid var(--text);
+    }
+
+    .green{
+        color: green;
     }
 </style>

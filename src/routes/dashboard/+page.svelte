@@ -49,11 +49,6 @@
                     window.location.href = "/login";
                 }else{
                     vendor = response;
-                    if(vendor.stripeToken && vendor.webhookSecret){
-                        localStorage.setItem("onlineSales", "true");
-                    }else{
-                        localStorage.setItem("onlineSales", "false");
-                    }
                 }
             })
             .catch((err)=>{
@@ -92,6 +87,7 @@
             />
         {:else if page === "products"}
             <Products
+                onlineSales={vendor.onlineSales}
                 on:notify={notify}
             />
         {:else if page === "orders"}

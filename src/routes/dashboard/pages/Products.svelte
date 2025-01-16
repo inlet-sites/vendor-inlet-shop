@@ -5,6 +5,7 @@
     import SingleProduct from "../components/SingleProduct.svelte";
 
     const dispatch = createEventDispatcher();
+    let {onlineSales} = $props();
     let loader = $state(false);
     let products = $state([]);
     let newProduct = $state(false);
@@ -178,6 +179,7 @@
 
     {#if newProduct}
         <NewProduct
+            onlineSales={onlineSales}
             on:closeCreate={closeCreate}
             on:addProduct={addProduct}
             on:notify

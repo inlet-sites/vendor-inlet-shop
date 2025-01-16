@@ -60,6 +60,7 @@
             </button>
         {/if}
     </div>
+    <p class="note">*Phone or email required to sell online</p>
 
     {#if edit}
         <input
@@ -89,7 +90,11 @@
     h3{
         text-decoration: underline;
         font-size: 22px;
+    }
+
+    .note{
         margin-bottom: 10px;
+        font-size: 13px;
     }
 
     button{

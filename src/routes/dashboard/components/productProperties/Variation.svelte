@@ -4,12 +4,10 @@
     import Variation from "../newProduct/Variation.svelte";
 
     const dispatch = createEventDispatcher();
-    let {variations, productId, productName} = $props();
+    let {variations, productId, productName, onlineSales} = $props();
     let variationIndex = $state(0);
     let confirmDelete = $state(false);
     let newVariation = $state(false);
-    let onlineSales = $state(false);
-    if(localStorage.getItem("onlineSales") === "true") onlineSales = true;
 
     const updateVariation = (event)=>{
         dispatch("updateVariation", {
@@ -132,7 +130,7 @@
         <div class="newVariation">
             <Variation
                 multiple={false}
-                onlineSales={true}
+                onlineSales={onlineSales}
                 productName={productName}
                 existing={true}
                 on:addVariation={addVariation}
