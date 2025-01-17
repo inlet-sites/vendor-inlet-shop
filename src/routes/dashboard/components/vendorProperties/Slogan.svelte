@@ -60,6 +60,7 @@
             </button>
         {/if}
     </div>
+    <p class="note">*Very short phrase show on shop page. Optional.</p>
 
     {#if edit}
         <input
@@ -89,7 +90,12 @@
     h3{
         text-decoration: underline;
         font-size: 22px;
+    }
+
+    .note{
         margin-bottom: 10px;
+        font-size: 13px;
+        color: rgb(252, 116, 100);
     }
 
     button{

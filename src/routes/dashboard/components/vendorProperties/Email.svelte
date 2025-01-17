@@ -95,6 +95,7 @@
     .note{
         margin-bottom: 10px;
         font-size: 13px;
+        color: rgb(252, 116, 100);
     }
 
     button{
