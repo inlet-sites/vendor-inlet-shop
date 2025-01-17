@@ -177,7 +177,7 @@
             {/each}
         </div>
     {:else}
-        <h2>No Products Yet</h2>
+        <h2 class="noProducts">No Products Yet</h2>
     {/if}
     {/if}
 
@@ -211,9 +211,12 @@
     }
 
     h2{
-        color: var(--text);
         text-align: center;
         font-size: 45px;
+    }
+
+    .noProducts{
+        color: var(--text);
     }
 
     header{
@@ -278,14 +281,20 @@
         flex-direction: column;
         align-items: flex-start;
         width: 250px;
-        border: 1px solid white;
+        border: 1px solid rgba(255, 0, 0, 0.35);
         margin: 15px 0;
         cursor: pointer;
         padding-bottom: 15px;
+        background: black;
+        color: var(--text);
     }
 
     .product img{
-        width: 100%;
+        max-width: 100%;
+        max-height: 250px;
+        margin: 0 auto;
+        border: 1px solid white;
+        border-radius: 0 0 5px 5px;
     }
 
     .product h2, .product p{
