@@ -1,22 +1,48 @@
 <script>
     import "../../global.css";
+    import HelpItem from "./HelpItem.svelte";
+
+    const helpItems = [
+        {
+            title: "Creating your Stripe API key",
+            text: "Learn how to create and use your Stripe API key for accepting payments on Inlet.shop",
+            url: "/help/stripe-token"
+        },
+        {
+            title: "Finding your Stripe Publishable key",
+            text: "Find the publishable key that you need to share with Inlet.Shop in order to recieve payments",
+            url: "/help/publishable-key"
+        },
+        {
+            title: "Creating the webhook secret",
+            text: "How to create the webhook secret for accepting payments on Inlet.Shop",
+            url: "/help/webhook-secret"
+        },
+        {
+            title: "Setting up your Account",
+            text: "First steps for setting up your account and getting ready to create your first items",
+            url: "/help/setup-account"
+        },
+        {
+            title: "Creating Products to Sell or List",
+            text: "How to create your products and the different options that you can choose for each product",
+            url: "/help/create-product"
+        }
+    ];
 </script>
 
 <div class="container">
     <h1>Help and Support</h1>
 
-    <a href="/help/stripe-token" class="helpItem">
-        <h2>Creating your Stripe API key/token</h2>
-        <p>Learn how to create and use your Stripe API key for accepting payments on Inlet.Shop</p>
-        <div class="rightArrow">
-            <svg width="46px" height="46px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#000000">
-                <path d="M13 6L19 12L13 18" stroke="#590010" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M5 6L11 12L5 18" stroke="#590010" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-        </div>
-    </a>
+    {#each helpItems as item}
+        <HelpItem
+            title={item.title}
+            text={item.text}
+            url={item.url}
+        />
+    {/each}
 
-    <p>If none of these answer your questions, feel free to call or email us.</p>
+    <p>If none of these answer your questions, feel free to call or email us:</p>
 
     <div class="contact">
         <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
@@ -39,29 +65,6 @@
         max-width: 1200px;
         margin: 35px auto;
         color: var(--text);
-    }
-
-    .helpItem{
-        display: block;
-        border: 3px solid rgba(255, 0, 0, 0.35);
-        padding: 15px;
-        max-width: 750px;
-        border-radius: 0 50px 50px 0;
-        color: var(--text);
-        text-decoration: none;
-        margin: 25px 0;
-        position: relative;
-        padding-right: 55px;
-    }
-
-    .helpItem h2{
-        margin-bottom: 15px;
-    }
-
-    .rightArrow{
-        position: absolute;
-        top: calc(50% - 23px);
-        right: 15px;
     }
 
     .contact{
