@@ -64,6 +64,8 @@
         <li><a href="mailto:lee@inletsites.dev">lee@inletsites.dev</a></li>
         <li><a href="tel+18434109586">(843) 410- 9586</a></li>
     </ul>
+
+    <iframe class="rumble" width="640" height="360" src="https://rumble.com/embed/v68krqy/?pub=4gu0cj" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <style>
@@ -99,6 +101,12 @@
 
     a{
         color: white;
+    }
+
+    iframe{
+        border: 2px solid rgba(255, 0, 0, 0.35);
+        margin: 35px auto;
+        max-width: 100%;
     }
 
     @media screen and (max-width: 600px){
