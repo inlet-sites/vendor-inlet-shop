@@ -32,6 +32,7 @@
     <button class:active={active === "orders"} onclick={()=>{openPage("orders")}}>Orders</button>
 
     <div class="bottomButtons">
+        <a href="/help" target="_blank">Help</a>
         <button onclick={logout}>Logout</button>
     </div>
 </div>
@@ -65,7 +66,7 @@
         left: 5px;
     }
 
-    .container button{
+    .container button, .container a{
         background: none;
         border: none;
         color: var(--text);
@@ -74,6 +75,13 @@
         cursor: pointer;
         margin-bottom: 25px;
         width: 200px;
+        text-decoration: none;
+        font-family: inherit;
+    }
+
+    .container a{
+        display: block;
+        font-family: inherit;
     }
 
     .container button:hover{
