@@ -17,7 +17,9 @@
 
 <div class="container">
     <header>
-        <button on:click={login}>Log In</button>
+        <button onclick={login}>Log In</button>
+
+        <a class="helpLink" href="/help">Help</a>
 
         <div class="logo">
             <img src={logo} alt="Inlet Sites logo">
@@ -27,7 +29,7 @@
 
         <h1>Vendor Portal</h1>
 
-        <a href="#about">
+        <a class="aboutLink" href="#about">
             <p>Want to become a vendor on Inlet.Shop?</p>
             <svg width="55px" height="55px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                 <path d="M6 9L12 15L18 9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -94,14 +96,22 @@
         top: 35px;
         right: 35px;
         font-size: 28px;
-        color: rgb(225, 225, 225);
+        color: var(--text);
         background: none;
         border: none;
         text-decoration: underline;
         cursor: pointer;
     }
 
-    header a{
+    .helpLink{
+        position: absolute;
+        top: 35px;
+        left: 35px;
+        font-size: 28px;
+        color: var(--text);
+    }
+
+    .aboutLink{
         font-size: 28px;
         position: absolute;
         bottom: 15px;
