@@ -42,6 +42,8 @@
         />
     {/each}
 
+    <h2 class="rumbleLink">You can find a list of instructional videos <a href="https://rumble.com/user/InletSites">here</a>.</h2>
+
     <p>If none of these answer your questions, feel free to call or email us:</p>
 
     <div class="contact">
@@ -76,5 +78,15 @@
     .contact a{
         color: white;
         margin-left: 15px;
+    }
+
+    .rumbleLink{
+        margin-bottom: 35px;
+    }
+
+    @media screen and (max-width: 750px){
+        h1{
+            text-align: center;
+        }
     }
 </style>
