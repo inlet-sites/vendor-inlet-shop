@@ -5,6 +5,7 @@
     let {orderId} = $props();
     let order = $state({});
     let displayStatus = $state();
+    let declineModal = $state(false);
     $effect(()=>{
         switch(order.status){
             case "incomplete":
@@ -74,16 +75,17 @@
                     let message = "";
                     switch(status){
                         case "confirmed": message = "Order confirmed"; break;
+                        case "declined": message = "Order has been declined"; break;
                         case "shipped": message = "Order marked as shipped"; break;
                     }
                     dispatch("notify", {
                         type: "success",
                         message: message
                     });
+                    order.status = status;
                 }
             })
             .catch((err)=>{
-                console.log(err);
                 dispatch("notify", {
                     type: "error",
                     message: "Something went wrong, try refreshing the page"
@@ -92,6 +94,11 @@
             .finally(()=>{
                 dispatch("loader", {on: false});
             });
+    }
+
+    const decline = ()=>{
+        update("declined");
+        declineModal = false;
     }
 
     onMount(()=>{
@@ -122,6 +129,27 @@
             });
     });
 </script>
+
+{#if declineModal}
+    <div class="modalContainer">
+        <div class="declineModal">
+            <p>Declining will cancel the order and you must issue a refund through Stripe.</p>
+            <p>Are you sure that you want to decline this order?</p>
+
+            <div class="declineButtonBox">
+                <button
+                    class="button"
+                    onclick={()=>{declineModal = false}}
+                >Cancel</button>
+                
+                <button
+                    class="button decline"
+                    onclick={decline}
+                >Decline</button>
+            </div>
+        </div>
+    </div>
+{/if}
 
 <div class="Order">
     <button
@@ -167,12 +195,7 @@
 
     <p class="status">Current Status: {displayStatus}</p>
 
-    {#if order.status === "paid"}
-        <button
-            class="button"
-            onclick={()=>{update("confirmed")}}
-        >Confirm Order</button>
-    {:else if order.status === "confirmed"}
+    {#if order.status === "confirmed"}
         <button
             class="button"
             onclick={()=>{update("shipped")}}
@@ -186,6 +209,21 @@
 
         {#if order.status === "incomplete"}
             <p>Awaiting payment, no actions to take at this time.</p>
+        {:else if order.status === "paid"}
+            <p>Payment complete, please confirm the order.</p>
+            <p>If you decline the order, then you must issue a refund on Stripe.</p>
+
+            <div class="buttonBox">
+                <button
+                    class="button confirm"
+                    onclick={()=>{update("confirmed")}}
+                >Confirm</button>
+
+                <button
+                    class="button decline"
+                    onclick={()=>{declineModal = true}}
+                >Decline</button>
+            </div>
         {/if}
     </div>
 </div>
@@ -247,5 +285,47 @@
     .actions p{
         font-size: 22px;
         color: rgba(255, 150, 0, 0.75);
+    }
+
+    .buttonBox{
+        margin-top: 15px;
+    }
+
+    .confirm{
+        background: green;
+        color: var(--text);
+    }
+
+    .decline{
+        background: red;
+        color: var(--text);
+    }
+
+    .modalContainer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        backdrop-filter: blur(10px);
+        z-index: 3;
+    }
+
+    .declineModal{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 350px;
+        width: 500px;
+        background: var(--text);
+        padding: 35px;
+    }
+
+    .declineModal p{
+        font-size: 22px;
+        color: black;
     }
 </style>
