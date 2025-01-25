@@ -219,6 +219,15 @@
             <p>Payment failed. No further action necessary.</p>
         {:else if order.status === "declined"}
             <p>You have declined this order. Ensure that you have issued a full refund through Stripe.</p>
+        {:else if order.status === "confirmed"}
+            <p>Order is confirmed and waiting on shipping.</p>
+
+            <div class="buttonBox">
+                <button
+                    class="button"
+                    onclick={()=>{update("shipped")}}
+                >I Have Shipped the Order</button>
+            </div>
         {/if}
     </div>
 </div>
