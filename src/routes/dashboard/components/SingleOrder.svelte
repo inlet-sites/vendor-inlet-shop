@@ -18,7 +18,7 @@
                 displayStatus = "Payment Failed";
                 break;
             case "declined":
-                displayStatus = "Declined by vendor";
+                displayStatus = "Declined";
                 break;
             case "confirmed":
                 displayStatus = "Awaiting shipment";
@@ -217,6 +217,8 @@
             </div>
         {:else if order.status === "paymentFailed"}
             <p>Payment failed. No further action necessary.</p>
+        {:else if order.status === "declined"}
+            <p>You have declined this order. Ensure that you have issued a full refund through Stripe.</p>
         {/if}
     </div>
 </div>
