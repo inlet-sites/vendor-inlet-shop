@@ -195,15 +195,6 @@
 
     <p class="status">Current Status: {displayStatus}</p>
 
-    {#if order.status === "confirmed"}
-        <button
-            class="button"
-            onclick={()=>{update("shipped")}}
-        >Order Shipped</button>
-    {:else if order.status === "declined"}
-        <p>Ensure that you refund the customer through Stripe</p>
-    {/if}
-
     <div class="actions">
         <h2>Actions</h2>
 
@@ -224,6 +215,8 @@
                     onclick={()=>{declineModal = true}}
                 >Decline</button>
             </div>
+        {:else if order.status === "paymentFailed"}
+            <p>Payment failed. No further action necessary.</p>
         {/if}
     </div>
 </div>
