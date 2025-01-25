@@ -228,6 +228,8 @@
                     onclick={()=>{update("shipped")}}
                 >I Have Shipped the Order</button>
             </div>
+        {:else if order.status === "shipped"}
+            <p>Order shipped and completed. No further action required.</p>
         {/if}
     </div>
 </div>
