@@ -127,6 +127,7 @@
     <button
         class="back"
         onclick={()=>{dispatch("close")}}
+        aria-label="Go back"
     >
         <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#000000">
             <path d="M21 12L3 12M3 12L11.5 3.5M3 12L11.5 20.5" stroke="#e1e1e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -179,6 +180,14 @@
     {:else if order.status === "declined"}
         <p>Ensure that you refund the customer through Stripe</p>
     {/if}
+
+    <div class="actions">
+        <h2>Actions</h2>
+
+        {#if order.status === "incomplete"}
+            <p>Awaiting payment, no actions to take at this time.</p>
+        {/if}
+    </div>
 </div>
 
 <style>
@@ -224,5 +233,19 @@
     .status{
         font-size: 22px;
         margin-top: 35px;
+    }
+
+    .actions{
+        margin-top: 35px;
+    }
+
+    .actions h2{
+        text-decoration: underline;
+        margin-bottom: 15px;
+    }
+
+    .actions p{
+        font-size: 22px;
+        color: rgba(255, 150, 0, 0.75);
     }
 </style>
