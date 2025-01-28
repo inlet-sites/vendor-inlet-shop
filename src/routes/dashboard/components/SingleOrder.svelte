@@ -6,6 +6,8 @@
     let order = $state({});
     let displayStatus = $state();
     let declineModal = $state(false);
+    let modalNote = $state(false);
+    let declineNote = $state();
     $effect(()=>{
         switch(order.status){
             case "incomplete":
@@ -133,20 +135,27 @@
 {#if declineModal}
     <div class="modalContainer">
         <div class="declineModal">
-            <p>Declining will cancel the order and you must issue a refund through Stripe.</p>
-            <p>Are you sure that you want to decline this order?</p>
+            {#if modalNote}
+                <p>Please enter a note for the customer explaining why the order was declined.</p>
+                <p>This note will be send in an email notifying the customer that it has been declined.</p>
 
-            <div class="declineButtonBox">
-                <button
-                    class="button"
-                    onclick={()=>{declineModal = false}}
-                >Cancel</button>
-                
-                <button
-                    class="button decline"
-                    onclick={decline}
-                >Decline</button>
-            </div>
+                <textarea bind:value={declineNote}></textarea>
+            {:else}
+                <p>Declining will cancel the order and you must issue a refund through Stripe.</p>
+                <p>Are you sure that you want to decline this order?</p>
+
+                <div class="declineButtonBox">
+                    <button
+                        class="button"
+                        onclick={()=>{declineModal = false}}
+                    >Cancel</button>
+                    
+                    <button
+                        class="button decline"
+                        onclick={decline}
+                    >Decline</button>
+                </div>
+            {/if}
         </div>
     </div>
 {/if}
