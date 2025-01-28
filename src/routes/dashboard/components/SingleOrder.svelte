@@ -1,5 +1,6 @@
 <script>
     import {onMount, createEventDispatcher} from "svelte";
+    import CartItem from "./CartItem.svelte";
 
     const dispatch = createEventDispatcher();
     let {orderId} = $props();
@@ -56,6 +57,14 @@
         return (total * 0.029) + 30;
     }
 
+    const hasShippedItems = ()=>{
+        for(let i = 0; i < order.items.length; i++){
+            const variation = getVariationForItem(order.items[i]);
+            if(variation.purchaseOption === "ship") return true;
+        }
+        return false;
+    }
+
     const update = (status)=>{
         dispatch("loader", {on: true});
         fetch(`${import.meta.env.VITE_API_URL}/order/${order._id}`, {
@@ -101,6 +110,22 @@
     const decline = ()=>{
         update("declined");
         declineModal = false;
+    }
+
+    const formatItem = (item)=>{
+        let variation;
+        for(let i = 0; i < item.product.variations.length; i++){
+            if(item.product.variations[i].id === item.variation){
+                variation = item.product.variations[i];
+                break;
+            }
+        }
+
+        return {
+            product: item.product,
+            variation: variation,
+            quantity: item.quantity
+        };
     }
 
     onMount(()=>{
@@ -175,28 +200,13 @@
     <h3>{order.address}</h3>
 
     <h3 class="tableTitle">Items Purchased</h3>
-    <table class="items">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Shipping</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {#each order.items as item}
-                <tr>
-                    <td>{item.product.name}</td>
-                    <td>{variationName(item)}</td>
-                    <td>{item.quantity}</td>
-                    <td>${shipping(item)}</td>
-                    <td>${total(item)}</td>
-                </tr>
-            {/each}
-        </tbody>
-    </table>
+    {#each order.items as item}
+        <CartItem
+            item={formatItem(item)}
+            vendor={order.vendor[0].store}
+            edit={false}
+        />
+    {/each}
 
     <h3>Grand Total: ${(order.total / 100).toFixed(2)}</h3>
     <h3>Stripe Fee: ${(stripeFee(order.total) / 100).toFixed(2)}</h3>
@@ -229,14 +239,18 @@
         {:else if order.status === "declined"}
             <p>You have declined this order. Ensure that you have issued a full refund through Stripe.</p>
         {:else if order.status === "confirmed"}
-            <p>Order is confirmed and waiting on shipping.</p>
+            {#if hasShippedItems()}
+                <p>Order is confirmed and waiting on shipping.</p>
 
-            <div class="buttonBox">
-                <button
-                    class="button"
-                    onclick={()=>{update("shipped")}}
-                >I Have Shipped the Order</button>
-            </div>
+                <div class="buttonBox">
+                    <button
+                        class="button"
+                        onclick={()=>{update("shipped")}}
+                    >I Have Shipped the Order</button>
+                </div>
+            {:else}
+                <p>Order confirmed. Waiting on customer pick-up.</p>
+            {/if}
         {:else if order.status === "shipped"}
             <p>Order shipped and completed. No further action required.</p>
         {/if}
@@ -267,20 +281,6 @@
         border-radius: 50%;
         padding: 5px;
         cursor: pointer;
-    }
-
-    .tableTitle{
-        margin-top: 35px;
-    }
-
-    table{
-        margin-bottom: 35px;
-    }
-
-    th,td{
-        border: 1px solid var(--text);
-        padding: 10px;
-        text-align: center;
     }
 
     .status{
