@@ -17,8 +17,6 @@
     let imageUrl = $state("");
     let loader = $state(false);
     let files = $state(null);
-    let addToken = $state(false);
-    let addWebhook = $state(false);
 
     const showLoader = (event)=>{
         loader = event.detail.showLoader;
@@ -65,13 +63,6 @@
             imageUrl = `${import.meta.env.VITE_API_URL}/document/defaultVendorImage.png`;
         }
     });
-
-    const finishWebhook = ()=>{
-        addWebhook = false;
-        if(vendor.contact.phone || vendor.contact.email){
-            vendor.onlineSales = true;
-        }
-    }
 </script>
 
 {#if loader}
@@ -83,24 +74,6 @@
         <ChangePassModal
             on:cancel={modal = false}
             on:notify
-        />
-    {/if}
-
-    {#if addToken}
-        <AddToken
-            on:notify
-            on:showLoader={showLoader}
-            on:cancel={()=>{addToken = false}}
-            on:next={()=>{addToken = false; addWebhook = true}}
-        />
-    {/if}
-
-    {#if addWebhook}
-        <AddWebhook
-            on:notify
-            on:showLoader={showLoader}
-            on:finish={finishWebhook}
-            on:finish={()=>{addWebhook = false; vendor.onlineSales = true}}
         />
     {/if}
 
@@ -144,7 +117,7 @@
 
     <div class="divider"></div>
 
-    <h1>Stripe Online Payment Information</h1>
+    <h1>Online Payments</h1>
     {#if vendor.onlineSales}
         <p><span class="green">Already activated.</span> Only click this button if you need to update your Stripe data.</p>
         <button
