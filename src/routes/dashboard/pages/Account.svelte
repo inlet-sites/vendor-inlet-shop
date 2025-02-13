@@ -7,8 +7,6 @@
     import Phone from "../components/vendorProperties/Phone.svelte";
     import Email from "../components/vendorProperties/Email.svelte";
     import Address from "../components/vendorProperties/Address.svelte";
-    import AddToken from "../components/AddToken.svelte";
-    import AddWebhook from "../components/AddWebhook.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -17,6 +15,7 @@
     let imageUrl = $state("");
     let loader = $state(false);
     let files = $state(null);
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     const showLoader = (event)=>{
         loader = event.detail.showLoader;
@@ -27,7 +26,7 @@
         const formData = new FormData();
         formData.append("file", files[0]);
 
-        fetch(`${import.meta.env.VITE_API_URL}/vendor/image`, {
+        fetch(`${apiUrl}/vendor/image`, {
             method: "put",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
@@ -58,11 +57,39 @@
 
     $effect(()=>{
         if(vendor.image){
-            imageUrl = `${import.meta.env.VITE_API_URL}/document/${vendor.image}`;
+            imageUrl = `${apiUrl}/document/${vendor.image}`;
         }else{
-            imageUrl = `${import.meta.env.VITE_API_URL}/document/defaultVendorImage.png`;
+            imageUrl = `${apiUrl}/document/defaultVendorImage.png`;
         }
     });
+
+    const createConnected = ()=>{
+        loader = true;
+        fetch(`${apiUrl}/vendor/connect`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+            }
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    dispatch("notify", {type: "error", message: response.error.message});
+                }else{
+                    console.log(response);
+                }
+            })
+            .catch((err)=>{
+                dispatch("notify", {
+                    type: "error",
+                    message: "Something went wrong, try refreshing the page"
+                });
+            })
+            .finally(()=>{
+                loader = false;
+            });
+    }
 </script>
 
 {#if loader}
@@ -127,7 +154,7 @@
     {:else}
         <button
             class="button"
-            onclick={()=>{addToken = true}}
+            onclick={createConnected}
         >Setup</button>
     {/if}
 
