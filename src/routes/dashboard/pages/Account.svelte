@@ -7,6 +7,7 @@
     import Phone from "../components/vendorProperties/Phone.svelte";
     import Email from "../components/vendorProperties/Email.svelte";
     import Address from "../components/vendorProperties/Address.svelte";
+    import StripeSetup from "../components/StripeSetup.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -15,6 +16,7 @@
     let imageUrl = $state("");
     let loader = $state(false);
     let files = $state(null);
+    let stripeSetup = $state(false);
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const showLoader = (event)=>{
@@ -63,37 +65,27 @@
         }
     });
 
-    const createConnected = ()=>{
-        loader = true;
-        fetch(`${apiUrl}/vendor/connect`, {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    dispatch("notify", {type: "error", message: response.error.message});
-                }else{
-                    console.log(response);
-                }
-            })
-            .catch((err)=>{
-                dispatch("notify", {
-                    type: "error",
-                    message: "Something went wrong, try refreshing the page"
-                });
-            })
-            .finally(()=>{
-                loader = false;
-            });
+    const setLoader = (on)=>{
+        loader = on;
+    }
+
+    const notify = (type, message)=>{
+        dispatch("notify", {
+            type: type,
+            message: message
+        });
     }
 </script>
 
 {#if loader}
     <Loader/>
+{/if}
+
+{#if stripeSetup}
+    <StripeSetup
+        loader={setLoader}
+        notify={notify}
+    />
 {/if}
 
 <div class="container">
@@ -146,15 +138,11 @@
 
     <h1>Online Payments</h1>
     {#if vendor.onlineSales}
-        <p><span class="green">Already activated.</span> Only click this button if you need to update your Stripe data.</p>
-        <button
-            class="button"
-            onclick={()=>{addToken = true}}
-        >Reset</button>
+        <p>Activated</p>
     {:else}
         <button
             class="button"
-            onclick={createConnected}
+            onclick={()=>{stripeSetup = true}}
         >Setup</button>
     {/if}
 

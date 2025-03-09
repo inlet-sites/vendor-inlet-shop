@@ -1,6 +1,7 @@
 <script>
     import {createEventDispatcher} from "svelte";
     import Loader from "../../../components/Loader.svelte";
+    import Notifier from "../../../components/Notifier.svelte";
     import BasicData from "./newProduct/BasicData.svelte";
     import Variation from "./newProduct/Variation.svelte";
     import AddImages from "./newProduct/AddImages.svelte";
@@ -12,6 +13,18 @@
     let variations = $state([]);
     let multipleVariations = $state(false);
     let loader = $state(false);
+    let notifier = $state(null);
+
+    const notify = (type, message)=>{
+        notifier = {
+            type: type,
+            message: message
+        };
+
+        setTimeout(()=>{
+            notifier = null;
+        }, 7500);
+    }
 
     const next = (event)=>{
         switch(currentStep){
@@ -35,63 +48,75 @@
     }
 
     const finish = async ()=>{
-        loader = true;
+        try{
+            loader = true;
 
-        const productFormData = new FormData();
-        productFormData.append("name", product.name);
-        productFormData.append("tags", JSON.stringify(product.tags));
-        productFormData.append("description", product.description);
-        productFormData.append("active", true);
-        for(let i = 0; i < product.images.length; i++){
-            productFormData.append("images", product.images[i]);
-        }
-        const vendorToken = localStorage.getItem("vendorToken");
-
-        const productResponse = await fetch(`${import.meta.env.VITE_API_URL}/product`, {
-            method: "post",
-            headers: {
-                Authorization: `Bearer ${vendorToken}`
-            },
-            body: productFormData
-        });
-        const newProduct = await productResponse.json();
-
-        const variationPromises = [];
-        for(let i = 0; i < variations.length; i++){
-            const variationFormData = new FormData();
-            variationFormData.append("product", newProduct.id);
-            variationFormData.append("descriptor", variations[i].descriptor);
-            variationFormData.append("price", variations[i].price * 100);
-            variationFormData.append("quantity", variations[i].quantity);
-            variationFormData.append("shipping", variations[i].shipping * 100);
-            variationFormData.append("purchaseOption", variations[i].purchaseOption);
-            for(let j = 0; j < variations[i].images.length; j++){
-                variationFormData.append("images", variations[i].images[j]);
+            const productFormData = new FormData();
+            productFormData.append("name", product.name);
+            productFormData.append("tags", JSON.stringify(product.tags));
+            productFormData.append("description", product.description);
+            productFormData.append("active", true);
+            for(let i = 0; i < product.images.length; i++){
+                productFormData.append("images", product.images[i]);
             }
-            variationPromises.push(fetch(`${import.meta.env.VITE_API_URL}/variation`, {
+            const vendorToken = localStorage.getItem("vendorToken");
+
+            const productResponse = await fetch(`${import.meta.env.VITE_API_URL}/product`, {
                 method: "post",
                 headers: {
                     Authorization: `Bearer ${vendorToken}`
                 },
-                body: variationFormData
-            }))
-        }
+                body: productFormData
+            });
+            const newProduct = await productResponse.json();
+            if(newProduct.error) throw newProduct.error;
 
-        const response = await Promise.all(variationPromises);
-        for(let i = 0; i < response.length; i++){
-            newProduct.variations.push(await response[i].json());
+            const variationPromises = [];
+            for(let i = 0; i < variations.length; i++){
+                const variationFormData = new FormData();
+                variationFormData.append("product", newProduct.id);
+                variationFormData.append("descriptor", variations[i].descriptor);
+                variationFormData.append("price", Math.floor(variations[i].price * 100));
+                variationFormData.append("quantity", variations[i].quantity);
+                variationFormData.append("shipping", Math.floor(variations[i].shipping * 100));
+                variationFormData.append("purchaseOption", variations[i].purchaseOption);
+                for(let j = 0; j < variations[i].images.length; j++){
+                    variationFormData.append("images", variations[i].images[j]);
+                }
+                variationPromises.push(fetch(`${import.meta.env.VITE_API_URL}/variation`, {
+                    method: "post",
+                    headers: {
+                        Authorization: `Bearer ${vendorToken}`
+                    },
+                    body: variationFormData
+                }))
+            }
+
+            const response = await Promise.all(variationPromises);
+            for(let i = 0; i < response.length; i++){
+                const variation = await response[i].json();
+                if(variation.error) throw variation.error;
+                newProduct.variations.push(variation);
+            }
+            loader = false;
+            dispatch("addProduct", {
+                product: newProduct
+            });
+            dispatch("cancel");
+        }catch(e){
+            notify("error", e.message);
+            loader = false;
         }
-        loader = false;
-        dispatch("addProduct", {
-            product: newProduct
-        });
-        dispatch("cancel");
     }
 </script>
 
 <div class="NewProduct">
     {#if loader}
         <Loader/>
+    {/if}
+
+    {#if notifier}
+        <Notifier type={notifier.type} message={notifier.message}/>
     {/if}
 
     {#if currentStep === "basicData"}
