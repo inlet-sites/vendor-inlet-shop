@@ -85,6 +85,7 @@
     <StripeSetup
         loader={setLoader}
         notify={notify}
+        close={()=>{stripeSetup = false}}
     />
 {/if}
 
@@ -136,9 +137,9 @@
 
     <div class="divider"></div>
 
-    <h1>Online Payments</h1>
+    <h1 class="stripeTitle">Stripe (payment processor)</h1>
     {#if vendor.onlineSales}
-        <p>Activated</p>
+        <a class="button" href="http://dashboard.stripe.com">View Dashboard</a>
     {:else}
         <button
             class="button"
@@ -159,7 +160,7 @@
     <div class="divider"></div>
 
     <button
-        class="changePass"
+        class="button"
         onclick={modal = true}
     >Change Password</button>
 </div>
@@ -170,26 +171,7 @@
         color: rgb(225, 225, 225);
     }
 
-    .changePass{
-        background: white;
-        border: none;
-        font-size: 22px;
-        padding: 10px;
-        cursor: pointer;
-        border: 2px outset white;
-    }
-
-    .changePass:active{
-        border-style: inset
-    }
-
-    .changePass:hover{
-        background: rgb(200, 200, 200);
-    }
-
     .vendorImage{
-        display: flex;
-        flex-direction: column;
         margin-top: 35px;
     }
 
@@ -214,7 +196,7 @@
         border-bottom: 2px solid var(--text);
     }
 
-    .green{
-        color: green;
+    .stripeTitle{
+        margin-bottom: 15px;
     }
 </style>
