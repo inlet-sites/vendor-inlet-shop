@@ -9,6 +9,7 @@
     let declineModal = $state(false);
     let modalNote = $state(false);
     let declineNote = $state();
+    const apiUrl = import.meta.env.VITE_API_URL;
     $effect(()=>{
         switch(order.status){
             case "incomplete":
@@ -67,7 +68,7 @@
 
     const update = (status)=>{
         dispatch("loader", {on: true});
-        fetch(`${import.meta.env.VITE_API_URL}/order/${order._id}`, {
+        fetch(`${apiUrl}/order/${order._id}`, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
@@ -86,7 +87,6 @@
                     let message = "";
                     switch(status){
                         case "confirmed": message = "Order confirmed"; break;
-                        case "declined": message = "Order has been declined"; break;
                         case "shipped": message = "Order marked as shipped"; break;
                     }
                     dispatch("notify", {
@@ -108,8 +108,46 @@
     }
 
     const decline = ()=>{
-        update("declined");
-        declineModal = false;
+        dispatch("loader", {on: true});
+        const refundProm = fetch(`${apiUrl}/order/${order._id}/refund`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+            }
+        });
+        const orderProm = fetch(`${apiUrl}/order/${order._id}`, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+            },
+            body: JSON.stringify({
+                status: "declined",
+                note: declineNote
+            })
+        });
+
+        Promise.all([refundProm, orderProm])
+            .then(r => Promise.all(r.map(res => res.json())))
+            .then((response)=>{
+                order = response[1];
+                dispatch("notify", {
+                    type: "success",
+                    message: "Order declined and refunded"
+                });
+            })
+            .catch((err)=>{
+                console.log(err);
+                dispatch("notify", {
+                    type: "error",
+                    message: "Something went wrong, try refreshing the page"
+                });
+            })
+            .finally(()=>{
+                dispatch("loader", {on: false});
+                declineModal = false;
+            });
     }
 
     const formatItem = (item)=>{
@@ -162,11 +200,23 @@
         <div class="declineModal">
             {#if modalNote}
                 <p>Please enter a note for the customer explaining why the order was declined.</p>
-                <p>This note will be send in an email notifying the customer that it has been declined.</p>
+                <p>This note will be sent in an email notifying the customer that it has been declined.</p>
 
-                <textarea bind:value={declineNote}></textarea>
+                <textarea bind:value={declineNote} rows="5"></textarea>
+
+                <div class="declineButtonBox">
+                    <button
+                        class="button"
+                        onclick={()=>{declineModal = false; modalNote = false;}}
+                    >Cancel</button>
+
+                    <button
+                        class="button decline"
+                        onclick={decline}
+                    >Decline</button>
+                </div>
             {:else}
-                <p>Declining will cancel the order and you must issue a refund through Stripe.</p>
+                <p>Declining will cancel the order and the customer will be issued a full refund.</p>
                 <p>Are you sure that you want to decline this order?</p>
 
                 <div class="declineButtonBox">
@@ -177,8 +227,8 @@
                     
                     <button
                         class="button decline"
-                        onclick={decline}
-                    >Decline</button>
+                        onclick={()=>{modalNote = true}}
+                    >Confirm</button>
                 </div>
             {/if}
         </div>
@@ -221,7 +271,7 @@
             <p>Awaiting payment, no actions to take at this time.</p>
         {:else if order.status === "paid"}
             <p>Payment complete, please confirm the order.</p>
-            <p>If you decline the order, then you must issue a refund on Stripe.</p>
+            <p>If you decline the order, a full refund will be issued to the customer.</p>
 
             <div class="buttonBox">
                 <button
@@ -237,7 +287,7 @@
         {:else if order.status === "paymentFailed"}
             <p>Payment failed. No further action necessary.</p>
         {:else if order.status === "declined"}
-            <p>You have declined this order. Ensure that you have issued a full refund through Stripe.</p>
+            <p>You have declined this order.</p>
         {:else if order.status === "confirmed"}
             {#if hasShippedItems()}
                 <p>Order is confirmed and waiting on shipping.</p>
@@ -333,7 +383,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 350px;
         width: 500px;
         background: var(--text);
         padding: 35px;
@@ -342,5 +391,13 @@
     .declineModal p{
         font-size: 22px;
         color: black;
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .declineButtonBox{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
     }
 </style>
