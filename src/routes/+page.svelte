@@ -45,28 +45,25 @@
         <p>In order to register as a vendor on Inlet.Shop, please <a href="#contact">contact</a> us. We meet personally with every business that sells on Inlet.Shop. We do this both to get to know our vendors, and also as a way to prevent illegal/inappropriate sales on the site. This also gives us a chance to help you, as a vendor, set up everything necessary for sales and answer any questions.</p>
 
         <h1>How it works</h1>
-        <p>Once a vendor contacts us, we will set up a time to meet. During this meeting, we will simply help you to set up everything that you need to sell on the site. For example, we use a payment system called Stripe for accepting payments. We will help your business get set up on Stripe. We can also create your account right there, with just a little information about your business.</p>
+        <p>Once you contact us, we will set up a time to meet. We can help you get set up on the site and give you a walkthrough to show how everything works. We can also answer any questions that you may have at the time. There is no cost or obligation with this meeting.</p>
 
-        <p>Once your account is set up, we will then walk your through using the site and creating products to sell online so that you feel comfortable with it.</p>
+        <p>Once your account on <a href="https://vendor.inlet.shop">Vendor.Inlet.Shop</a> is created, you can then add all of the information for your business. If you want to make sales online, then you can set up your payment processing directly on the site. If you only wish to list your items, without online sales, then you can skip this step.</p>
 
-        <p>All money earned on Inlet.Shop goes directly to your Stripe account, then to you. Each month, Inlet Sites will send you a bill for our fees.</p>
+        <p>On <a href="https://inlet.shop">Inlet.Shop</a> you will have a page that displays your bussiness with information about it, as well as a page that will display all of your products. Optionally, we can create a custom pagefor your business to display on the site</p>
+
+        <p>When you sell an item on the site, the payment is processed through <a href="https://stripe.com">Stripe</a>. The sales fee is taken from the price and the rest is deposited directly to your account.</p>
 
         <h1>Vendor Costs</h1>
-        <p>Most of the cost for selling will be due to the payment processor, Stripe. They have a fee of 2.9% plus $0.30/transaction. This amount is taken automatically when the payment is processed.</p>
-
-        <p>Inlet.Shop has a $25/month fee, plus 1% of sales on the site. We do not take this automatically, but will send a bill at the end of each month for the total amount owed.</p>
-
-        <p>So, a summary of costs:</p>
         <ul>
-            <li>$25/month</li>
             <li>3.9% of sales</li>
             <li>$0.30/transaction</li>
+            <li>$100 (optional) custom webpage</li>
         </ul>
 
         <h1>Vendor responsibilities</h1>
         <p>Inlet.Shop is not responsible for fulfilling any orders. It is the responsibility of the vendor to ship, or otherwise fulfill any orders placed on the site.</p>
 
-        <p>Some form of contact is required for vendors so that customers may contact them. In the event that customers contact Inlet Sites about non-fulfillment or other issues, we will contact the vendor to resolve the issue.</p>
+        <p>Some form of contact information is required for vendors so that customers may contact them. In the event that customers contact Inlet Sites about non-fulfillment or other issues, we will contact the vendor to resolve the issue.</p>
     </div>
 
     <div id="contact">
