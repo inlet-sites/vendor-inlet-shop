@@ -137,6 +137,7 @@
     {#if orders.length > 0}
         {#each orders as order}
             <button class="order" onclick={()=>{singleOrder = order.id}}>
+                <p class="orderNumber">Order No. {order.orderNumber}</p>
                 <p class="name">{order.name}</p>
                 <p class="email">{order.email}</p>
                 <p class="total">${(order.total / 100).toFixed(2)}</p>
@@ -199,6 +200,16 @@
         padding: 25px;
         font-size: 18px;
         cursor: pointer;
+        position: relative;
+    }
+
+    .orderNumber{
+        position: absolute;
+        top: 5px;
+        left: 25%;
+        font-size: 12px;
+        width: 50%;
+        text-align: center;
     }
 
     .order .name{
