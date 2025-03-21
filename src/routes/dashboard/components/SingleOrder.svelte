@@ -245,7 +245,8 @@
             <path d="M21 12L3 12M3 12L11.5 3.5M3 12L11.5 20.5" stroke="#e1e1e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
     </button>
-    <h1>{order.name}</h1>
+    <h1>Order No. {order.orderNumber}</h1>
+    <h2>{order.name}</h2>
     <h2>{order.email}</h2>
     <h3>{order.address}</h3>
 
@@ -316,6 +317,7 @@
         height: 100%;
         width: 100%;
         padding: 35px;
+        padding: 55px 35px 35px 35px;
         z-index: 2;
     }
 
