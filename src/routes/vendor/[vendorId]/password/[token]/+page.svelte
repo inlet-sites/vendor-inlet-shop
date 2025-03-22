@@ -39,7 +39,7 @@
                     notifier.type = "error";
                     notifier.message = response.error.message;
                 }else{
-                    window.location.href = "/";
+                    window.location.href = "/login";
                 }
             })
             .catch((err)=>{
