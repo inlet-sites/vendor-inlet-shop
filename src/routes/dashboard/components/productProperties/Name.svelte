@@ -5,7 +5,6 @@
     let {name, productId} = $props();
     let edit = $state(false);
     let focusInput = $state({});
-    $inspect(focusInput);
 
     const showEdit = async ()=>{
         edit = true;

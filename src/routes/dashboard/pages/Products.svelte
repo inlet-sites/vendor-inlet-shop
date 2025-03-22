@@ -186,6 +186,7 @@
     {#if singleProduct}
         <SingleProduct
             productId={singleProduct}
+            onlineSales={onlineSales}
             on:update={updateProduct}
             on:removeProduct={removeProduct}
             on:notify

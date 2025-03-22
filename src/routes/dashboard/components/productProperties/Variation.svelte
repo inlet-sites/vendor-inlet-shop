@@ -3,6 +3,7 @@
     import Images from "./Images.svelte";
     import Variation from "../newProduct/Variation.svelte";
     import VariationQuantity from "../productProperties/VariationQuantity.svelte";
+    import VariationPurchaseOption from "../productProperties/VariationPurchaseOption.svelte";
 
     const dispatch = createEventDispatcher();
     let {variations, productId, productName, onlineSales} = $props();
@@ -194,6 +195,17 @@
         on:loader
         on:notify
     />
+
+    {#if onlineSales}
+        <VariationPurchaseOption
+            purchaseOption={variations[variationIndex].purchaseOption}
+            productId={productId}
+            variationId={variations[variationIndex].id}
+            on:updateVariation={updateVariation}
+            on:loader
+            on:notify
+        />
+    {/if}
 
     <Images
         images={variations[variationIndex].images}

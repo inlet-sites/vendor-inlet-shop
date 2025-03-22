@@ -9,7 +9,7 @@
     import Variation from "./productProperties/Variation.svelte";
 
     const dispatch = createEventDispatcher();
-    let {productId} = $props();
+    let {productId, onlineSales} = $props();
     let product = $state({});
     let loader = $state(false);
     let deleteModal = $state(false);
@@ -169,6 +169,7 @@
         variations={product.variations}
         productId={product.id}
         productName={product.name}
+        onlineSales={onlineSales}
         on:updateVariation={updateVariation}
         on:loader={updateLoader}
         on:notify
