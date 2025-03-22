@@ -6,8 +6,40 @@
     let edit = $state(false);
 
     const submit = ()=>{
-        console.log(purchaseOption);
-        console.log("submit");
+        dispatch("loader", {on: true});
+        fetch(`${import.meta.env.VITE_API_URL}/product/${productId}/variation/${variationId}`, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+            },
+            body: JSON.stringify({purchaseOption: purchaseOption})
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    dispatch("notify", {
+                        type: "error",
+                        message: response.error.message
+                    });
+                }else{
+                    dispatch("updateVariation", {variation: response});
+                    dispatch("notify", {
+                        type: "success",
+                        message: "Item's purchase option updated"
+                    });
+                }
+            })
+            .catch((err)=>{
+                dispatch("notify", {
+                    type: "error",
+                    message: "Something went wrong, try refreshing the page"
+                });
+            })
+            .finally(()=>{
+                dispatch("loader", {on: false});
+                edit = false;
+            });
     }
 </script>
 

@@ -24,6 +24,10 @@
                     });
                 }else{
                     dispatch("updateVariation", {variation: response});
+                    dispatch("notify", {
+                        type: "success",
+                        message: "Quantity of item updated"
+                    });
                 }
             })
             .catch((err)=>{
