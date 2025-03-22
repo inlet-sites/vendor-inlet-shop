@@ -2,6 +2,7 @@
     import {createEventDispatcher} from "svelte";
     import Images from "./Images.svelte";
     import Variation from "../newProduct/Variation.svelte";
+    import VariationQuantity from "../productProperties/VariationQuantity.svelte";
 
     const dispatch = createEventDispatcher();
     let {variations, productId, productName, onlineSales} = $props();
@@ -173,6 +174,10 @@
         <h2>Shipping Cost</h2>
         <p>${(variations[variationIndex].shipping / 100).toFixed(2)}</p>
     </div>
+
+    <VariationQuantity
+        quantity={variations[variationIndex].quantity}
+    />
 
     <div class="variationData">
         <h2>Quantity</h2>
