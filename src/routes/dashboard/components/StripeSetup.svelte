@@ -24,7 +24,6 @@
                 }
             })
             .catch((err)=>{
-                console.log(err);
                 notify("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{
@@ -42,7 +41,6 @@
         });
 
         if(!response.ok){
-            console.log(response);
             notify("error", "Something went wrong, try refreshing the page");
         }else{
             const {sessionSecret} = await response.json();
@@ -88,7 +86,6 @@
                 }
             })
             .catch((err)=>{
-                console.log(err);
                 notify("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{

@@ -138,7 +138,6 @@
                 });
             })
             .catch((err)=>{
-                console.log(err);
                 dispatch("notify", {
                     type: "error",
                     message: "Something went wrong, try refreshing the page"
