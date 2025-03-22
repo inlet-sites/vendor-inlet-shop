@@ -10,6 +10,17 @@
     let confirmDelete = $state(false);
     let newVariation = $state(false);
 
+    const loader = (on)=>{
+        dispatch("loader", {on: on});
+    }
+
+    const notify = (type, message)=>{
+        dispatch("notify", {
+            type: type,
+            message: message
+        });
+    }
+
     const updateVariation = (event)=>{
         dispatch("updateVariation", {
             variation: event.detail.variation,
@@ -177,12 +188,12 @@
 
     <VariationQuantity
         quantity={variations[variationIndex].quantity}
+        productId={productId}
+        variationId={variations[variationIndex].id}
+        on:updateVariation={updateVariation}
+        on:loader
+        on:notify
     />
-
-    <div class="variationData">
-        <h2>Quantity</h2>
-        <p>{variations[variationIndex].quantity}</p>
-    </div>
 
     <Images
         images={variations[variationIndex].images}
