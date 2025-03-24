@@ -7,7 +7,7 @@
     import AddImages from "./newProduct/AddImages.svelte";
 
     const dispatch = createEventDispatcher();
-    let onlineSales = $props();
+    let {onlineSales}= $props();
     let currentStep = $state("basicData");
     let product = $state();
     let variations = $state([]);
