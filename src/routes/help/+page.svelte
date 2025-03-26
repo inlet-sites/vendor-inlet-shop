@@ -4,21 +4,6 @@
 
     const helpItems = [
         {
-            title: "Creating your Stripe API key",
-            text: "Learn how to create and use your Stripe API key for accepting payments on Inlet.shop",
-            url: "/help/stripe-token"
-        },
-        {
-            title: "Finding your Stripe Publishable key",
-            text: "Find the publishable key that you need to share with Inlet.Shop in order to recieve payments",
-            url: "/help/publishable-key"
-        },
-        {
-            title: "Creating the webhook secret",
-            text: "How to create the webhook secret for accepting payments on Inlet.Shop",
-            url: "/help/webhook-secret"
-        },
-        {
             title: "Setting up your Account",
             text: "First steps for setting up your account and getting ready to create your first items",
             url: "/help/setup-account"
