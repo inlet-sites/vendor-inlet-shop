@@ -151,7 +151,9 @@
 <style>
     .Orders{
         color: var(--text);
-        margin: 35px;
+        padding: 35px;
+        width: 100%;
+        position: relative;
     }
 
     .search{

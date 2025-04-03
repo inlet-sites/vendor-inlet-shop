@@ -311,11 +311,10 @@
     .Order{
         position: absolute;
         top: 0;
-        bottom: 0;
+        left: 0;
         background: rgb(0, 0, 25);
         height: 100%;
         width: 100%;
-        padding: 35px;
         padding: 55px 35px 35px 35px;
         z-index: 2;
     }
@@ -326,7 +325,7 @@
         align-items: center;
         position: absolute;
         top: 10px;
-        left: -10px;
+        left: 35px;
         background: none;
         border: 1px solid var(--text);
         border-radius: 50%;
