@@ -269,31 +269,6 @@
         flex-wrap: wrap;
     }
 
-    .product{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 250px;
-        border: 1px solid rgba(255, 0, 0, 0.35);
-        margin: 15px 0;
-        cursor: pointer;
-        padding-bottom: 15px;
-        background: black;
-        color: var(--text);
-    }
-
-    .product img{
-        max-width: 100%;
-        max-height: 250px;
-        margin: 0 auto;
-        border: 1px solid white;
-        border-radius: 0 0 5px 5px;
-    }
-
-    .product h2, .product p{
-        margin-left: 15px;
-    }
-
     @media screen and (max-width: 850px){
         .Products{
             padding-top: 95px;
