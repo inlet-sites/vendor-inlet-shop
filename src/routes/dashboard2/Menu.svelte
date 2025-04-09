@@ -1,16 +1,9 @@
 <script>
     import logo from "$lib/logo.png";
-    import {createEventDispatcher} from "svelte";
+    import {onMount} from "svelte";
 
-    const dispatch = createEventDispatcher();
-    let active = $state("account");
+    let active = $state();
     let menuOpen = $state(false);
-
-    const openPage = (page)=>{
-        menuOpen = false;
-        active = page;
-        dispatch("page", {page: page});
-    }
 
     const logout = ()=>{
         localStorage.removeItem("vendorToken");
@@ -20,16 +13,27 @@
     const showMobile = ()=>{
         menuOpen = !menuOpen;
     }
+
+    onMount(()=>{
+        const path = window.location.pathname;
+        if(path.includes("account")){
+            active = "account";
+        }else if(path.includes("products")){
+            active = "products";
+        }else if(path.includes("orders")){
+            active = "orders";
+        }
+    });
 </script>
 
 <div class="container" class:open={menuOpen}>
     <img src={logo} alt="Inlet Shop logo">
 
-    <button class:active={active === "account"} onclick={()=>{openPage("account")}}>Account</button> 
+    <a class:active={active === "account"} href="/dashboard/account">Account</a>
 
-    <button class:active={active === "products"} onclick={()=>{openPage("products")}}>Products</button>
+    <a class:active={active === "products"} href="/dashboard/products">Products</a>
 
-    <button class:active={active === "orders"} onclick={()=>{openPage("orders")}}>Orders</button>
+    <a class:active={active === "orders"} href="/dashboard/orders">Orders</a>
 
     <div class="bottomButtons">
         <a href="/help" target="_blank">Help</a>
@@ -100,7 +104,7 @@
         padding-left: 35px;
     }
 
-    .container button.active{
+    .container a.active{
         color: rgb(231, 0, 31);
     }
 
