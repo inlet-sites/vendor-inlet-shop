@@ -1,8 +1,8 @@
 <script>
     import {onMount} from "svelte";
     import {loadConnectAndInitialize} from "@stripe/connect-js";
-    import Loader from "../../../components/Loader.svelte";
-    import Notifier from "../../../components/Notifier.svelte";
+    import Loader from "$lib/Loader.svelte";
+    import Notifier from "$lib/Notifier.svelte";
 
     const apiUrl = import.meta.env.VITE_API_URL;
     let container = $state();

@@ -1,5 +1,5 @@
 <script>
-    import "../../../global.css";
+    import "$lib/global.css";
 </script>
 
 <div class="container">

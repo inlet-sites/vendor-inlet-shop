@@ -1,0 +1,51 @@
+:root{
+    --text: rgb(225, 225, 225);
+    --highlite: #d6011d;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: rgb(0, 0, 25);
+}
+
+.standardForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.standardForm label{
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+.standardForm input{
+    font-size: 28px;
+    padding-left: 10px;
+}
+
+.button{
+    background: white;
+    color: rgb(0, 0, 25);
+    cursor: pointer;
+    font-size: 28px;
+    font-weight: bold;
+    border: 2px outset black;
+    padding: 5px 15px;
+    text-decoration: none;
+}
+
+.button:hover{
+    background: rgb(225, 225, 225);
+}
+
+.button:active{
+    border-style: inset;
+}

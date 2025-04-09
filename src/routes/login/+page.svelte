@@ -1,9 +1,9 @@
 <script>
-    import "../../global.css";
+    import "$lib/global.css";
     import {onMount} from "svelte";
     import logo from "$lib/logo.png";
-    import Notifier from "../../components/Notifier.svelte";
-    import Loader from "../../components/Loader.svelte";
+    import Notifier from "$lib/Notifier.svelte";
+    import Loader from "$lib/Loader.svelte";
 
     let notifier = $state({type: "", message: ""});
     let loader = $state(false);

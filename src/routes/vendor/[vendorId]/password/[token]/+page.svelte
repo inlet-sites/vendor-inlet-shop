@@ -1,9 +1,9 @@
 <script>
+    import "$lib/global.css";
     import {onMount} from "svelte";
-    import "../../../../../global.css";
     import logo from "$lib/logo.png";
-    import Loader from "../../../../../components/Loader.svelte";
-    import Notifier from "../../../../../components/Notifier.svelte";
+    import Loader from "$lib/Loader.svelte";
+    import Notifier from "$lib/Notifier.svelte";
     let {data} = $props();
 
     let password = $state();

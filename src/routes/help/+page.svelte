@@ -1,5 +1,5 @@
 <script>
-    import "../../global.css";
+    import "$lib/global.css";
     import HelpItem from "./HelpItem.svelte";
 
     const helpItems = [
