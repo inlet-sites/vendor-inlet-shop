@@ -249,4 +249,15 @@
     .stripeTitle{
         margin-bottom: 15px;
     }
+
+    .orderEmailOption h3{
+        font-size: 22px;
+        text-decoration: underline;
+    }
+
+    .orderEmailOption input{
+        height: 25px;
+        width: 25px;
+        cursor: pointer;
+    }
 </style>
