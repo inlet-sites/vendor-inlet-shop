@@ -131,7 +131,7 @@
             display: flex;
         }
 
-        .container > button{
+        .container > a{
             margin: 35px 0;
             font-size: 35px;
         }
