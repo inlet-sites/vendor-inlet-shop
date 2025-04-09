@@ -23,6 +23,47 @@
         loader = event.detail.showLoader;
     }
 
+    const updateOrderEmail = ()=>{
+        loader = true;
+        fetch(`${apiUrl}/vendor`, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+            },
+            body: JSON.stringify({newOrderSendEmail: vendor.newOrderSendEmail})
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    dispatch("notify", {
+                        type: "error",
+                        message: response.error.message
+                    });
+                }else{
+                    let message = "";
+                    if(response.newOrderSendEmail){
+                        message = "You will recieve an email for each new order";
+                    }else{
+                        message = "You will no longer recieve an email for new orders";
+                    }
+                    dispatch("notify", {
+                        type: "success",
+                        message: message
+                    });
+                }
+            })
+            .catch((err)=>{
+                dispatch("notify", {
+                    type: "error",
+                    message: "Something went wrong, try refreshing the page"
+                });
+            })
+            .finally(()=>{
+                loader = false;
+            });
+    }
+
     const newThumbnail = ()=>{
         loader = true;
         const formData = new FormData();
@@ -134,6 +175,15 @@
         on:updateVendor
         on:notify
     />
+
+    <div class="orderEmailOption">
+        <h3>Email me for each order</h3>
+        <input
+            type="checkbox"
+            bind:checked={vendor.newOrderSendEmail}
+            onchange={updateOrderEmail}
+        >
+    </div>
 
     <div class="divider"></div>
 
