@@ -4,6 +4,7 @@
     import Address from "./Address.svelte";
     import Slogan from "./Slogan.svelte";
     import Description from "./Description.svelte";
+    import Hours from "./Hours.svelte";
 </script>
 
 <div class="PublicData">
@@ -12,6 +13,7 @@
     <Address/>
     <Slogan/>
     <Description/>
+    <Hours/>
 </div>
 
 <style>
