@@ -15,7 +15,7 @@
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
-            body: JSON.stringify({phone: $vendor.publicData.phone})
+            body: JSON.stringify({email: $vendor.publicData.email})
         })
             .then(r=>r.json())
             .then((response)=>{
@@ -23,7 +23,7 @@
                     notify("error", response.error.message);
                 }else{
                     vendor.set(response);
-                    notify("success", "Phone number updated");
+                    notify("success", "Email address updated");
                 }
             })
             .catch((err)=>{
@@ -38,7 +38,7 @@
 
 <div class="Phone">
     <div class="head">
-        <h3>Phone Number</h3>
+        <h3>Email</h3>
         {#if edit}
             <button onclick={submit} aria-label="Submit">
                 <svg width="32px" height="32px" stroke-width="2" viewBox="0 0 24 24" fill="none" color="currentColor">
@@ -54,18 +54,16 @@
         {/if}
     </div>
     
-    {#if $vendor?.publicData?.phone}
-        {#if edit}
-            <form onsubmit={submit}>
-                <input
-                    type="text"
-                    bind:value={$vendor.publicData.phone}
-                    required
-                />
-            </form>
-        {:else}
-            <p class="data">{$vendor.publicData.phone}</p>
-        {/if}
+    {#if edit}
+        <form onsubmit={submit}>
+            <input
+                type="text"
+                bind:value={$vendor.publicData.email}
+                required
+            />
+        </form>
+    {:else}
+        <p class="data">{$vendor?.publicData?.email}</p>
     {/if}
 </div>
 
