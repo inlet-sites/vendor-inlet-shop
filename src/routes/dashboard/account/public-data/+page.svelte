@@ -1,5 +1,9 @@
+<script>
+    import Phone from "./Phone.svelte";
+</script>
+
 <div class="PublicData">
-    <h1>Public Information</h1>
+    <Phone/>
 </div>
 
 <style>

@@ -27,7 +27,7 @@
         }, 7500);
     }
 
-    let vendor = writable();
+    let vendor = writable(null);
     setContext("vendor", vendor);
     setContext("notify", notify);
     setContext("loader", setLoader);
@@ -50,7 +50,7 @@
                     localStorage.removeItem("vendorToken");
                     window.location.href = "/login";
                 }else{
-                    vendor = response;
+                    vendor.set(response);
                 }
             })
             .catch((err)=>{
