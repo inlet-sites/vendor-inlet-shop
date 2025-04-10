@@ -1,7 +1,11 @@
-<script>
-
-</script>
-
 <div class="container">
-    <h1>Account Page</h1>
+    <div class="settings">
+        <h1>Settings</h1>
+    </div>
 </div>
+
+<style>
+    .container h1{
+        color: white;
+    }
+</style>

@@ -79,14 +79,27 @@
     />
 {/if}
 
-<Menu/>
+<div class="container">
+    <Menu/>
 
-<div class="contents">
-    {@render children()}
+    <div class="contents">
+        {@render children()}
+    </div>
 </div>
 
 <style>
+    .container{
+        display: flex;
+    }
+
     .contents{
+        padding: 35px;
         width: calc(100vw - 250px);
+    }
+
+    @media screen and (max-width: 850px){
+        .contents{
+            width: 100%;
+        }
     }
 </style>
