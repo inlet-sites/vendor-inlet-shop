@@ -15,7 +15,7 @@
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
-            body: JSON.stringify({email: $vendor.publicData.email})
+            body: JSON.stringify({description: $vendor.publicData.description})
         })
             .then(r=>r.json())
             .then((response)=>{
@@ -23,7 +23,7 @@
                     notify("error", response.error.message);
                 }else{
                     vendor.set(response);
-                    notify("success", "Email address updated");
+                    notify("success", "Description updated");
                 }
             })
             .catch((err)=>{
@@ -38,7 +38,7 @@
 
 <div class="Phone">
     <div class="head">
-        <h3>Email</h3>
+        <h3>Description</h3>
         {#if edit}
             <button onclick={submit} aria-label="Submit">
                 <svg width="32px" height="32px" stroke-width="2" viewBox="0 0 24 24" fill="none" color="currentColor">
@@ -57,13 +57,14 @@
     {#if $vendor}
         {#if edit}
             <form onsubmit={submit}>
-                <input
+                <textarea
                     type="text"
-                    bind:value={$vendor.publicData.email}
-                />
+                    bind:value={$vendor.publicData.description}
+                    rows="10"
+                ></textarea>
             </form>
         {:else}
-            <p class="data">{$vendor.publicData?.email}</p>
+            <p class="data">{$vendor?.publicData?.description || "***None***"}</p>
         {/if}
     {/if}
 </div>
@@ -92,8 +93,18 @@
         margin-left: 15px;
     }
 
-    input, .data{
-        font-size: 22px;
+    textarea{
+        font-size: 16px;
         padding-left: 10px;
+        width: 100%;
+        max-width: 750px;
+    }
+
+    .data{
+        overflow: hidden;
+        font-size: 16px;
+        padding-left: 10px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 </style>

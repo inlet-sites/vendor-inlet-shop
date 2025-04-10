@@ -54,17 +54,16 @@
         {/if}
     </div>
     
-    {#if $vendor?.publicData?.phone}
+    {#if $vendor}
         {#if edit}
             <form onsubmit={submit}>
                 <input
                     type="text"
                     bind:value={$vendor.publicData.phone}
-                    required
                 />
             </form>
         {:else}
-            <p class="data">{$vendor.publicData.phone}</p>
+            <p class="data">{$vendor.publicData.phone || "***None***"}</p>
         {/if}
     {/if}
 </div>
