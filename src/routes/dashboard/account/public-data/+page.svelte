@@ -8,6 +8,10 @@
     import Links from "./Links.svelte";
 </script>
 
+<svelte:head>
+    <title>Account | Vendor.Inlet.Shop</title>
+</svelte:head>
+
 <div class="PublicData">
     <Phone/>
     <Email/>

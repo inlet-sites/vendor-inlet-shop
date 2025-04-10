@@ -1,11 +1,14 @@
-<div class="container">
-    <div class="settings">
-        <h1>Settings</h1>
-    </div>
+<script>
+    import OrderEmail from "./settings/OrderEmail.svelte";
+</script>
+
+<svelte:head>
+    <title>Account | Vendor.Inlet.Shop</title>
+</svelte:head>
+
+<div class="Settings">
+    <OrderEmail/>
 </div>
 
 <style>
-    .container h1{
-        color: white;
-    }
 </style>
