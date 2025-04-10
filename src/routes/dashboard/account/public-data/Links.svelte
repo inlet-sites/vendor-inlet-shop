@@ -149,7 +149,7 @@
         flex-direction: column;
     }
 
-    input, .data{
+    input{
         font-size: 22px;
         padding-left: 10px;
     }
