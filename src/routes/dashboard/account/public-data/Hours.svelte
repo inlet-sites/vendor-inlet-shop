@@ -223,7 +223,7 @@
         border-spacing: 25px 0;
     }
 
-    input, .data{
+    input{
         font-size: 22px;
         padding-left: 10px;
     }
