@@ -6,6 +6,10 @@
     let stripeSetup = $state(false);
 </script>
 
+<svelte:head>
+    <title>Online Sales | Vendor.Inlet.Shop</title>
+</svelte:head>
+
 <div class="OnlineSales">
     {#if $vendor}
         {#if $vendor.onlineSales}
