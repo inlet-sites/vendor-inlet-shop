@@ -5,6 +5,30 @@
     const loader = getContext("loader");
     const notify = getContext("notify");
     let products = $state([]);
+    let displayProducts = $state([]);
+    let tags = $state();
+
+    const createTags = (products)=>{
+        const tags = new Set();
+        for(let i = 0; i < products.length; i++){
+            for(let j = 0; j < products[i].tags.length; j++){
+                tags.add(products[i].tags[j].toLowerCase());
+            }
+        }
+        return [...tags];
+    }
+
+    const tagSearch = (tag)=>{
+        if(tag === "all"){
+            displayProducts = [...products];
+            return;
+        }
+
+        displayProducts = [];
+        for(let i = 0; i < products.length; i++){
+            if(products[i].tags.includes(tag)) displayProducts.push(products[i]);
+        }
+    }
 
     onMount(()=>{
         loader(true);
@@ -21,6 +45,8 @@
                     notify("error", response.error.message);
                 }else{
                     products = response;
+                    displayProducts = response;
+                    tags = createTags(response);
                 }
             })
             .catch((err)=>{
@@ -37,7 +63,19 @@
 </svelte:head>
 
 <div class="container">
-    {#each products as product}
+    <div class="tags">
+        <button
+            onclick={()=>{tagSearch("all")}}
+            class="button"
+        >ALL</button>
+        {#each tags as tag}
+            <button
+                onclick={()=>{tagSearch(tag)}}
+                class="button"
+            >{tag.toUpperCase()}</button>
+        {/each}
+    </div>
+    {#each displayProducts as product}
         <Product
             product={product}
         />
