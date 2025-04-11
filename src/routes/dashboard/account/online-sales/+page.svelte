@@ -40,7 +40,7 @@
         position: relative;
     }
 
-    h3, h2{
+    h3, h4{
         margin-bottom: 35px;
     }
 </style>
