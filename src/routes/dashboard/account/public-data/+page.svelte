@@ -1,4 +1,5 @@
 <script>
+    import ImageUpload from "./ImageUpload.svelte";
     import Phone from "./Phone.svelte";
     import Email from "./Email.svelte";
     import Address from "./Address.svelte";
@@ -13,6 +14,7 @@
 </svelte:head>
 
 <div class="PublicData">
+    <ImageUpload/>
     <Phone/>
     <Email/>
     <Address/>
