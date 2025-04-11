@@ -90,11 +90,14 @@
 <style>
     .container{
         display: flex;
+        max-height: 100vh;
     }
 
     .contents{
         padding: 35px;
         width: calc(100vw - 250px);
+        height: 100vh;
+        overflow-y: auto;
     }
 
     @media screen and (max-width: 850px){
