@@ -1,6 +1,6 @@
 <script>
     import logo from "$lib/logo.png";
-    import {onMount} from "svelte";
+    import {afterNavigate} from "$app/navigation";
 
     let active = $state();
     let menuOpen = $state(false);
@@ -14,7 +14,7 @@
         menuOpen = !menuOpen;
     }
 
-    onMount(()=>{
+    afterNavigate(()=>{
         const path = window.location.pathname;
         if(path.includes("account")){
             active = "account";
