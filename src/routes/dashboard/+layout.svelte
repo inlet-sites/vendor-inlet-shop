@@ -3,7 +3,6 @@
     import {onMount, setContext} from "svelte";
     import {goto} from "$app/navigation";
     import {writable} from "svelte/store";
-    import {redirect} from "@sveltejs/kit";
     import Loader from "$lib/Loader.svelte";
     import Notifier from "$lib/Notifier.svelte";
     import Menu from "./Menu.svelte";
@@ -60,12 +59,6 @@
                 setLoader(false);
             });
     });
-
-    export function load({url}){
-        if(url.pathname === "/dashboard"){
-            throw redirect(302, "/dashboard/account");
-        }
-    }
 </script>
 
 {#if loader}
@@ -98,6 +91,7 @@
         width: calc(100vw - 250px);
         height: 100vh;
         overflow-y: auto;
+        position: relative;
     }
 
     @media screen and (max-width: 850px){

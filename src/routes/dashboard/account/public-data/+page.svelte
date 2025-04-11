@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-    <title>Account | Vendor.Inlet.Shop</title>
+    <title>Public Data | Vendor.Inlet.Shop</title>
 </svelte:head>
 
 <div class="PublicData">
