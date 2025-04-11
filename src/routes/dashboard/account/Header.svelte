@@ -7,6 +7,8 @@
         const path = window.location.pathname;
         if(path.includes("public-data")){
             active = "public";
+        }else if(path.includes("online-sales")){
+            active = "sales";
         }else{
             active = "settings"
         }
@@ -17,11 +19,14 @@
     <a class:active={active==="settings"} href="/dashboard/account">Settings</a>
     <div class="divider"></div>
     <a class:active={active==="public"} href="/dashboard/account/public-data">Public Information</a>
+    <div class="divider"></div>
+    <a class:active={active==="sales"} href="/dashboard/account/online-sales">Online Sales</a>
 </div>
 
 <style>
     .Header{
         display: flex;
+        align-items: center;
         padding-bottom: 10px;
         border-bottom: 1px solid white;
         margin-bottom: 35px;
@@ -30,6 +35,7 @@
     .divider{
         border-right: 2px solid white;
         margin: 0 15px;
+        height: 45px;
     }
 
     a{
