@@ -1,5 +1,5 @@
 <script>
-    import "../global.css";
+    import "$lib/global.css";
     import logo from "$lib/logo.png";
     import {onMount} from "svelte";
     let loggedIn = $state(false);
