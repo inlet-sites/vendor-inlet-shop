@@ -6,11 +6,8 @@
     let initialFocus = $state();
     let name = $state("");
     let tags = $state([""]);
-    let imageInput = $state();
-    let images = $state();
-    let imageUrls = $state([]);
+    let images = $state([]);
     let description = $state("");
-    $inspect(images);
 
     const checkTags = ()=>{
         let empty = [];
@@ -26,12 +23,6 @@
 
     const triggerFileInput = ()=>{
         imageInput.click();
-    }
-
-    const showFiles = ()=>{
-        for(let i = 0; i < images.length; i++){
-            imageUrls.push(URL.createObjectURL(images[i]));
-        }
     }
 
     onMount(()=>{
@@ -68,23 +59,10 @@
         ></textarea>
     </label>
 
-    <label>
-        <input
-            class="imageInput"
-            type="file"
-            bind:files={images}
-            bind:this={imageInput}
-            onchange={showFiles}
-            accept="image/*"
-            multiple
-            required
-        >
-        <button
-            type="button"
-            class="button"
-            onclick={triggerFileInput}
-        >Add Images</button>
-    </label>
+    <UploadImages
+        addImage={(img)=>{images.push(img)}}
+        removeImage={(i)=>{images.splice(i, 1)}}
+    />
 </form>
 
 <style>
@@ -92,7 +70,7 @@
         display: flex;
         flex-direction: column;
         color: white;
-        max-width: 750px;
+        width: 100%;
     }
 
     label{
