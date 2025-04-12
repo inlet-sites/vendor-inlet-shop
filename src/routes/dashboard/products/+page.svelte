@@ -7,6 +7,7 @@
     let products = $state([]);
     let displayProducts = $state([]);
     let tags = $state();
+    let activeTag = $state("all");
 
     const createTags = (products)=>{
         const tags = new Set();
@@ -19,6 +20,7 @@
     }
 
     const tagSearch = (tag)=>{
+        activeTag = tag;
         if(tag === "all"){
             displayProducts = [...products];
             return;
@@ -67,11 +69,13 @@
         <button
             onclick={()=>{tagSearch("all")}}
             class="button"
+            class:active={activeTag === "all"}
         >ALL</button>
         {#each tags as tag}
             <button
                 onclick={()=>{tagSearch(tag)}}
                 class="button"
+                class:active={activeTag === tag}
             >{tag.toUpperCase()}</button>
         {/each}
     </div>
@@ -85,5 +89,22 @@
 <style>
     h1{
         color: white;
+    }
+
+    .tags{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 35px;
+    }
+
+    .tags button{
+        margin: 10px;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+
+    .tags button.active{
+        border: 2px inset red;
     }
 </style>
