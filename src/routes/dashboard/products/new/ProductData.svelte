@@ -2,7 +2,7 @@
     import {onMount} from "svelte";
     import UploadImages from "$lib/UploadImages.svelte";
 
-    let {nextStage} = $props();
+    let {finish} = $props();
     let initialFocus = $state();
     let name = $state("");
     let tags = $state([""]);
@@ -25,12 +25,23 @@
         imageInput.click();
     }
 
+    const submit = ()=>{
+        let data = {
+            name: name,
+            tags: tags.filter(t => t !== ""),
+            images: images,
+            description: description,
+            active: true
+        };
+        finish(data);
+    }
+
     onMount(()=>{
         initialFocus.focus();
     });
 </script>
 
-<form class="ProductData standardForm">
+<form class="ProductData standardForm" onsubmit={submit}>
     <label>Product Name
         <input
             type="text"
@@ -63,6 +74,15 @@
         addImage={(img)=>{images.push(img)}}
         removeImage={(i)=>{images.splice(i, 1)}}
     />
+
+    <div class="buttonBox">
+        <a
+            href="/dashboard/products"
+            class="button"
+        >Cancel</a>
+
+        <button class="button">Next</button>
+    </div>
 </form>
 
 <style>
@@ -84,5 +104,16 @@
 
     .imageInput{
         display: none;
+    }
+
+    .buttonBox{
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-top: 75px;
+    }
+
+    .buttonBox > *{
+        margin: 0 35px;
     }
 </style>

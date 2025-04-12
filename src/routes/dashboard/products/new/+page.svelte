@@ -3,9 +3,11 @@
 
     let stage = $state("productData");
     let newProduct = $state();
+    $inspect(newProduct);
 
-    const nextStage = (nextStage)=>{
-        stage = nextStage;
+    const addProduct = (p)=>{
+        newProduct = p;
+        stage = "variation";
     }
 </script>
 
@@ -16,7 +18,9 @@
 <div class="NewProduct">
     {#if stage === "productData"}
         <ProductData
-            nextStage={nextStage}
+            finish={addProduct}
         />
+    {:else if stage === "variation"}
+        <h1>Variation</h1>
     {/if}
 </div>

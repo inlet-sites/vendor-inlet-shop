@@ -40,7 +40,7 @@
     <div class="images">
         {#each imageUrls as image, i}
             <div class="image">
-                <img src={image} alt="Uploaded Image">
+                <img src={image} alt="Uploaded">
                 <button
                     class="remove"
                     type="button"
@@ -65,6 +65,7 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
+        margin-top: 15px;
     }
 
     .image{
