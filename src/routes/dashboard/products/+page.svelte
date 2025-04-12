@@ -65,6 +65,11 @@
 </svelte:head>
 
 <div class="container">
+    <header>
+        <h1>Products</h1>
+        <a class="button" href="/dashboard/products/new">Create</a>
+    </header>
+
     <div class="tags">
         <button
             onclick={()=>{tagSearch("all")}}
@@ -87,6 +92,11 @@
 </div>
 
 <style>
+    header{
+        display: flex;
+        justify-content: space-between;
+    }
+
     h1{
         color: white;
     }
