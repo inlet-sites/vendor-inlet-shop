@@ -63,6 +63,7 @@
 
     .images{
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
         width: 100%;
         margin-top: 15px;
@@ -91,5 +92,12 @@
         border: none;
         border-radius: 50%;
         cursor: pointer;
+    }
+
+    @media screen and (max-width: 850px){
+        .image{
+            height: 125px;
+            width: 167px;
+        }
     }
 </style>

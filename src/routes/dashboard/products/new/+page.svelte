@@ -3,7 +3,6 @@
 
     let stage = $state("productData");
     let newProduct = $state();
-    $inspect(newProduct);
 
     const addProduct = (p)=>{
         newProduct = p;

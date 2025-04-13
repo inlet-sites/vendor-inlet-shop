@@ -116,4 +116,14 @@
     .buttonBox > *{
         margin: 0 35px;
     }
+
+    @media screen and (max-width: 550px){
+        .buttonBox{
+            justify-content: space-around;
+        }
+
+        .buttonBox > *{
+            margin: 0;
+        }
+    }
 </style>
