@@ -4,8 +4,8 @@
     import logo from "$lib/logo.png";
     import Loader from "$lib/Loader.svelte";
     import Notifier from "$lib/Notifier.svelte";
-    let {data} = $props();
 
+    let {data} = $props();
     let password = $state();
     let confirmPassword = $state();
     let loader = $state(false);

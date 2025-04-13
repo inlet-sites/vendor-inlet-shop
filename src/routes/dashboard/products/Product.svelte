@@ -36,7 +36,7 @@
     }
 </script>
 
-<a href="/product/{product.id}" class="Product">
+<a href="/dashboard/products/{product.id}" class="Product">
     <div class="imageContainer">
         <img src={imageLink()} alt={product.name}>
     </div>
