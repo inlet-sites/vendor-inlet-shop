@@ -25,7 +25,7 @@
     const submit = ()=>{
         let data = {
             name: name,
-            tags: tags.filter(t => t !== ""),
+            tags: JSON.stringify(tags.filter(t => t !== "")),
             images: images,
             description: description,
             active: true
