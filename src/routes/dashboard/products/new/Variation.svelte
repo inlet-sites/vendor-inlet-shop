@@ -15,13 +15,14 @@
 
     const submit = ()=>{
         const data = {
-            descriptor: descriptor,
             price: Math.floor(price * 100),
             quantity: quantity,
             shipping: Math.floor(shipping * 100),
             purchaseOption: purchaseOption,
             images: images
         };
+
+        if(multipleVariations) data.descriptor = descriptor;
 
         finish(data, finished);
 
@@ -44,14 +45,17 @@
     {:else}
         <h1>Price Information</h1>
     {/if}
-    <label>Descriptor
-        <input
-            type="text"
-            bind:value={descriptor}
-            placeholder="Descriptor"
-            required
-        >
-    </label>
+
+    {#if multipleVariations}
+        <label>Descriptor
+            <input
+                type="text"
+                bind:value={descriptor}
+                placeholder="Descriptor"
+                required
+            >
+        </label>
+    {/if}
 
     <label>Price
         <input

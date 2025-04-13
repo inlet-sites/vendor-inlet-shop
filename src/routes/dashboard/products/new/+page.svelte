@@ -19,6 +19,7 @@
     }
 
     const addVariation = (v, f)=>{
+        if(!multipleVariations) v.descriptor = product.name;
         variations.push(v);
         if(f) createProduct();
     }
@@ -78,7 +79,6 @@
                 goto("/dashboard/products");
             })
             .catch((err)=>{
-                console.log(err);
                 notify("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{
