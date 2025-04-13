@@ -106,5 +106,4 @@
     input:checked + .slider:before{
         transform: translateX(26px);
     }
-
 </style>

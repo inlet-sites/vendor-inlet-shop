@@ -1,11 +1,14 @@
 <script>
     import ProductData from "./ProductData.svelte";
+    import Variation from "./Variation.svelte";
 
     let stage = $state("productData");
     let newProduct = $state();
+    let multipleVariations = $state(false);
 
-    const addProduct = (p)=>{
+    const addProduct = (p, mv)=>{
         newProduct = p;
+        multipleVariations = mv;
         stage = "variation";
     }
 </script>
@@ -20,6 +23,6 @@
             finish={addProduct}
         />
     {:else if stage === "variation"}
-        <h1>Variation</h1>
+        <Variation/>
     {/if}
 </div>

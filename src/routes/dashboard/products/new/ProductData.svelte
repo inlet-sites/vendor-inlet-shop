@@ -8,6 +8,7 @@
     let tags = $state([""]);
     let images = $state([]);
     let description = $state("");
+    let multipleVariations = $state(false);
 
     const checkTags = ()=>{
         let empty = [];
@@ -21,10 +22,6 @@
         if(empty.length > 1) tags.splice(empty[0], 1);
     }
 
-    const triggerFileInput = ()=>{
-        imageInput.click();
-    }
-
     const submit = ()=>{
         let data = {
             name: name,
@@ -33,7 +30,7 @@
             description: description,
             active: true
         };
-        finish(data);
+        finish(data, multipleVariations);
     }
 
     onMount(()=>{
@@ -70,6 +67,16 @@
         ></textarea>
     </label>
 
+    <label>This product has multiple variations/prices:
+        <label class="switch">
+            <input
+                type="checkbox"
+                bind:checked={multipleVariations}
+            >
+            <span class="slider"></span>
+        </label>
+    </label>
+
     <UploadImages
         addImage={(img)=>{images.push(img)}}
         removeImage={(i)=>{images.splice(i, 1)}}
@@ -102,10 +109,6 @@
         max-width: 200px;
     }
 
-    .imageInput{
-        display: none;
-    }
-
     .buttonBox{
         display: flex;
         justify-content: flex-end;
@@ -115,6 +118,52 @@
 
     .buttonBox > *{
         margin: 0 35px;
+    }
+
+    .switch{
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+        margin-top: 15px;
+    }
+
+    .switch input{
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider{
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: red;
+        transition: 0.4s;
+        border-radius: 34px;
+    }
+
+    .slider:before{
+        position: absolute;
+        left: 4px;
+        bottom: 4px;
+        content: "";
+        height: 26px;
+        width: 26px;
+        background-color: black;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider{
+        background-color: green;
+    }
+
+    input:checked + .slider:before{
+        transform: translateX(26px);
     }
 
     @media screen and (max-width: 550px){
