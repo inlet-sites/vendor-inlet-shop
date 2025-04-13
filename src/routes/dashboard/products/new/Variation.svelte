@@ -192,4 +192,19 @@
         justify-content: space-between;
         margin-top: 35px;
     }
+
+    @media screen and (max-width: 650px){
+        .buttonBox{
+            align-items: flex-start;
+            flex-direction: column-reverse;
+        }
+
+        .buttonBox *{
+            font-size: 20px;
+        }
+
+        .buttonBoxEnd{
+            margin-bottom: 15px;
+        }
+    }
 </style>
