@@ -23,7 +23,6 @@
             images: images
         };
 
-        console.log(finished);
         finish(data, finished);
 
         if(!finished){
@@ -131,10 +130,12 @@
         >Cancel</a>
 
         <div class="buttonBoxEnd">
-            <button
-                class="button"
-                onclick={()=>{finished = false}}
-            >Add Another</button>
+            {#if multipleVariations}
+                <button
+                    class="button"
+                    onclick={()=>{finished = false}}
+                >Add Another</button>
+            {/if}
 
             <button
                 class="button"
