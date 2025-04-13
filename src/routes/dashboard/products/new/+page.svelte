@@ -4,12 +4,22 @@
 
     let stage = $state("productData");
     let newProduct = $state();
+    let variations = $state([]);
     let multipleVariations = $state(false);
 
     const addProduct = (p, mv)=>{
         newProduct = p;
         multipleVariations = mv;
         stage = "variation";
+    }
+
+    const addVariation = (v, f)=>{
+        variations.push(v);
+        if(f) createProduct();
+    }
+
+    const createProduct = ()=>{
+        console.log("creating product");
     }
 </script>
 
@@ -23,6 +33,9 @@
             finish={addProduct}
         />
     {:else if stage === "variation"}
-        <Variation/>
+        <Variation
+            multipleVariations={multipleVariations}
+            finish={addVariation}
+        />
     {/if}
 </div>
