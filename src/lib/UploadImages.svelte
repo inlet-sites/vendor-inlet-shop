@@ -1,8 +1,14 @@
 <script>
-    let {addImage, removeImage} = $props();
+    let {addImage, removeImage, clear} = $props();
     let inputImages = $state();
     let imageUrls = $state([]);
     let inputElem = $state();
+    $effect(()=>{
+        if(clear > 0){
+            imageUrls = [];
+            inputImages = null;
+        }
+    });
 
     const addImages = ()=>{
         for(let i = 0; i < inputImages.length; i++){

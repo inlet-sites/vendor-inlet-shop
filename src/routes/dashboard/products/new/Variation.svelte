@@ -23,16 +23,19 @@
             images: images
         };
 
+        console.log(finished);
         finish(data, finished);
 
-        descriptor = "";
-        price = 0;
-        quantity = 0;
-        shipping = 0;
-        purchaseOption = "list";
-        images = [];
-        finished = true;
-        count++;
+        if(!finished){
+            descriptor = "";
+            price = 0;
+            quantity = 0;
+            shipping = 0;
+            purchaseOption = "list";
+            images = [];
+            finished = true;
+            count++;
+        }
     }
 </script>
 
@@ -117,6 +120,7 @@
         <UploadImages
             addImage={(img)=>{images.push(img)}}
             removeImage={(i)=>{images.splice(i, 1)}}
+            clear={count}
         />
     {/if}
 
