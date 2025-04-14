@@ -3,7 +3,7 @@
 
     const loader = getContext("loader");
     const notify = getContext("notify");
-    let {description, productId, updateProduct} = $props();
+    let {description, productId} = $props();
     let edit = $state(false);
     let inputElem = $state();
 

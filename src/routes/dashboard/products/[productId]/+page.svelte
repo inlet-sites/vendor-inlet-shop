@@ -3,6 +3,7 @@
     import Name from "./components/Name.svelte";
     import Tags from "./components/Tags.svelte";
     import Description from "./components/Description.svelte";
+    import Images from "./components/Images.svelte";
 
     let {data} = $props();
     const loader = getContext("loader");
@@ -57,6 +58,12 @@
         <Description
             description={product.description}
             productId={product.id}
+        />
+
+        <Images
+            images={product.images}
+            name={product.name}
+            productId={product.id}
             updateProduct={updateProduct}
         />
     {/if}
@@ -66,5 +73,10 @@
     .container{
         color: white;
         width: 100%;
+    }
+
+    .divider{
+        border-bottom: 1px solid white;
+        margin: 25px;
     }
 </style>
