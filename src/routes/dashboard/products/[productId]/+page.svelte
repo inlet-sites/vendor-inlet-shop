@@ -2,6 +2,7 @@
     import {onMount, getContext} from "svelte";
     import Name from "./components/Name.svelte";
     import Tags from "./components/Tags.svelte";
+    import Description from "./components/Description.svelte";
 
     let {data} = $props();
     const loader = getContext("loader");
@@ -49,6 +50,12 @@
 
         <Tags
             tags={product.tags}
+            productId={product.id}
+            updateProduct={updateProduct}
+        />
+
+        <Description
+            description={product.description}
             productId={product.id}
             updateProduct={updateProduct}
         />
