@@ -81,6 +81,7 @@
 
     input{
         width: 100%;
+        max-width: 450px;
         font-size: 28px;
     }
 

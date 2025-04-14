@@ -1,6 +1,7 @@
 <script>
     import {onMount, getContext} from "svelte";
     import Name from "./components/Name.svelte";
+    import Tags from "./components/Tags.svelte";
 
     let {data} = $props();
     const loader = getContext("loader");
@@ -42,6 +43,12 @@
     {#if product}
         <Name
             name={product.name}
+            productId={product.id}
+            updateProduct={updateProduct}
+        />
+
+        <Tags
+            tags={product.tags}
             productId={product.id}
             updateProduct={updateProduct}
         />
