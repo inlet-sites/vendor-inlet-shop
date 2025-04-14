@@ -51,5 +51,6 @@
 <style>
     .container{
         color: white;
+        width: 100%;
     }
 </style>

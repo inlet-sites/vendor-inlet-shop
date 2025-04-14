@@ -80,6 +80,14 @@
     }
 
     input{
+        width: 100%;
         font-size: 28px;
+    }
+
+    @media screen and (max-width: 850px){
+        .Name{
+            margin-top: 35px;
+            max-width: 100%;
+        }
     }
 </style>
