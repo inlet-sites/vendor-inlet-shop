@@ -8,6 +8,10 @@
     let product = $state();
     $inspect(product);
 
+    const updateProduct = (p)=>{
+        product = p;
+    }
+
     onMount(()=>{
         loader(true);
         fetch(`${import.meta.env.VITE_API_URL}/product/${data.productId}`, {
@@ -38,6 +42,8 @@
     {#if product}
         <Name
             name={product.name}
+            productId={product.id}
+            updateProduct={updateProduct}
         />
     {/if}
 </div>
