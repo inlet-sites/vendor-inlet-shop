@@ -89,7 +89,7 @@
 
     {#if $vendor?.onlineSales}
         <h3>How will you sell this item?</h3>
-        <label class="radio">Available to purchase oneline, and I will ship the item
+        <label class="radio">Available to purchase online, and I will ship the item
             <input
                 type="radio"
                 name="purchaseOption"
