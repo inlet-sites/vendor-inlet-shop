@@ -14,14 +14,14 @@
     let product = $state();
     let currentPrice = $state(0);
     let price = $state();
+    const apiUrl = import.meta.env.VITE_API_URL;
     $effect(()=>{
         if(product) price = product.variations[currentPrice];
     });
-    $inspect(price);
 
     const updateProduct = (p)=>{product = p}
 
-    const updateVariation = (v, i)=>{product.variations[i] = v}
+    const updateVariation = (v)=>{price = v}
 
     const priceString = (p)=>{
         return `$${(p / 100).toFixed(2)}`
@@ -29,7 +29,7 @@
 
     onMount(()=>{
         loader(true);
-        fetch(`${import.meta.env.VITE_API_URL}/product/${data.productId}`, {
+        fetch(`${apiUrl}/product/${data.productId}`, {
             method: "get",
             headers: {
                 "Content-Type": "application/json",
@@ -75,8 +75,9 @@
         <Images
             images={product.images}
             name={product.name}
-            productId={product.id}
-            updateProduct={updateProduct}
+            addUrl="{apiUrl}/product/{product.id}/images/add"
+            removeUrl="{apiUrl}/product/{product.id}/images/remove"
+            update={updateProduct}
         />
 
         <div class="divider"></div>
@@ -104,7 +105,7 @@
                     quantity={price.quantity}
                     productId={product.id}
                     variationId={price.id}
-                    updateVariation={(v)=>{updateVariation(v, currentPrice)}}
+                    updateVariation={updateVariation}
                 />
 
                 {#if product.variations[currentPrice].shipping > 0}
@@ -120,6 +121,14 @@
                         updateVariation={(v)=>{updateVariation(v, currentPrice)}}
                     />
                 {/if}
+
+                <Images
+                    images={price.images}
+                    name={product.name}
+                    addUrl="{apiUrl}/product/{product.id}/variation/{price.id}/images/add"
+                    removeUrl="{apiUrl}/product/{product.id}/variation/{price.id}/images/remove"
+                    update={(v)=>{updateVariation(v, currentPrice)}}
+                />
             </div>
         {/if}
     {/if}

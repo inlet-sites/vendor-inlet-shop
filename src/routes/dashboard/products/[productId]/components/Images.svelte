@@ -3,13 +3,13 @@
 
     const loader = getContext("loader");
     const notify = getContext("notify");
-    let {images, name, productId, updateProduct} = $props();
-    const apiUrl = import.meta.env.VITE_API_URL;
+    let {images, name, addUrl, removeUrl, update} = $props();
     let imageInput = $state();
     let newImages = $state();
 
     const imageSource = (i)=>{
-        return `${apiUrl}/document/${i}`;
+        const thing = `${import.meta.env.VITE_API_URL}/document/${i}`;
+        return thing;
     }
 
     const upload = ()=>{
@@ -19,7 +19,7 @@
         for(let i = 0; i < newImages.length; i++){
             formData.append("images", newImages[i]);
         }
-        fetch(`${apiUrl}/product/${productId}/images/add`, {
+        fetch(addUrl, {
             method: "put",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
@@ -31,7 +31,7 @@
                 if(response.error){
                     notify("error", response.error.message);
                 }else{
-                    updateProduct(response);
+                    update(response);
                     notify("success", "New images added");
                 }
             })
@@ -45,7 +45,7 @@
 
     const remove = (i)=>{
         loader(true);
-        fetch(`${apiUrl}/product/${productId}/images/remove`, {
+        fetch(removeUrl, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +58,7 @@
                 if(response.error){
                     notify("error", response.error.message);
                 }else{
-                    images.splice(i, 1);
+                    update(response);
                     notify("success", "Image removed");
                 }
             })
@@ -94,7 +94,11 @@
     <div class="images">
         {#each images as image, i}
             <div class="image">
-                <img src={imageSource(image)} alt={name}>
+                <img
+                    src={imageSource(image)}
+                    alt={name}
+                    loading="lazy"
+                >
                 <button class="remove" onclick={()=>{remove(i)}} aria-label="Remove">
                     <svg width="32px" height="32px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="currentColor">
                         <path d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
