@@ -1,0 +1,108 @@
+<script>
+    import {getContext, tick} from "svelte";
+
+    const loader = getContext("loader");
+    const notify = getContext("notify");
+    let {quantity, productId, variationId, updateVariation} = $props();
+    let edit = $state(false);
+    let inputElem = $state();
+
+    const editOn = ()=>{
+        edit = true;
+        tick().then(()=>{inputElem.focus()});
+    }
+
+    let submit = ()=>{
+        loader(true);
+        fetch(`${import.meta.env.VITE_API_URL}/product/${productId}/variation/${variationId}`, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+            },
+            body: JSON.stringify({quantity: quantity})
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    notify("error", response.error.message);
+                }else{
+                    updateVariation(response);
+                    notify("success", "Quantity updated");
+                    edit = false;
+                }
+            })
+            .catch((err)=>{
+                notify("error", "Something went wrong, try refreshing the page");
+            })
+            .finally(()=>{
+                loader(false);
+            });
+    }
+</script>
+
+<div class="Quantity">
+    <div class="title">
+        <h2>Quantity Available</h2>
+
+        {#if edit}
+            <button aria-label="Submit" onclick={submit}>
+                <svg width="32px" height="32px" stroke-width="2" viewBox="0 0 24 24" fill="none" color="currentColor">
+                    <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        {:else}
+            <button onclick={editOn} aria-label="Edit">
+                <svg width="28px" height="28px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#currentColor">
+                    <path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        {/if}
+    </div>
+
+    {#if edit}
+        <form onsubmit={submit}>
+            <input
+                type="number"
+                min="0"
+                step="1"
+                bind:value={quantity}
+                bind:this={inputElem}
+            >
+        </form>
+    {:else}
+        <p>{quantity}</p>
+    {/if}
+</div>
+
+<style>
+    .Quantity{
+        margin-top: 35px;
+        color: white
+    }
+
+    h2{
+        text-decoration: underline;
+    }
+
+    .title{
+        display: flex;
+    }
+
+    button{
+        margin-left: 25px;
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+    }
+
+    input{
+        font-size: 28px;
+        max-width: 250px;
+    }
+
+    p{
+        font-size: 22px;
+    }
+</style>

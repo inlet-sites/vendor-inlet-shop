@@ -5,6 +5,7 @@
     import Description from "./components/Description.svelte";
     import Images from "./components/Images.svelte";
     import PurchaseOption from "./components/PurchaseOption.svelte";
+    import Quantity from "./components/Quantity.svelte";
 
     let {data} = $props();
     const loader = getContext("loader");
@@ -80,38 +81,47 @@
 
         <div class="divider"></div>
 
-        <div class="variations">
-            {#if product.variations.length > 1}
-                <h1 class="priceTitle">Prices</h1>
+        {#if price}
+            <div class="variations">
+                {#if product.variations.length > 1}
+                    <h1 class="priceTitle">Prices</h1>
 
-                <select bind:value={currentPrice}>
-                    {#each product.variations as price, i}
-                        <option value={i}>{price.descriptor}</option>
-                    {/each}
-                </select>
-            {:else}
-                <h1 class="priceTitle">Price Information</h1>
+                    <select bind:value={currentPrice}>
+                        {#each product.variations as price, i}
+                            <option value={i}>{price.descriptor}</option>
+                        {/each}
+                    </select>
+                {:else}
+                    <h1 class="priceTitle">Price Information</h1>
 
-                <h1>{product.variations[currentPrice].descriptor}</h1>
-            {/if}
+                    <h1>{product.variations[currentPrice].descriptor}</h1>
+                {/if}
 
-            <h2>Price</h2>
-            <p class="priceItem">{priceString(product.variations[currentPrice].price)}</p>
+                <h2>Price</h2>
+                <p class="priceItem">{priceString(product.variations[currentPrice].price)}</p>
 
-            {#if product.variations[currentPrice].shipping > 0}
-                <h2>Shipping</h2>
-                <p class="priceItem">{priceString(product.variations[currentPrice].shipping)}</p>
-            {/if}
-
-            {#if $vendor?.onlineSales}
-                <PurchaseOption
-                    purchaseOption={price.purchaseOption}
+                <Quantity
+                    quantity={price.quantity}
                     productId={product.id}
                     variationId={price.id}
                     updateVariation={(v)=>{updateVariation(v, currentPrice)}}
                 />
-            {/if}
-        </div>
+
+                {#if product.variations[currentPrice].shipping > 0}
+                    <h2>Shipping</h2>
+                    <p class="priceItem">{priceString(product.variations[currentPrice].shipping)}</p>
+                {/if}
+
+                {#if $vendor?.onlineSales}
+                    <PurchaseOption
+                        purchaseOption={price.purchaseOption}
+                        productId={product.id}
+                        variationId={price.id}
+                        updateVariation={(v)=>{updateVariation(v, currentPrice)}}
+                    />
+                {/if}
+            </div>
+        {/if}
     {/if}
 </div>
 
@@ -124,10 +134,6 @@
     .divider{
         border-bottom: 1px solid white;
         margin: 25px;
-    }
-
-    .variations{
-        padding: 0 35px;
     }
 
     .priceTitle{
