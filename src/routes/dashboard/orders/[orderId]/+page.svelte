@@ -180,6 +180,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>Order {order.orderNumber} | Vendor.Inlet.Shop</title>
+</svelte:head>
+
 {#if declineModal}
     <div class="modalContainer">
         <div class="declineModal">
