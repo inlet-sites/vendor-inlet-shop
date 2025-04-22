@@ -86,7 +86,7 @@
                     notify("error", response.error.message);
                 }else{
                     const instance = loadConnectAndIntiialize({
-                        publishableKey: import.meta.env.STRIPE_PUBLISHABLE,
+                        publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE,
                         fetchClientSecret: fetchClientSecret,
                         appearance: {
                             overlays: "dialog",
