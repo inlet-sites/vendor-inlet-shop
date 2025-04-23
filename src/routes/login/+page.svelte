@@ -3,25 +3,9 @@
     import {onMount} from "svelte";
     import {enhance} from "$app/forms";
     import logo from "$lib/logo.png";
-    import Notifier from "$lib/Notifier.svelte";
-    import Loader from "$lib/Loader.svelte";
-
-    let notifier = $state({type: "", message: ""});
-    let loader = $state(false);
-    let email = $state("");
-    let password = $state("");
-
-    const notify = (type, message)=>{
-        notifier.type = type;
-        notifier.message = message;
-
-        setTimeout(()=>{
-            notifier.type = "";
-        }, 7500);
-    }
 
     onMount(()=>{
-        if(localStorage.getItem("vendorToken")) window.location.href = "/dashboard";
+        //if(localStorage.getItem("vendorToken")) window.location.href = "/dashboard";
     });
 </script>
 
@@ -30,12 +14,6 @@
 </svelte:head>
 
 <div class="container">
-    {#if notifier.type}
-        <Notifier type={notifier.type} message={notifier.message}/>
-    {/if}
-
-    {#if loader} <Loader/> {/if}
-
     <img class="logo" src={logo} alt="Inlet Sites logo">
 
     <form class="standardForm" action="?/login" method="post" use:enhance>
@@ -44,7 +22,7 @@
         <label>Email
             <input
                 type="email"
-                bind:value={email}
+                name="email"
                 placeholder="Email"
                 required
             />
@@ -53,7 +31,7 @@
         <label>Password
             <input
                 type="password"
-                bind:value={password}
+                name="password"
                 placeholder="Password"
                 required
             />

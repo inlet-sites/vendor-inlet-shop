@@ -1,5 +1,10 @@
 import {redirect} from "@sveltejs/kit";
 
+export const load = async ({cookies})=>{
+    const vendorToken = cookies.get("vendorToken");
+    if(cookies.get("vendorToken")) throw redirect(302, "/dashboard/account");
+}
+
 export const actions = {
     login: async ({request, cookies, fetch, url})=>{
         const data = await request.formData();
