@@ -1,13 +1,12 @@
 <script>
     import "$lib/global.css";
-    import {onMount, setContext} from "svelte";
-    import {goto} from "$app/navigation";
+    import {setContext} from "svelte";
     import {writable} from "svelte/store";
     import Loader from "$lib/Loader.svelte";
     import Notifier from "$lib/Notifier.svelte";
     import Menu from "./Menu.svelte";
 
-    let {children} = $props();
+    let {data, children} = $props();
     let loader = $state(false);
     let notifier = $state(null);
 
@@ -26,39 +25,10 @@
         }, 7500);
     }
 
-    let vendor = writable(null);
+    let vendor = writable(data.vendor);
     setContext("vendor", vendor);
     setContext("notify", notify);
     setContext("loader", setLoader);
-
-    onMount(()=>{
-        setLoader(true);
-        const vendorToken = localStorage.getItem("vendorToken");
-        if(!vendorToken) goto("/login");
-
-        fetch(`${import.meta.env.VITE_API_URL}/vendor/self`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${vendorToken}`
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    localStorage.removeItem("vendorToken");
-                    window.location.href = "/login";
-                }else{
-                    vendor.set(response);
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                setLoader(false);
-            });
-    });
 </script>
 
 {#if loader}
