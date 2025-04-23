@@ -6,7 +6,6 @@
     let {purchaseOption, productId, variationId, updateVariation} = $props();
 
     const update = ()=>{
-        console.log("update");
         loader(true);
         fetch(`${import.meta.env.VITE_API_URL}/product/${productId}/variation/${variationId}`, {
             method: "put",
@@ -26,7 +25,6 @@
                 }
             })
             .catch((err)=>{
-                console.log(err);
                 notify("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{

@@ -1,6 +1,7 @@
 <script>
     import "$lib/global.css";
     import {onMount} from "svelte";
+    import {enhance} from "$app/forms";
     import logo from "$lib/logo.png";
     import Notifier from "$lib/Notifier.svelte";
     import Loader from "$lib/Loader.svelte";
@@ -17,35 +18,6 @@
         setTimeout(()=>{
             notifier.type = "";
         }, 7500);
-    }
-
-    const submit = ()=>{
-        loader = true;
-        fetch(`${import.meta.env.VITE_API_URL}/vendor/token`, {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    notify("error", response.error.message);
-                }else{
-                    localStorage.setItem("vendorToken", response.token);
-                    window.location.href = "/dashboard";
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                loader = false;
-            });
     }
 
     onMount(()=>{
@@ -66,7 +38,7 @@
 
     <img class="logo" src={logo} alt="Inlet Sites logo">
 
-    <form class="standardForm" onsubmit={submit}>
+    <form class="standardForm" action="?/login" method="post" use:enhance>
         <h1>Vendor Login</h1>
 
         <label>Email
