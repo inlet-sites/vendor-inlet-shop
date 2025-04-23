@@ -1,12 +1,7 @@
 <script>
     import "$lib/global.css";
-    import {onMount} from "svelte";
     import {enhance} from "$app/forms";
     import logo from "$lib/logo.png";
-
-    onMount(()=>{
-        //if(localStorage.getItem("vendorToken")) window.location.href = "/dashboard";
-    });
 </script>
 
 <svelte:head>
