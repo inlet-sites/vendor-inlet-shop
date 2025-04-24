@@ -10,10 +10,6 @@ export const load = async ({fetch, cookies})=>{
         orders = await orders.json();
         
         if(orders.error) return {error: orders.error.message};
-        return {error: {
-            code: 400,
-            message: "Invalid email"
-        }};
 
         return {orders};
     }catch(e){

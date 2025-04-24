@@ -1,6 +1,6 @@
 <script>
     let {code, message} = $props();
-    let codeMessage = "";
+    let codeMessage = $state();
     switch(code){
         case 400: codeMessage = "Bad Request"; break;
         case 401: codeMessage = "Unauthorized"; break;
