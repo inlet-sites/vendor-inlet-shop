@@ -1,16 +1,18 @@
 <script>
-    import {onMount, getContext} from "svelte";
+    import {getContext} from "svelte";
+    import LoadError from "$lib/LoadError.svelte";
 
     const loader = getContext("loader");
     const notify = getContext("notify");
-    let orders = $state([]);
+    const {data} = $props();
+    let orders = $state(data.orders);
     let searchFrom = $state();
     let searchTo = $state();
-    let incomplete = $state(true);
+    let incomplete = $state(false);
     let paid = $state(true);
     let paymentFailed = $state(false);
     let declined = $state(false);
-    let confirmed = $state(true);
+    let confirmed = $state(false);
     let shipped = $state(false);
 
     const craftUrl= ()=>{
@@ -57,14 +59,18 @@
                 loader(false);
             });
     }
-
-    onMount(search);
 </script>
 
 <svelte:head>
     <title>Orders | Vendor.Inlet.Shop</title>
 </svelte:head>
 
+{#if data.error}
+    <LoadError
+        code={data.error.code}
+        message={data.error.message}
+    />
+{:else}
 <div class="Orders">
     <h1>Orders</h1>
 
@@ -132,6 +138,7 @@
         <h2>No Orders to Display</h2>
     {/if}
 </div>
+{/if}
 
 <style>
     .Orders{
