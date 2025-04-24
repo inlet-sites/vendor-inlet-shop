@@ -1,13 +1,12 @@
 <script>
     import {getContext} from "svelte";
+    import {enhance} from "$app/forms";
     import LoadError from "$lib/LoadError.svelte";
 
     const loader = getContext("loader");
     const notify = getContext("notify");
-    const {data} = $props();
+    let {data, form} = $props();
     let orders = $state(data.orders);
-    let searchFrom = $state();
-    let searchTo = $state();
     let incomplete = $state(false);
     let paid = $state(true);
     let paymentFailed = $state(false);
@@ -15,49 +14,17 @@
     let confirmed = $state(false);
     let shipped = $state(false);
 
-    const craftUrl= ()=>{
-        let url = `${import.meta.env.VITE_API_URL}/order?`;
-        if(searchFrom) url += `from=${searchFrom}&`;
-        if(searchTo) url += `to=${searchTo}&`;
-
-        let status = "";
-        if(incomplete) status += ",incomplete";
-        if(paid) status += ",paid";
-        if(paymentFailed) status += ",paymentFailed";
-        if(declined) status += ",declined";
-        if(confirmed) status += ",confirmed";
-        if(shipped) status += ",shipped";
-        if(status.length > 1){
-            status = status.slice(1);
-            url += `status=${status}`
-        }
-
-        return url;
-    }
+    if(orders.error) notify("error", orders.error.message);
 
     const search = ()=>{
         loader(true);
-        fetch(craftUrl(), {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    notify("error", response.error.message);
-                }else{
-                    orders = response;
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                loader(false);
-            });
+
+        return async ({update, data})=>{
+            await update({reset: false});
+            orders = form.orders;
+            if(orders.error) notify("error", orders.error.message);
+            loader(false);
+        }
     }
 </script>
 
@@ -65,29 +32,28 @@
     <title>Orders | Vendor.Inlet.Shop</title>
 </svelte:head>
 
-{#if data.error}
-    <LoadError
-        code={data.error.code}
-        message={data.error.message}
-    />
-{:else}
 <div class="Orders">
     <h1>Orders</h1>
 
-    <div class="search">
+    <form
+        class="search"
+        action="?/search"
+        method="post"
+        use:enhance={search}
+    >
         <div class="searchDates">
             <h4>Dates</h4>
             <label>From
                 <input
                     type="date"
-                    bind:value={searchFrom}
+                    name="searchFrom"
                 >
             </label>
 
             <label>To
                 <input
                     type="date"
-                    bind:value={searchTo}
+                    name="searchTo"
                 >
             </label>
         </div>
@@ -95,35 +61,56 @@
         <h4>Status</h4>
         <div class="searchStatus">
             <label>Unpaid Order
-                <input type="checkbox" bind:checked={incomplete}>
+                <input
+                    type="checkbox"
+                    name="incomplete"
+                    bind:checked={incomplete}
+                >
             </label>
 
             <label>Paid
-                <input type="checkbox" bind:checked={paid}>
+                <input
+                    type="checkbox"
+                    name="paid"
+                    bind:checked={paid}
+                >
             </label>
 
             <label>Payment Failed
-                <input type="checkbox" bind:checked={paymentFailed}>
+                <input
+                    type="checkbox"
+                    name="paymentFailed"
+                    bind:checked={paymentFailed}
+                >
             </label>
 
             <label>Declined
-                <input type="checkbox" bind:checked={declined}>
+                <input
+                    type="checkbox"
+                    name="declined"
+                    bind:checked={declined}
+                >
             </label>
 
             <label>Vendor Confirmed
-                <input type="checkbox" bind:checked={confirmed}>
+                <input
+                    type="checkbox"
+                    name="confirmed"
+                    bind:checked={confirmed}
+                >
             </label>
 
             <label>Shipped
-                <input type="checkbox" bind:checked={shipped}>
+                <input
+                    type="checkbox"
+                    name="shipped"
+                    bind:checked={shipped}
+                >
             </label>
         </div>
 
-        <button
-            class="button"
-            onclick={search}
-        >Search</button>
-    </div>
+        <button class="button">Search</button>
+    </form>
     
     {#if orders.length > 0}
         {#each orders as order}
@@ -138,7 +125,6 @@
         <h2>No Orders to Display</h2>
     {/if}
 </div>
-{/if}
 
 <style>
     .Orders{
