@@ -12,7 +12,7 @@ export const load = async ({fetch, cookies})=>{
 }
 
 export const actions = {
-    search: async({request, cookies, fetch, url})=>{
+    search: async({request, cookies, fetch})=>{
         const data = await request.formData();
         let orders = await fetch(craftUrl(data), {
             method: "get",

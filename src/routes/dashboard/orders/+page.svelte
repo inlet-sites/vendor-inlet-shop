@@ -1,7 +1,6 @@
 <script>
     import {getContext} from "svelte";
     import {enhance} from "$app/forms";
-    import LoadError from "$lib/LoadError.svelte";
 
     const loader = getContext("loader");
     const notify = getContext("notify");
@@ -19,7 +18,7 @@
     const search = ()=>{
         loader(true);
 
-        return async ({update, data})=>{
+        return async ({update})=>{
             await update({reset: false});
             orders = form.orders;
             if(orders.error) notify("error", orders.error.message);

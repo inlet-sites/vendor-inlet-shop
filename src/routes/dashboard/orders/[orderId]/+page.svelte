@@ -1,38 +1,35 @@
 <script>
-    import {onMount, getContext} from "svelte";
+    import {getContext} from "svelte";
+    import {enhance} from "$app/forms";
     import CartItem from "./CartItem.svelte";
 
     const loader = getContext("loader");
     const notify = getContext("notify");
-    let {data} = $props();
-    let order = $state({});
-    let displayStatus = $state();
+    let {data, form} = $props();
+    let order = $state(data.order);
     let declineModal = $state(false);
     let modalNote = $state(false);
     let declineNote = $state();
     const apiUrl = import.meta.env.VITE_API_URL;
-    $effect(()=>{
+    let displayStatus = $derived.by(()=>{
         switch(order.status){
-            case "incomplete":
-                displayStatus = "Unpaid order";
-                break;
-            case "paid":
-                displayStatus = "Awaiting order confirmation";
-                break;
-            case "paymentFailed":
-                displayStatus = "Payment Failed";
-                break;
-            case "declined":
-                displayStatus = "Declined";
-                break;
-            case "confirmed":
-                displayStatus = "Awaiting shipment";
-                break;
-            case "shipped":
-                displayStatus = "Shipped";
-                break;
+            case "incomplete": return "Unpaid order";
+            case "paid": return "Awaiting order confirmation";
+            case "paymentFailed": return "Payment Failed";
+            case "declined": return "Declined";
+            case "confirmed": return "Awaiting shipment";
+            case "shipped": return "Shipped";
         }
     });
+
+    const update = ()=>{
+        loader(true);
+
+        return async (thing)=>{
+            order = form.order;
+            loader(false);
+        }
+    }
 
     const variationName = (item)=>{
         const variation = getVariationForItem(item);
@@ -67,7 +64,7 @@
         return false;
     }
 
-    const update = (status)=>{
+    /*const update = (status)=>{
         loader(true);
         fetch(`${apiUrl}/order/${order._id}`, {
             method: "put",
@@ -100,7 +97,7 @@
             .finally(()=>{
                 loader(false);
             });
-    }
+    }*/
 
     const decline = ()=>{
         loader(true);
@@ -153,31 +150,6 @@
             quantity: item.quantity
         };
     }
-
-    onMount(()=>{
-        loader(true);
-        fetch(`${import.meta.env.VITE_API_URL}/order/${data.orderId}/vendor`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    notify("error", response.error.message);
-                }else{
-                    order = response;
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                loader(false);
-            });
-    });
 </script>
 
 <svelte:head>
@@ -188,22 +160,26 @@
     <div class="modalContainer">
         <div class="declineModal">
             {#if modalNote}
-                <p>Please enter a note for the customer explaining why the order was declined.</p>
-                <p>This note will be sent in an email notifying the customer that it has been declined.</p>
+                <form
+                    method="?/decline"
+                    action="post"
+                    use:enhance={update}
+                >
+                    <p>Please enter a note for the customer explaining why the order was declined.</p>
+                    <p>This note will be sent in an email notifying the customer that it has been declined.</p>
 
-                <textarea bind:value={declineNote} rows="5"></textarea>
+                    <textarea bind:value={declineNote} rows="5" name="declineNote"></textarea>
+                    <input type="hidden" name="id" value={order._id}>
 
-                <div class="declineButtonBox">
-                    <button
-                        class="button"
-                        onclick={()=>{declineModal = false; modalNote = false;}}
-                    >Cancel</button>
+                    <div class="declineButtonBox">
+                        <button
+                            class="button"
+                            onclick={()=>{declineModal = false; modalNote = false;}}
+                        >Cancel</button>
 
-                    <button
-                        class="button decline"
-                        onclick={decline}
-                    >Decline</button>
-                </div>
+                        <button class="button decline">Decline</button>
+                    </div>
+                </form>
             {:else}
                 <p>Declining will cancel the order and the customer will be issued a full refund.</p>
                 <p>Are you sure that you want to decline this order?</p>
@@ -264,10 +240,15 @@
             <p>If you decline the order, a full refund will be issued to the customer.</p>
 
             <div class="buttonBox">
-                <button
-                    class="button confirm"
-                    onclick={()=>{update("confirmed")}}
-                >Confirm</button>
+                <form
+                    action="?/update",
+                    method="post"
+                    use:enhance={update}
+                >
+                    <input type="hidden" value={order._id} name="id">
+                    <input type="hidden" value="confirmed" name="status">
+                    <button class="button confirm">Confirm</button>
+                </form>
 
                 <button
                     class="button decline"
@@ -282,12 +263,16 @@
             {#if hasShippedItems()}
                 <p>Order is confirmed and waiting on shipping.</p>
 
-                <div class="buttonBox">
-                    <button
-                        class="button"
-                        onclick={()=>{update("shipped")}}
-                    >I Have Shipped the Order</button>
-                </div>
+                <form
+                    class="buttonBox"
+                    action="?/update",
+                    method="post"
+                    use:enhance={update}
+                >
+                    <input type="hidden" name="id" value={order._id}>
+                    <input type="hidden" name="status" value="shipped">
+                    <button class="button">I Have Shipped the Order</button>
+                </form>
             {:else}
                 <p>Order confirmed. Waiting on customer pick-up.</p>
             {/if}
