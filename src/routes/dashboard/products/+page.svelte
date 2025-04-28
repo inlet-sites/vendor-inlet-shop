@@ -18,7 +18,7 @@
         }
         return [...tags];
     }
-    let tags = createTags(products);
+    const tags = createTags(products);
 
     const tagSearch = (tag)=>{
         activeTag = tag;

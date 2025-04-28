@@ -21,7 +21,6 @@ export const load = async ({fetch, cookies})=>{
 
         return {vendor};
     }catch(e){
-        console.log(e);
         redirect(302, "/");
     }
 }
