@@ -1,12 +1,6 @@
 <script>
     import "$lib/global.css";
     import logo from "$lib/logo.png";
-    import {onMount} from "svelte";
-    let loggedIn = $state(false);
-
-    onMount(()=>{
-        if(localStorage.getItem("vendorToken")) loggedIn = true;
-    });
 </script>
 
 <div class="container">
@@ -18,8 +12,6 @@
 
     <div class="links">
         <a href="/">Return Home</a>
-
-        {#if loggedIn} <a href="/dashboard">Return to dashboard</a> {/if}
     </div>
 </div>
 
