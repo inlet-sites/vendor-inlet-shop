@@ -1,12 +1,12 @@
 <script>
-    import {onMount, getContext} from "svelte";
+    import {getContext} from "svelte";
     import Product from "./Product.svelte";
 
     const loader = getContext("loader");
     const notify = getContext("notify");
-    let products = $state([]);
-    let displayProducts = $state([]);
-    let tags = $state();
+    const {data} = $props();
+    let products = $state(data.products);
+    let displayProducts = $state(products);
     let activeTag = $state("all");
 
     const createTags = (products)=>{
@@ -18,6 +18,7 @@
         }
         return [...tags];
     }
+    let tags = createTags(products);
 
     const tagSearch = (tag)=>{
         activeTag = tag;
@@ -31,33 +32,6 @@
             if(products[i].tags.includes(tag)) displayProducts.push(products[i]);
         }
     }
-
-    onMount(()=>{
-        loader(true);
-        fetch(`${import.meta.env.VITE_API_URL}/product/vendor`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    notify("error", response.error.message);
-                }else{
-                    products = response;
-                    displayProducts = response;
-                    tags = createTags(response);
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                loader(false);
-            });
-    });
 </script>
 
 <svelte:head>

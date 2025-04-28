@@ -1,5 +1,5 @@
 <script>
-    import {onMount, getContext} from "svelte";
+    import {getContext} from "svelte";
     import Name from "./components/Name.svelte";
     import Tags from "./components/Tags.svelte";
     import Description from "./components/Description.svelte";
@@ -7,17 +7,18 @@
     import PurchaseOption from "./components/PurchaseOption.svelte";
     import Quantity from "./components/Quantity.svelte";
 
-    let {data} = $props();
-    const loader = getContext("loader");
+    const {data} = $props();
     const notify = getContext("notify");
     const vendor = getContext("vendor");
-    let product = $state();
+    let product = $state(data.product);
     let currentPrice = $state(0);
     let price = $state();
     const apiUrl = import.meta.env.VITE_API_URL;
     $effect(()=>{
         if(product) price = product.variations[currentPrice];
     });
+
+    if(product.error) notify("error", product.error.message);
 
     const updateProduct = (p)=>{product = p}
 
@@ -26,31 +27,6 @@
     const priceString = (p)=>{
         return `$${(p / 100).toFixed(2)}`
     }
-
-    onMount(()=>{
-        loader(true);
-        fetch(`${apiUrl}/product/${data.productId}`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    notify("error", response.error.message)
-                }else{
-                    product = response;
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                loader(false);
-            });
-    });
 </script>
 
 <div class="container">
