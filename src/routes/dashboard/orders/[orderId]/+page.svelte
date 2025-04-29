@@ -2,15 +2,13 @@
     import {getContext} from "svelte";
     import {enhance} from "$app/forms";
     import CartItem from "./CartItem.svelte";
+    import Decline from "./Decline.svelte";
 
     const loader = getContext("loader");
     const notify = getContext("notify");
     let {data, form} = $props();
     let order = $state(data.order);
-    let declineModal = $state(false);
-    let modalNote = $state(false);
-    let declineNote = $state();
-    const apiUrl = import.meta.env.VITE_API_URL;
+    let decline = $state(false);
     let displayStatus = $derived.by(()=>{
         switch(order.status){
             case "incomplete": return "Unpaid order";
@@ -25,27 +23,11 @@
     const update = ()=>{
         loader(true);
 
-        return async (thing)=>{
+        return async ({update})=>{
+            await update({reset: false});
             order = form.order;
             loader(false);
         }
-    }
-
-    const variationName = (item)=>{
-        const variation = getVariationForItem(item);
-        return `${variation.descriptor} ($${(variation.price / 100).toFixed(2)})`;
-    }
-
-    const shipping = (item)=>{
-        const variation = getVariationForItem(item);
-        return ((variation.shipping * item.quantity) / 100).toFixed(2);
-    }
-
-    const total = (item)=>{
-        const variation = getVariationForItem(item);
-        const price = variation.price * item.quantity;
-        const shipping = variation.shipping * item.quantity;
-        return ((price + shipping) / 100).toFixed(2);
     }
 
     const getVariationForItem = (item)=>{
@@ -85,48 +67,12 @@
     <title>Order {order.orderNumber} | Vendor.Inlet.Shop</title>
 </svelte:head>
 
-{#if declineModal}
-    <div class="modalContainer">
-        <div class="declineModal">
-            {#if modalNote}
-                <form
-                    method="?/decline"
-                    action="post"
-                    use:enhance={update}
-                >
-                    <p>Please enter a note for the customer explaining why the order was declined.</p>
-                    <p>This note will be sent in an email notifying the customer that it has been declined.</p>
-
-                    <textarea bind:value={declineNote} rows="5" name="declineNote"></textarea>
-                    <input type="hidden" name="id" value={order._id}>
-
-                    <div class="declineButtonBox">
-                        <button
-                            class="button"
-                            onclick={()=>{declineModal = false; modalNote = false;}}
-                        >Cancel</button>
-
-                        <button class="button decline">Decline</button>
-                    </div>
-                </form>
-            {:else}
-                <p>Declining will cancel the order and the customer will be issued a full refund.</p>
-                <p>Are you sure that you want to decline this order?</p>
-
-                <div class="declineButtonBox">
-                    <button
-                        class="button"
-                        onclick={()=>{declineModal = false}}
-                    >Cancel</button>
-                    
-                    <button
-                        class="button decline"
-                        onclick={()=>{modalNote = true}}
-                    >Confirm</button>
-                </div>
-            {/if}
-        </div>
-    </div>
+{#if decline}
+    <Decline
+        orderId={order._id}
+        close={()=>{decline = false}}
+        update={update}
+    />
 {/if}
 
 <div class="Order">
@@ -181,7 +127,7 @@
 
                 <button
                     class="button decline"
-                    onclick={()=>{declineModal = true}}
+                    onclick={()=>{decline = true}}
                 >Decline</button>
             </div>
         {:else if order.status === "paymentFailed"}
@@ -269,40 +215,5 @@
     .decline{
         background: red;
         color: var(--text);
-    }
-
-    .modalContainer{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 100vw;
-        backdrop-filter: blur(10px);
-        z-index: 3;
-    }
-
-    .declineModal{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 500px;
-        background: var(--text);
-        padding: 35px;
-    }
-
-    .declineModal p{
-        font-size: 22px;
-        color: black;
-        text-align: center;
-        margin: 15px 0;
-    }
-
-    .declineButtonBox{
-        display: flex;
-        justify-content: space-around;
-        margin-top: 15px;
     }
 </style>
