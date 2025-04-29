@@ -3,6 +3,7 @@
     import StripeSetup from "./StripeSetup.svelte";
 
     const vendor = getContext("vendor");
+    const {data} = $props();
     let stripeSetup = $state(false);
 </script>
 
@@ -33,6 +34,7 @@
 
     {#if stripeSetup}
         <StripeSetup
+            vt={data.vt}
             close={()=>{stripeSetup = false}}
         />
     {/if}

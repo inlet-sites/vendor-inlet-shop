@@ -4,7 +4,8 @@
 
     const loader = getContext("loader");
     const notify = getContext("notify");
-    let {close} = $props();
+    let {vt, close} = $props();
+    let form = $state();
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const activate = ()=>{
@@ -13,7 +14,7 @@
             method: "put",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                Authorization: `Bearer ${vt}`
             },
             body: JSON.stringify({stripeActivated: true})
         })
@@ -76,7 +77,7 @@
             method: "post",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                Authorization: `Bearer ${vt}`
             }
         })
             .then(r=>r.json())
@@ -97,6 +98,12 @@
 </script>
 
 <div class="StripeSetup">
+    <form
+        style="display:none"
+        action="?/getClientSecret"
+        method="post"
+        bind:this={form}
+    >
     <div id="eoc"></div>
 </div>
 
