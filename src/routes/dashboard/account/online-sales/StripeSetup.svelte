@@ -39,7 +39,7 @@
             method: "post",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                Authorization: `Bearer ${vt}`
             }
         });
 
@@ -98,12 +98,6 @@
 </script>
 
 <div class="StripeSetup">
-    <form
-        style="display:none"
-        action="?/getClientSecret"
-        method="post"
-        bind:this={form}
-    >
     <div id="eoc"></div>
 </div>
 
