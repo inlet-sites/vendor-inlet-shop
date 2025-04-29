@@ -6,8 +6,10 @@
     let menuOpen = $state(false);
 
     const logout = ()=>{
-        localStorage.removeItem("vendorToken");
-        window.location.href = "/";
+        const logout = document.createElement("form");
+        form.action = "?/logout";
+        form.method = "post";
+        form.click();
     }
 
     const showMobile = ()=>{
@@ -37,7 +39,7 @@
 
     <div class="bottomButtons">
         <a href="/help" target="_blank">Help</a>
-        <button onclick={logout}>Logout</button>
+        <a href="/logout">Logout</a>
     </div>
 </div>
 
