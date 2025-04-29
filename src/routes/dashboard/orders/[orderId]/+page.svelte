@@ -204,7 +204,12 @@
     }
 
     .buttonBox{
+        display: flex;
         margin-top: 15px;
+    }
+
+    .buttonBox > *{
+        margin-right: 35px;
     }
 
     .confirm{

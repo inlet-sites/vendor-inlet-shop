@@ -88,4 +88,9 @@
         background: red;
         color: var(--text);
     }
+
+    textarea{
+        width: 100%;
+        font-size: 22px;
+    }
 </style>
