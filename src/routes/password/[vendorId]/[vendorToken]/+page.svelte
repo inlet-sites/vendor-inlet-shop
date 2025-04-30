@@ -22,8 +22,23 @@
         }, 7500);
     }
 
+    const valid = ()=>{
+        if(password !== confirmPassword){
+            notify("error", "Passwords do not match");
+            return false
+        }
+
+        if(password.length < 10){
+            notify("error", "Password must contain at least 10 characters");
+            return false;
+        }
+
+        return true;
+    }
+
     const submit = ()=>{
         loader = true;
+        if(!valid()) return;
         fetch(`${import.meta.env.VITE_API_URL}/vendor/password/reset`, {
             method: "post",
             headers: {
