@@ -15,7 +15,7 @@ export const load = async ({fetch, cookies})=>{
         vendor = await vendor.json();
 
         if(vendor.error){
-            cookies.delete("vendorToken");
+            cookies.delete("vendorToken", {path: "/"});
             redirect(302, "/login");
         }
 
