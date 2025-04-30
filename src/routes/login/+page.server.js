@@ -23,13 +23,17 @@ export const actions = {
         });
         response = await response.json();
 
-        cookies.set("vendorToken", response.token, {
-            httpOnly: true,
-            secure: url.protocol === "https",
-            sameSite: "strict",
-            path: "/"
-        });
+        if(response.error){
+            return {error: response.error};
+        }else{
+            cookies.set("vendorToken", response.token, {
+                httpOnly: true,
+                secure: url.protocol === "https",
+                sameSite: "strict",
+                path: "/"
+            });
 
-        throw redirect(303, "/dashboard/account");
+            throw redirect(303, "/dashboard/account");
+        }
     }
 }
