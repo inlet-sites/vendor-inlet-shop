@@ -12,8 +12,7 @@
         fetch("/dashboard/account/public-data", {
             method: "put",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({slogan: $vendor.publicData.slogan})
         })

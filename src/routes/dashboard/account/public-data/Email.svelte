@@ -13,7 +13,6 @@
             method: "put",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
             },
             body: JSON.stringify({email: $vendor.publicData.email})
         })
