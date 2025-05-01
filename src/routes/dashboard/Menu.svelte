@@ -73,7 +73,7 @@
         left: 5px;
     }
 
-    .container button, .container a{
+    .container a{
         background: none;
         border: none;
         color: var(--text);
@@ -89,14 +89,6 @@
     .container a{
         display: block;
         font-family: inherit;
-    }
-
-    .container button:hover{
-        color: rgb(150, 150, 150);
-    }
-
-    .container button:active{
-        color: rgb(125, 125, 125);
     }
 
     .bottomButtons{

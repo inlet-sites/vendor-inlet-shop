@@ -19,11 +19,8 @@
         const formData = new FormData();
         formData.append("file", files[0]);
 
-        fetch(`${import.meta.env.VITE_API_URL}/vendor/image`, {
+        fetch("/dashboard/account/public-data/image", {
             method: "put",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            },
             body: formData
         })
             .then(r=>r.json())
