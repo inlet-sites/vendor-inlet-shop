@@ -9,7 +9,7 @@
     const submit = ()=>{
         loader(true);
 
-        fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
+        fetch("/dashboard/account/public-data", {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
