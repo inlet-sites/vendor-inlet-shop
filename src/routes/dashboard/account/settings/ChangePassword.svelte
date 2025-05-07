@@ -8,36 +8,6 @@
     let {cancel} = $props();
     let password = $state();
     let confirmPassword = $state();
-
-    const submit = ()=>{
-        loader(true);
-        fetch(`${import.meta.env.VITE_API_URL}/vendor/${$vendor.id}/password`, {
-            method: "put",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            },
-            body: JSON.stringify({
-                password: password,
-                confirmPassword: confirmPassword
-            })
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    notify("error", response.error.message);
-                }else{
-                    localStorage.removeItem("vendorToken");
-                    goto("/");
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                loader(false);
-            });
-    }
 </script>
 
 <div class="ChangePassword">
@@ -45,11 +15,11 @@
         <h2>Change Password</h2>
         <p>This will log you out of all devices</p>
 
-        <form onsubmit={submit}>
+        <form action="?/changePassword" method="post">
             <label>New Password
                 <input
                     type="password"
-                    bind:value={password}
+                    name="password"
                     required
                 >
             </label>
@@ -57,11 +27,16 @@
             <label>Confirm Password
                 <input
                     type="password"
-                    bind:value={confirmPassword}
+                    name="confirmPassword"
                     required
                 >
             </label>
 
+            <input
+                type="hidden"
+                name="vendorId"
+                value={$vendor.id}
+            >
 
             <div class="buttonBox">
                 <button class="button cancel" type="button" onclick={cancel}>Cancel</button>
