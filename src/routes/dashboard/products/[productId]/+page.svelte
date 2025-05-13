@@ -29,6 +29,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>{product.name} | Inlet.Shop</title>
+</svelte:head>
+
 <div class="container">
     {#if product}
         <Name
