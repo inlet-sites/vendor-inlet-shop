@@ -36,11 +36,8 @@
             formData.append("images", product.images[i]);
         }
 
-        fetch(`${apiUrl}/product`, {
+        fetch("/api/product", {
             method: "post",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            },
             body: formData
         })
             .then(r=>r.json())
@@ -61,11 +58,8 @@
                             formData.append("images", variations[i].images[j]);
                         }
 
-                        const promise = fetch(`${apiUrl}/variation`, {
+                        const promise = fetch("/api/product/variation", {
                             method: "post",
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-                            },
                             body: formData
                         });
                         promises.push(promise);
@@ -75,7 +69,7 @@
                 }
             })
             .then((response)=>{
-                notify("success", "New product created");
+                notify("sucess", "New product created");
                 goto("/dashboard/products");
             })
             .catch((err)=>{
