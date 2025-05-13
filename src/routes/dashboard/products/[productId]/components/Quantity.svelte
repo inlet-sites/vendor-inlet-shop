@@ -12,15 +12,18 @@
         tick().then(()=>{inputElem.focus()});
     }
 
-    let submit = ()=>{
+    const submit = ()=>{
         loader(true);
-        fetch(`${import.meta.env.VITE_API_URL}/product/${productId}/variation/${variationId}`, {
-            method: "put",
+        fetch("/api/product/variation", {
+            method: "PUT",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({quantity: quantity})
+            body: JSON.stringify({
+                quantity: quantity,
+                productId: productId,
+                variationId: variationId
+            })
         })
             .then(r=>r.json())
             .then((response)=>{
