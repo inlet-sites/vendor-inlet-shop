@@ -1,5 +1,7 @@
 export const PUT = async ({request, fetch, cookies})=>{
+    console.log("wtf");
     const data = await request.json();
+    console.log(data);
     let response = await fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
         method: "put",
         headers: {
@@ -8,6 +10,5 @@ export const PUT = async ({request, fetch, cookies})=>{
         },
         body: JSON.stringify(data)
     });
-    response = await response.json();
-    return response;
+    return new Response(await response.text());
 }

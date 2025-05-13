@@ -22,7 +22,7 @@
     const submit = ()=>{
         loader(true);
 
-        fetch("/dasbhoard/account/public-data", {
+        fetch("/dashboard/account/public-data", {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
@@ -39,6 +39,7 @@
                 }
             })
             .catch((err)=>{
+                console.log(err);
                 notify("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{
