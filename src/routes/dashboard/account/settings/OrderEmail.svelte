@@ -5,14 +5,12 @@
     let loader = getContext("loader");
     let notify = getContext("notify");
 
-    const update = ()=>{
+    const orderEmail = ()=>{
         loader(true);
-
-        fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
+        fetch(`${import.meta.env.VITE_URL}/dashboard/account/settings`, {
             method: "put",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({newOrderSendEmail: $vendor.newOrderSendEmail})
         })
@@ -41,11 +39,12 @@
 {#if $vendor}
     <div class="OrderEmail">
         <h3>Send Email for Each Order?</h3>
+
         <label class="switch">
             <input
                 type="checkbox"
                 bind:checked={$vendor.newOrderSendEmail}
-                onchange={update}
+                on:change={orderEmail}
             >
             <span class="slider"></span>
         </label>

@@ -1,5 +1,3 @@
-import {redirect} from "@sveltejs/kit";
-
 export const actions = {
     changePassword: async ({request, fetch, cookies})=>{
         const data = await request.formData();
@@ -14,6 +12,19 @@ export const actions = {
                 password: data.get("password"),
                 confirm: data.get("confirmPassword")
             })
+        });
+        return await response.json();
+    },
+
+    orderEmail: async ({request, fetch, cookies})=>{
+        const data = await request.formData();
+        let response = await fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${cookies.get("vendorToken")}`
+            },
+            body: JSON.stringify({newOrderSendEmail: data.get("newOrderSendEmail")})
         });
         return await response.json();
     }
