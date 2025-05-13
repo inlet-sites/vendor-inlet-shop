@@ -35,13 +35,15 @@
 
     const submit = ()=>{
         loader(true);
-        fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, {
-            method: "put",
+        fetch("/api/product", {
+            method: "PUT",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({tags: submitTags()})
+            body: JSON.stringify({
+                tags: submitTags(),
+                productId: productId
+            })
         })
             .then(r=>r.json())
             .then((response)=>{
@@ -49,7 +51,7 @@
                     notify("error", response.error.message);
                 }else{
                     updateProduct(response);
-                    notify("success", "Tags updated");
+                    notify("Success", "Tags updated");
                     edit = false;
                 }
             })
