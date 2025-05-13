@@ -14,16 +14,15 @@
 
     const upload = ()=>{
         loader(true);
-    
+
         let formData = new FormData();
+        formData.append("url", addUrl);
         for(let i = 0; i < newImages.length; i++){
             formData.append("images", newImages[i]);
         }
-        fetch(addUrl, {
-            method: "put",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
-            },
+
+        fetch("/api/product/image", {
+            method: "PUT",
             body: formData
         })
             .then(r=>r.json())
@@ -45,13 +44,19 @@
 
     const remove = (i)=>{
         loader(true);
-        fetch(removeUrl, {
-            method: "put",
+        const thing = JSON.stringify({
+            images: [images[i]],
+            url: removeUrl
+        });
+        fetch("/api/product/image", {
+            method: "PATCH",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("vendorToken")}`
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({images: [images[i]]})
+            body: JSON.stringify({
+                images: [images[i]],
+                url: removeUrl
+            })
         })
             .then(r=>r.json())
             .then((response)=>{
