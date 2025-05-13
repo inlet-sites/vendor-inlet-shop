@@ -12,13 +12,16 @@ export const POST = async ({request, fetch, cookies})=>{
 
 export const PUT = async ({request, fetch, cookies})=>{
     const data = await request.json();
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/product/${data.get("vendorId")}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/product/${data.productId}`, {
         method: "put",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${cookies.get("vendorToken")}`
         },
-        body: data
+        body: JSON.stringify({
+            ...data,
+            productId: undefined
+        })
     });
     return new Response(await response.text());
 }
