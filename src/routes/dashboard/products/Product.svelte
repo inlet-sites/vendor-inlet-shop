@@ -57,11 +57,12 @@
         margin: 15px 0;
         cursor: pointer;
         text-decoration: none;
+        max-width: 750px;
     }
 
     .imageContainer{
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         height: 100%;
         width: 200px;
     }

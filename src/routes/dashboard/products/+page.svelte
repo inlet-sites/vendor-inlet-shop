@@ -35,7 +35,7 @@
 </script>
 
 <svelte:head>
-    <title>Products | Vendor.Inlet.Shop</title>
+    <title>Products | Inlet Shop</title>
 </svelte:head>
 
 <div class="container">
