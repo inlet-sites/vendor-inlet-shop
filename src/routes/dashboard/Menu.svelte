@@ -25,6 +25,7 @@
         }else if(path.includes("orders")){
             active = "orders";
         }
+        showMobile();
     });
 </script>
 
