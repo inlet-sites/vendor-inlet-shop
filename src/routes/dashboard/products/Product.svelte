@@ -78,4 +78,10 @@
         justify-content: space-around;
         height: 100%;
     }
+
+    @media screen and (max-width: 850px){
+        .imageContainer{
+            width: 150px;
+        }
+    }
 </style>
