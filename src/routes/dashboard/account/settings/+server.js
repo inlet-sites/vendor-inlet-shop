@@ -10,7 +10,5 @@ export const PUT = async ({request, fetch, cookies})=>{
         },
         body: JSON.stringify({newOrderSendEmail: data.newOrderSendEmail})
     });
-    const thing = await response.text();
-    console.log(thing);
     return new Response(await response.text());
 }

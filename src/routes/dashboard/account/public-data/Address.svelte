@@ -7,7 +7,6 @@
     let edit = $state(false);
 
     const submit = ()=>{
-        console.log($vendor.publicData);
         loader(true);
 
         fetch("/dashboard/account/public-data", {

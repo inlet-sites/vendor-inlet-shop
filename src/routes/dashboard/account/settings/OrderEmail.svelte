@@ -8,7 +8,7 @@
     const orderEmail = ()=>{
         loader(true);
         fetch(`${import.meta.env.VITE_URL}/dashboard/account/settings`, {
-            method: "put",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
