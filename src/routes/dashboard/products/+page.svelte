@@ -91,4 +91,26 @@
     .tags button.active{
         border: 2px inset red;
     }
+
+    @media screen and (max-width: 850px){
+        header{
+            justify-content: flex-start;
+        }
+
+        h1{
+            margin-right: 35px;
+        }
+
+        .tags button{
+            margin: 5px;
+        }
+    }
+
+    @media screen and (max-width: 500px){
+        header{
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+    }
 </style>
